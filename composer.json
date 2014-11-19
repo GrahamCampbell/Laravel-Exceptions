@@ -1,0 +1,41 @@
+{
+    "name": "graham-campbell/exceptions",
+    "description": "Provides Pretty Error Pages For Both Development And Production",
+    "keywords": ["laravel", "framework", "exceptions", "exception", "errors", "error", "whoops", "Exceptions", "Laravel Exceptions", "Laravel-Exceptions", "Graham Campbell", "GrahamCampbell"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Graham Campbell",
+            "email": "graham@mineuk.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "illuminate/contracts": "~5.0",
+        "illuminate/support": "~5.0",
+        "symfony/debug": "~2.6",
+        "symfony/http-foundation": "~2.6",
+        "filp/whoops": "~1.1",
+        "psr/log": "~1.0"
+    },
+    "require-dev": {
+        "graham-campbell/testbench": "~2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GrahamCampbell\\Exceptions\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GrahamCampbell\\Tests\\Exceptions\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
