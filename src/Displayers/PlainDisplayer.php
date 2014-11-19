@@ -39,11 +39,11 @@ class PlainDisplayer implements DisplayerInterface
     protected $view;
 
     /**
-     * Create a new instance.
+     * Create a new plain displayer instance.
      *
      * @param \Illuminate\Contracts\View\Factory $view
      *
-     * @return string
+     * @return void
      */
     public function __construct(View $view)
     {
