@@ -34,9 +34,9 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertIsInjectable('GrahamCampbell\Exceptions\ExceptionHandler');
     }
 
-    public function testAjaxDisplayerIsInjectable()
+    public function testArrayDisplayerIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\AjaxDisplayer');
+        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\ArrayDisplayer');
     }
 
     public function testDebugDisplayerIsInjectable()

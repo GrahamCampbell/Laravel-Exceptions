@@ -20,18 +20,18 @@ use Exception;
 use GrahamCampbell\Exceptions\Traits\InfoTrait;
 
 /**
- * This is the ajax displayer class.
+ * This is the array displayer class.
  *
  * @author    Graham Campbell <graham@mineuk.com>
  * @copyright 2014 Graham Campbell
  * @license   <https://github.com/GrahamCampbell/Laravel-Exceptions/blob/master/LICENSE.md> Apache 2.0
  */
-class AjaxDisplayer implements DisplayerInterface
+class ArrayDisplayer implements DisplayerInterface
 {
     use InfoTrait;
 
     /**
-     * Get the HTML content associated with the given exception.
+     * Get the content associated with the given exception.
      *
      * @param \Exception $exception
      * @param int        $code

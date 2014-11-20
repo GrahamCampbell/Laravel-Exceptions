@@ -28,7 +28,7 @@ use Exception;
 interface DisplayerInterface
 {
     /**
-     * Get the HTML content associated with the given exception.
+     * Get the content associated with the given exception.
      *
      * @param \Exception $exception
      * @param int        $code

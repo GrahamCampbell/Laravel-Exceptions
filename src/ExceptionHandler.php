@@ -17,7 +17,7 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
-use GrahamCampbell\Exceptions\Displayers\AjaxDisplayer;
+use GrahamCampbell\Exceptions\Displayers\ArrayDisplayer;
 use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\PlainDisplayer;
 use Illuminate\Contracts\Config\Repository as Config;
@@ -108,7 +108,7 @@ class ExceptionHandler extends Handler
     protected function getContent(Exception $exception, $code, $ajax, $debug)
     {
         if ($ajax) {
-            return $this->container->make(AjaxDisplayer::class)->display($exception, $code);
+            return $this->container->make(ArrayDisplayer::class)->display($exception, $code);
         }
 
         if ($debug) {
