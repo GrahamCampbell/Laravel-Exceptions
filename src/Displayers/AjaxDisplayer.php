@@ -17,7 +17,7 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
-use GrahamCampbell\Exceptions\InfoTrait;
+use GrahamCampbell\Exceptions\Traits\InfoTrait;
 
 /**
  * This is the ajax displayer class.

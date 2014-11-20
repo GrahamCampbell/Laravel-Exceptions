@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace GrahamCampbell\Exceptions;
+namespace GrahamCampbell\Exceptions\Traits;
 
 /**
  * This is the exception info trait.
