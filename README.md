@@ -30,7 +30,7 @@ Once Laravel Exceptions is installed, you need to register the service provider.
 
 * `'GrahamCampbell\Exceptions\ExceptionsServiceProvider'`
 
-You then MUST also bind the exception handler. Open up `bootstrap/app.php` and change `App\Exceptions\Handler` to `GrahamCampbell\Exceptions\ExceptionHandler`. Feel free to delete your `app/Exceptions/Handler.php` file since you won't be needing it anymore.
+You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\ExceptionHandler` rather than extending `Illuminate\Foundation\Exceptions\Handler`.
 
 
 ## Configuration
