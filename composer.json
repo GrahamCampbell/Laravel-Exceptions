@@ -2,7 +2,7 @@
     "name": "graham-campbell/exceptions",
     "description": "Provides Pretty Error Pages For Both Development And Production",
     "keywords": ["laravel", "framework", "exceptions", "exception", "errors", "error", "whoops", "Exceptions", "Laravel Exceptions", "Laravel-Exceptions", "Graham Campbell", "GrahamCampbell"],
-    "license": "Apache-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Graham Campbell",
