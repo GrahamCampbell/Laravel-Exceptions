@@ -40,7 +40,7 @@ Laravel Exceptions requires no configuration. Just follow the simple install ins
 
 ## Usage
 
-Laravel Exceptions is designed to pull down code from github commits, analyse it, and build code style reports. There is currently no real documentation for this package, but feel free to check out the [API Documentation](http://docs.grahamjcampbell.co.uk) for Laravel Exceptions.
+There is currently no real documentation for this package, but feel free to check out the [API Documentation](http://docs.grahamjcampbell.co.uk) for Laravel Exceptions.
 
 
 ## License
