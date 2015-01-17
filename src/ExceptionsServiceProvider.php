@@ -11,7 +11,7 @@
 
 namespace GrahamCampbell\Exceptions;
 
-use Illuminate\Support\ServiceProvider;
+use Orchestra\Support\Providers\ServiceProvider;
 
 /**
  * This is the exceptions service provider class.
@@ -21,20 +21,13 @@ use Illuminate\Support\ServiceProvider;
 class ExceptionsServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
-     * Bootstrap the application events.
+     * Boot the service provider.
      *
      * @return void
      */
     public function boot()
     {
-        $this->package('graham-campbell/exceptions', 'graham-campbell/exceptions', __DIR__);
+        $this->addViewComponent('graham-campbell/exceptions', 'graham-campbell/exceptions', realpath(__DIR__.'/../views'));
     }
 
     /**
