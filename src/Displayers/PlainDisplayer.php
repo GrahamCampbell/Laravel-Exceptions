@@ -55,6 +55,6 @@ class PlainDisplayer implements DisplayerInterface
     {
         $info = $this->info($code, $exception->getMessage());
 
-        return $this->view->make('graham-campbell/exceptions::plain', $info)->render();
+        return $this->view->make('exceptions::plain', $info)->render();
     }
 }

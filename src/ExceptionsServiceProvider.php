@@ -11,7 +11,7 @@
 
 namespace GrahamCampbell\Exceptions;
 
-use Orchestra\Support\Providers\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 /**
  * This is the exceptions service provider class.
@@ -27,7 +27,7 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->addViewComponent('graham-campbell/exceptions', 'graham-campbell/exceptions', realpath(__DIR__.'/../views'));
+        $this->loadViewsFrom('exceptions', realpath(__DIR__.'/../views'));
     }
 
     /**
