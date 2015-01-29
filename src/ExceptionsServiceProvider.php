@@ -27,7 +27,7 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom('exceptions', realpath(__DIR__.'/../views'));
+        $this->loadViewsFrom(realpath(__DIR__.'/../views'), 'exceptions');
     }
 
     /**
