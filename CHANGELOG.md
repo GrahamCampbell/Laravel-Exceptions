@@ -2,6 +2,6 @@ CHANGE LOG
 ==========
 
 
-## V0.1 Alpha (Upcoming)
+## V1.0 (04/02/2015)
 
-* Initial testing release
+* Initial release
