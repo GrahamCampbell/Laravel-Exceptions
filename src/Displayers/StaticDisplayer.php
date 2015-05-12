@@ -70,5 +70,4 @@ class StaticDisplayer implements DisplayerInterface
 
         return $this->view;
     }
-
 }
