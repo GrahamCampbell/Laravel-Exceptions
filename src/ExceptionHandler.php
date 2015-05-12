@@ -20,6 +20,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler;
 use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\Debug\ExceptionHandler as SymfonyHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -73,19 +74,21 @@ class ExceptionHandler extends Handler
     {
         $flattened = FlattenException::create($e);
 
-        $code = $flattened->getStatusCode();
-        $ajax = $request->ajax();
-        $debug = $this->config->get('app.debug');
+        try {
+            $code = $flattened->getStatusCode();
+            $ajax = $request->ajax();
+            $debug = $this->config->get('app.debug');
+            $content = $this->getContent($e, $code, $ajax, $debug);
+            $headers = $flattened->getHeaders();
 
-        $content = $this->getContent($e, $code, $ajax, $debug);
+            if (is_array($content)) {
+                return new JsonResponse($content, $code, $headers);
+            }
 
-        $headers = $flattened->getHeaders();
-
-        if (is_array($content)) {
-            return new JsonResponse($content, $code, $headers);
+            return new Response($content, $code, $headers);
+        } catch (Exception $exception) {
+            return (new SymfonyHandler(false))->createResponse($flattened);
         }
-
-        return new Response($content, $code, $headers);
     }
 
     /**
