@@ -36,14 +36,14 @@ class PlainDisplayer implements DisplayerInterface
      */
     public function __construct()
     {
-        $this->view = file_get_contents(__DIR__ . '/../../views/plain.html');
+        $this->view = file_get_contents(__DIR__.'/../../views/plain.html');
     }
 
     /**
      * Get the content associated with the given exception.
      *
      * @param \Exception $exception
-     * @param int $code
+     * @param int        $code
      *
      * @return string
      */

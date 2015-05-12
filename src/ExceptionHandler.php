@@ -15,7 +15,6 @@ use Exception;
 use GrahamCampbell\Exceptions\Displayers\ArrayDisplayer;
 use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\PlainDisplayer;
-use GrahamCampbell\Exceptions\Displayers\StaticDisplayer;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler;
@@ -48,8 +47,8 @@ class ExceptionHandler extends Handler
     /**
      * Create a new exception handler instance.
      *
-     * @param \Psr\Log\LoggerInterface $log
-     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Psr\Log\LoggerInterface                  $log
+     * @param \Illuminate\Contracts\Config\Repository   $config
      * @param \Illuminate\Contracts\Container\Container $container
      *
      * @return void
@@ -66,7 +65,7 @@ class ExceptionHandler extends Handler
      * Render an exception into a response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception $e
+     * @param \Exception               $e
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -93,9 +92,9 @@ class ExceptionHandler extends Handler
      * Get the content associated with the given exception.
      *
      * @param \Exception $exception
-     * @param int $code
-     * @param bool $ajax
-     * @param bool $debug
+     * @param int        $code
+     * @param bool       $ajax
+     * @param bool       $debug
      *
      * @return string|array
      */
