@@ -48,8 +48,8 @@ class ExceptionHandler extends Handler
     /**
      * Create a new exception handler instance.
      *
-     * @param \Psr\Log\LoggerInterface                  $log
-     * @param \Illuminate\Contracts\Config\Repository   $config
+     * @param \Psr\Log\LoggerInterface $log
+     * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Illuminate\Contracts\Container\Container $container
      *
      * @return void
@@ -66,7 +66,7 @@ class ExceptionHandler extends Handler
      * Render an exception into a response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception               $e
+     * @param \Exception $e
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -93,9 +93,9 @@ class ExceptionHandler extends Handler
      * Get the content associated with the given exception.
      *
      * @param \Exception $exception
-     * @param int        $code
-     * @param bool       $ajax
-     * @param bool       $debug
+     * @param int $code
+     * @param bool $ajax
+     * @param bool $debug
      *
      * @return string|array
      */
@@ -109,10 +109,6 @@ class ExceptionHandler extends Handler
             return $this->container->make(DebugDisplayer::class)->display($exception, $code);
         }
 
-        try {
-            return $this->container->make(PlainDisplayer::class)->display($exception, $code);
-        } catch (Exception $e) {
-            return $this->container->make(StaticDisplayer::class)->display($exception, $code);
-        }
+        return $this->container->make(PlainDisplayer::class)->display($exception, $code);
     }
 }
