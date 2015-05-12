@@ -15,6 +15,7 @@ use Exception;
 use GrahamCampbell\Exceptions\Displayers\ArrayDisplayer;
 use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\PlainDisplayer;
+use GrahamCampbell\Exceptions\Displayers\StaticDisplayer;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler;
@@ -108,6 +109,10 @@ class ExceptionHandler extends Handler
             return $this->container->make(DebugDisplayer::class)->display($exception, $code);
         }
 
-        return $this->container->make(PlainDisplayer::class)->display($exception, $code);
+        try {
+            return $this->container->make(PlainDisplayer::class)->display($exception, $code);
+        } catch (Exception $e) {
+            return $this->container->make(StaticDisplayer::class)->display($exception, $code);
+        }
     }
 }
