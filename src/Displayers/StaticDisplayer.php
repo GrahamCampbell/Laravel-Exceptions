@@ -25,7 +25,7 @@ class StaticDisplayer implements DisplayerInterface
     use InfoTrait;
 
     /**
-     * The view
+     * The view.
      *
      * @var string
      */
@@ -33,18 +33,17 @@ class StaticDisplayer implements DisplayerInterface
 
     /**
      * Create a new static displayer instance.
-     *
      */
     public function __construct()
     {
-        $this->view = file_get_contents(__DIR__ . '/../../views/plain.html');
+        $this->view = file_get_contents(__DIR__.'/../../views/plain.html');
     }
 
     /**
      * Get the content associated with the given exception.
      *
      * @param \Exception $exception
-     * @param int $code
+     * @param int        $code
      *
      * @return string
      */
@@ -68,6 +67,7 @@ class StaticDisplayer implements DisplayerInterface
         foreach ($info as $key => $val) {
             $this->view = str_replace("{{ $$key }}", $val, $this->view);
         }
+
         return $this->view;
     }
 
