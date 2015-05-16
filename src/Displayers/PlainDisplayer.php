@@ -13,7 +13,6 @@ namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\Traits\InfoTrait;
-use Illuminate\Contracts\View\Factory as View;
 
 /**
  * This is the plain displayer class.
@@ -23,21 +22,6 @@ use Illuminate\Contracts\View\Factory as View;
 class PlainDisplayer implements DisplayerInterface
 {
     use InfoTrait;
-
-    /**
-     * The view.
-     *
-     * @var string
-     */
-    protected $view;
-
-    /**
-     * Create a new static displayer instance.
-     */
-    public function __construct()
-    {
-        $this->view = file_get_contents(__DIR__.'/../../views/plain.html');
-    }
 
     /**
      * Get the content associated with the given exception.
@@ -55,7 +39,7 @@ class PlainDisplayer implements DisplayerInterface
     }
 
     /**
-     * Render the view with given info.
+     * Render the page with given info.
      *
      * @param array $info
      *
@@ -63,11 +47,14 @@ class PlainDisplayer implements DisplayerInterface
      */
     private function render($info)
     {
+        $content = file_get_contents('resources/plain.html');
+
         $info['home_url'] = asset('/');
+
         foreach ($info as $key => $val) {
-            $this->view = str_replace("{{ $$key }}", $val, $this->view);
+            $content = str_replace("{{ $$key }}", $val, $content);
         }
 
-        return $this->view;
+        return $content;
     }
 }
