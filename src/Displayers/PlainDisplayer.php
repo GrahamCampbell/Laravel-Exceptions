@@ -43,7 +43,7 @@ class PlainDisplayer implements DisplayerInterface
      *
      * @return string
      */
-    private function render($info)
+    protected function render(array $info)
     {
         $content = file_get_contents('resources/plain.html');
 
