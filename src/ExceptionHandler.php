@@ -39,8 +39,8 @@ class ExceptionHandler extends Handler
     /**
      * Create a new exception handler instance.
      *
-     * @param \Psr\Log\LoggerInterface                  $log
-     * @param \Illuminate\Contracts\Config\Repository   $config
+     * @param \Psr\Log\LoggerInterface                $log
+     * @param \Illuminate\Contracts\Config\Repository $config
      *
      * @return void
      */
