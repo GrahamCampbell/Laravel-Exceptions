@@ -25,22 +25,18 @@ class PlainDisplayer implements DisplayerInterface
     use InfoTrait;
 
     /**
-     * The view factory instance.
+     * The view.
      *
-     * @var \Illuminate\Contracts\View\Factory
+     * @var string
      */
     protected $view;
 
     /**
-     * Create a new plain displayer instance.
-     *
-     * @param \Illuminate\Contracts\View\Factory $view
-     *
-     * @return void
+     * Create a new static displayer instance.
      */
-    public function __construct(View $view)
+    public function __construct()
     {
-        $this->view = $view;
+        $this->view = file_get_contents(__DIR__.'/../../views/plain.html');
     }
 
     /**
@@ -55,6 +51,23 @@ class PlainDisplayer implements DisplayerInterface
     {
         $info = $this->info($code, $exception->getMessage());
 
-        return $this->view->make('exceptions::plain', $info)->render();
+        return $this->render($info);
+    }
+
+    /**
+     * Render the view with given info.
+     *
+     * @param array $info
+     *
+     * @return string
+     */
+    private function render($info)
+    {
+        $info['home_url'] = asset('/');
+        foreach ($info as $key => $val) {
+            $this->view = str_replace("{{ $$key }}", $val, $this->view);
+        }
+
+        return $this->view;
     }
 }
