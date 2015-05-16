@@ -48,6 +48,7 @@ class PlainDisplayer implements DisplayerInterface
         $content = file_get_contents('resources/plain.html');
 
         $info['home_url'] = asset('/');
+        $info['favicon_url'] = asset('favicon.ico');
 
         foreach ($info as $key => $val) {
             $content = str_replace("{{ $$key }}", $val, $content);
