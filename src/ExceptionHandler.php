@@ -16,7 +16,6 @@ use GrahamCampbell\Exceptions\Displayers\ArrayDisplayer;
 use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\PlainDisplayer;
 use Illuminate\Contracts\Config\Repository as Config;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler;
 use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
@@ -38,25 +37,16 @@ class ExceptionHandler extends Handler
     protected $config;
 
     /**
-     * The container instance.
-     *
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    protected $container;
-
-    /**
      * Create a new exception handler instance.
      *
      * @param \Psr\Log\LoggerInterface                  $log
      * @param \Illuminate\Contracts\Config\Repository   $config
-     * @param \Illuminate\Contracts\Container\Container $container
      *
      * @return void
      */
-    public function __construct(Log $log, Config $config, Container $container)
+    public function __construct(Log $log, Config $config)
     {
         $this->config = $config;
-        $this->container = $container;
 
         parent::__construct($log);
     }
@@ -101,13 +91,13 @@ class ExceptionHandler extends Handler
     protected function getContent(Exception $exception, $code, $ajax, $debug)
     {
         if ($ajax) {
-            return $this->container->make(ArrayDisplayer::class)->display($exception, $code);
+            return (new ArrayDisplayer())->display($exception, $code);
         }
 
         if ($debug) {
-            return $this->container->make(DebugDisplayer::class)->display($exception, $code);
+            return (new DebugDisplayer())->display($exception, $code);
         }
 
-        return $this->container->make(PlainDisplayer::class)->display($exception, $code);
+        return (new PlainDisplayer())->display($exception, $code);
     }
 }
