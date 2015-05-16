@@ -12,7 +12,7 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
-use GrahamCampbell\Exceptions\Traits\InfoTrait;
+use GrahamCampbell\Exceptions\ExceptionInfo;
 
 /**
  * This is the array displayer class.
@@ -21,8 +21,6 @@ use GrahamCampbell\Exceptions\Traits\InfoTrait;
  */
 class ArrayDisplayer implements DisplayerInterface
 {
-    use InfoTrait;
-
     /**
      * Get the content associated with the given exception.
      *
@@ -33,7 +31,7 @@ class ArrayDisplayer implements DisplayerInterface
      */
     public function display(Exception $exception, $code)
     {
-        $info = $this->info($code, $exception->getMessage());
+        $info = ExceptionInfo::generate($code, $exception->getMessage());
 
         return ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
     }

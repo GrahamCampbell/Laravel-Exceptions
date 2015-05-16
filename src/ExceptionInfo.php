@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace GrahamCampbell\Exceptions\Traits;
+namespace GrahamCampbell\Exceptions;
 
 /**
- * This is the exception info trait.
+ * This is the exception info class.
  *
  * @author Graham Campbell <graham@mineuk.com>
  */
-trait InfoTrait
+class ExceptionInfo
 {
     /**
      * Get the exception information.
@@ -26,7 +26,7 @@ trait InfoTrait
      *
      * @return array
      */
-    protected function info($code, $msg)
+    public static function generate($code, $msg)
     {
         switch ($code) {
             case 400:
