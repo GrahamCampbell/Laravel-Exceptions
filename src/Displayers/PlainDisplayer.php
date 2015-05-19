@@ -45,7 +45,7 @@ class PlainDisplayer implements DisplayerInterface
      */
     protected function render(array $info)
     {
-        $content = file_get_contents('resources/plain.html');
+        $content = file_get_contents(__DIR__.'/resources/plain.html');
 
         $info['home_url'] = asset('/');
         $info['favicon_url'] = asset('favicon.ico');
