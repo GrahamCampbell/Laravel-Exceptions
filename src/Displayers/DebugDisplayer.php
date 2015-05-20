@@ -12,6 +12,7 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
+use Illuminate\Http\Request;
 use Whoops\Handler\PrettyPageHandler as Handler;
 use Whoops\Run as Whoops;
 
@@ -48,5 +49,28 @@ class DebugDisplayer implements DisplayerInterface
         $whoops->pushHandler(new Handler());
 
         return $whoops;
+    }
+
+    /**
+     * Can we display the exception in the given context?
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
+     *
+     * @return bool
+     */
+    public function canDisplay(Request $request, Exception $exception)
+    {
+        return true;
+    }
+
+    /**
+     * Do we provide verbose information about the exception?
+     *
+     * @return bool
+     */
+    public function isVerbose()
+    {
+        return true;
     }
 }

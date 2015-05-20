@@ -14,14 +14,13 @@ namespace GrahamCampbell\Tests\Exceptions\Displayers;
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\PlainDisplayer;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
-use GrahamCampbell\TestBench\Traits\ServiceProviderTestCaseTrait;
 
 /**
  * This is the plain displayer test class.
  *
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PlainDisplayerProviderTest extends AbstractTestCase
+class PlainDisplayerTest extends AbstractTestCase
 {
     public function testExceptionHandlerIsInjectable()
     {

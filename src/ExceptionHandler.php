@@ -12,11 +12,9 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
-use GrahamCampbell\Exceptions\Displayers\ArrayDisplayer;
-use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
-use GrahamCampbell\Exceptions\Displayers\PlainDisplayer;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -62,12 +60,15 @@ class ExceptionHandler extends Handler
     public function render($request, Exception $e)
     {
         $flattened = FlattenException::create($e);
-
         $code = $flattened->getStatusCode();
-        $ajax = $request->ajax();
-        $debug = $this->config->get('app.debug');
 
-        $content = $this->getContent($e, $code, $ajax, $debug);
+        $displayer = $this->getDisplayer($request, $e);
+
+        if ($displayer) {
+            $content = (new $displayer())->display($e, $code);
+        } else {
+            $content = 'An error has occurred and this resource cannot be displayed.';
+        }
 
         $headers = $flattened->getHeaders();
 
@@ -79,25 +80,37 @@ class ExceptionHandler extends Handler
     }
 
     /**
-     * Get the content associated with the given exception.
+     * Get the displayer instance.
      *
-     * @param \Exception $exception
-     * @param int        $code
-     * @param bool       $ajax
-     * @param bool       $debug
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $e
      *
-     * @return string|array
+     * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface|null
      */
-    protected function getContent(Exception $exception, $code, $ajax, $debug)
+    protected function getDisplayer(Request $request, Exception $e)
     {
-        if ($ajax) {
-            return (new ArrayDisplayer())->display($exception, $code);
+        $displayers = $this->config->get('exceptions.displayers', []);
+
+        foreach ($displayers as $index => $displayer) {
+            $displayers[$index] = new $displayer();
         }
 
-        if ($debug) {
-            return (new DebugDisplayer())->display($exception, $code);
+        if ($this->config->get('app.debug') !== true) {
+            foreach ($displayers as $index => $displayer) {
+                if ($displayer->isVerbose()) {
+                    unset($displayers[$index]);
+                }
+            }
         }
 
-        return (new PlainDisplayer())->display($exception, $code);
+        foreach ($displayers as $index => $displayer) {
+            if (!$displayer->canDisplay($request, $e)) {
+                unset($displayers[$index]);
+            }
+        }
+
+        if ($remaining = array_values($displayers)) {
+            return $remaining[0];
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionInfo;
+use Illuminate\Http\Request;
 
 /**
  * This is the array displayer class.
@@ -34,5 +35,28 @@ class ArrayDisplayer implements DisplayerInterface
         $info = ExceptionInfo::generate($code, $exception->getMessage());
 
         return ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
+    }
+
+    /**
+     * Can we display the exception in the given context?
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
+     *
+     * @return bool
+     */
+    public function canDisplay(Request $request, Exception $exception)
+    {
+        return $request->ajax();
+    }
+
+    /**
+     * Do we provide verbose information about the exception?
+     *
+     * @return bool
+     */
+    public function isVerbose()
+    {
+        return false;
     }
 }
