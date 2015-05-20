@@ -26,9 +26,9 @@ return [
     */
 
     'displayers' => [
-        'GrahamCampbell\Exceptions\Displayers\ArrayDisplayer',
         'GrahamCampbell\Exceptions\Displayers\DebugDisplayer',
         'GrahamCampbell\Exceptions\Displayers\PlainDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\ArrayDisplayer',
     ],
 
 ];
