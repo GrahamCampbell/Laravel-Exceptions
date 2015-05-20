@@ -135,7 +135,7 @@ class ExceptionHandler extends Handler
 
             foreach ($types as $type) {
                 if (in_array($type, $acceptable)) {
-                    continue;
+                    continue 2;
                 }
             }
 
