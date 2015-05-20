@@ -14,14 +14,14 @@ namespace GrahamCampbell\Exceptions\Displayers;
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * This is the array displayer class.
+ * This is the html displayer class.
  *
  * @author Graham Campbell <graham@mineuk.com>
  */
-class ArrayDisplayer implements DisplayerInterface
+class HtmlDisplayer implements DisplayerInterface
 {
     /**
      * Get the error response associated with the given exception.
@@ -36,9 +36,28 @@ class ArrayDisplayer implements DisplayerInterface
     {
         $info = ExceptionInfo::generate($code, $exception->getMessage());
 
-        $content = ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
+        return new Response($this->render($info), $code, array_merge($headers, ['Content-Type' => 'text/html']));
+    }
 
-        return new JsonResponse($content, $code, array_merge($headers, ['Content-Type' => 'application/json']));
+    /**
+     * Render the page with given info.
+     *
+     * @param array $info
+     *
+     * @return string
+     */
+    protected function render(array $info)
+    {
+        $content = file_get_contents(__DIR__.'/resources/error.html');
+
+        $info['home_url'] = asset('/');
+        $info['favicon_url'] = asset('favicon.ico');
+
+        foreach ($info as $key => $val) {
+            $content = str_replace("{{ $$key }}", $val, $content);
+        }
+
+        return $content;
     }
 
     /**
@@ -48,7 +67,7 @@ class ArrayDisplayer implements DisplayerInterface
      */
     public function contentType()
     {
-        return 'application/json';
+        return 'text/html';
     }
 
     /**

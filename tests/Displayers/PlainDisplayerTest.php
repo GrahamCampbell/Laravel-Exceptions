@@ -12,21 +12,21 @@
 namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
 use Exception;
-use GrahamCampbell\Exceptions\Displayers\PlainDisplayer;
+use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
 
 /**
- * This is the plain displayer test class.
+ * This is the html displayer test class.
  *
  * @author Graham Campbell <graham@mineuk.com>
  */
-class PlainDisplayerTest extends AbstractTestCase
+class HtmlDisplayerTest extends AbstractTestCase
 {
     public function testExceptionHandlerIsInjectable()
     {
-        $actual = (new PlainDisplayer())->display(new Exception('Oh noes!'), 502, [])->getContent();
+        $actual = (new HtmlDisplayer())->display(new Exception('Oh noes!'), 502, [])->getContent();
 
-        $expected = file_get_contents(__DIR__.'/stubs/plain.txt');
+        $expected = file_get_contents(__DIR__.'/stubs/html.txt');
 
         $this->assertSame($expected, $actual);
     }

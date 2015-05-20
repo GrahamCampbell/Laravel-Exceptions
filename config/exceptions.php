@@ -27,8 +27,8 @@ return [
 
     'displayers' => [
         'GrahamCampbell\Exceptions\Displayers\DebugDisplayer',
-        'GrahamCampbell\Exceptions\Displayers\PlainDisplayer',
-        'GrahamCampbell\Exceptions\Displayers\ArrayDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\HtmlDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\JsonDisplayer',
     ],
 
 ];

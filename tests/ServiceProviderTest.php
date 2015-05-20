@@ -27,9 +27,9 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertIsInjectable('GrahamCampbell\Exceptions\ExceptionHandler');
     }
 
-    public function testArrayDisplayerIsInjectable()
+    public function testJsonDisplayerIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\ArrayDisplayer');
+        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\JsonDisplayer');
     }
 
     public function testDebugDisplayerIsInjectable()
@@ -37,8 +37,8 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\DebugDisplayer');
     }
 
-    public function testPlainDisplayerIsInjectable()
+    public function testHtmlDisplayerIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\PlainDisplayer');
+        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\HtmlDisplayer');
     }
 }
