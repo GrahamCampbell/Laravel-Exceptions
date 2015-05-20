@@ -95,6 +95,21 @@ class ExceptionHandler extends Handler
             $displayers[$index] = new $displayer();
         }
 
+        if ($filtered = $thus->getFiltered($displayers, $request->getAcceptableContentTypes())) {
+            return $filtered[0];
+        }
+    }
+
+    /**
+     * Get the filtered list of displayers.
+     *
+     * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
+     * @param string[]                                                   $acceptable
+     *
+     * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
+     */
+    protected function getFiltered(array $displayers, array $acceptable)
+    {
         if ($this->config->get('app.debug') !== true) {
             foreach ($displayers as $index => $displayer) {
                 if ($displayer->isVerbose()) {
@@ -106,11 +121,24 @@ class ExceptionHandler extends Handler
         foreach ($displayers as $index => $displayer) {
             if (!$displayer->canDisplay($request, $e)) {
                 unset($displayers[$index]);
+                continue;
             }
+
+            $types = $displayer->contentTypes();
+
+            if (in_array('*', $types)) {
+                continue;
+            }
+
+            foreach ($acceptable as $type) {
+                if (in_array($type, $types)) {
+                    continue;
+                }
+            }
+
+            unset($displayers[$index]);
         }
 
-        if ($remaining = array_values($displayers)) {
-            return $remaining[0];
-        }
+        return array_values($displayers);
     }
 }

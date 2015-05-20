@@ -59,6 +59,16 @@ class PlainDisplayer implements DisplayerInterface
     }
 
     /**
+     * Get the supported content types.
+     *
+     * @return string[]
+     */
+    public function contentTypes()
+    {
+        return ['text/html'];
+    }
+
+    /**
      * Can we display the exception in the given context?
      *
      * @param \Illuminate\Http\Request $request
