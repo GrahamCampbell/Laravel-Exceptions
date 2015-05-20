@@ -119,7 +119,7 @@ class ExceptionHandler extends Handler
      */
     protected function getFiltered(array $displayers, Request $request, Exception $e)
     {
-        $acceptable = $request->getAcceptableContentTypes()
+        $acceptable = $request->getAcceptableContentTypes();
 
         foreach ($displayers as $index => $displayer) {
             if (!$displayer->canDisplay($request, $e)) {
