@@ -38,6 +38,16 @@ class ArrayDisplayer implements DisplayerInterface
     }
 
     /**
+     * Get the supported content types.
+     *
+     * @return string[]
+     */
+    public function contentTypes()
+    {
+        return ['application/json'];
+    }
+
+    /**
      * Can we display the exception in the given context?
      *
      * @param \Illuminate\Http\Request $request
@@ -47,7 +57,7 @@ class ArrayDisplayer implements DisplayerInterface
      */
     public function canDisplay(Request $request, Exception $exception)
     {
-        return $request->ajax();
+        return true;
     }
 
     /**

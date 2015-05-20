@@ -32,6 +32,13 @@ interface DisplayerInterface
     public function display(Exception $exception, $code);
 
     /**
+     * Get the supported content types.
+     *
+     * @return string[]
+     */
+    public function contentTypes();
+
+    /**
      * Can we display the exception in the given context?
      *
      * @param \Illuminate\Http\Request $request
