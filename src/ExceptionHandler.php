@@ -126,12 +126,12 @@ class ExceptionHandler extends Handler
 
             $types = $displayer->contentTypes();
 
-            if (in_array('*', $types)) {
+            if (in_array('*', $acceptable)) {
                 continue;
             }
 
-            foreach ($acceptable as $type) {
-                if (in_array($type, $types)) {
+            foreach ($types as $type) {
+                if (in_array($type, $acceptable)) {
                     continue;
                 }
             }
