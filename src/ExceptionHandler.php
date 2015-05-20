@@ -15,7 +15,6 @@ use Exception;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Request;
-use InvalidArgumentException;
 use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\JsonResponse;
