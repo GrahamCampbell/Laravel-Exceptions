@@ -27,7 +27,23 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->setupConfig();
+
         $this->loadViewsFrom(realpath(__DIR__.'/../views'), 'exceptions');
+    }
+
+    /**
+     * Setup the config.
+     *
+     * @return void
+     */
+    protected function setupConfig()
+    {
+        $source = realpath(__DIR__.'/../config/exceptions.php');
+
+        $this->publishes([$source => config_path('exceptions.php')]);
+
+        $this->mergeConfigFrom($source, 'exceptions');
     }
 
     /**
