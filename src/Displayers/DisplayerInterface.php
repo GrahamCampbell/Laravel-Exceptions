@@ -22,21 +22,21 @@ use Illuminate\Http\Request;
 interface DisplayerInterface
 {
     /**
-     * Get the content associated with the given exception.
+     * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
      * @param int        $code
      *
-     * @return string|array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function display(Exception $exception, $code);
 
     /**
-     * Get the supported content types.
+     * Get the supported content type.
      *
-     * @return string[]
+     * @return string
      */
-    public function contentTypes();
+    public function contentType();
 
     /**
      * Can we display the exception in the given context?

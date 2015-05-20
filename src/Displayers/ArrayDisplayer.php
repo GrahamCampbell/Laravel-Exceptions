@@ -14,6 +14,7 @@ namespace GrahamCampbell\Exceptions\Displayers;
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * This is the array displayer class.
@@ -23,28 +24,30 @@ use Illuminate\Http\Request;
 class ArrayDisplayer implements DisplayerInterface
 {
     /**
-     * Get the content associated with the given exception.
+     * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
      * @param int        $code
      *
-     * @return array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function display(Exception $exception, $code)
     {
         $info = ExceptionInfo::generate($code, $exception->getMessage());
 
-        return ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
+        $content = ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
+
+        return new JsonResponse($content, $code);
     }
 
     /**
-     * Get the supported content types.
+     * Get the supported content type.
      *
-     * @return string[]
+     * @return string
      */
-    public function contentTypes()
+    public function contentType()
     {
-        return ['application/json'];
+        return 'application/json';
     }
 
     /**
