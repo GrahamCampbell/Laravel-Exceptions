@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * This is the exception hander class.
