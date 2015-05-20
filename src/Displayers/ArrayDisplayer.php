@@ -13,6 +13,8 @@ namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionInfo;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Http\Request;
 
 /**
  * This is the array displayer class.
@@ -34,5 +36,19 @@ class ArrayDisplayer implements DisplayerInterface
         $info = ExceptionInfo::generate($code, $exception->getMessage());
 
         return ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
+    }
+
+    /**
+     * Can the exception be displayed?
+     *
+     * @param \Exception                              $exception
+     * @param \Illuminate\Http\Request                $request
+     * @param \Illuminate\Contracts\Config\Repository $config
+     *
+     * @return bool
+     */
+    public function canDisplay(Exception $exception, Request $request, Repository $config)
+    {
+        return $request->ajax();
     }
 }

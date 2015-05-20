@@ -12,6 +12,8 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Http\Request;
 
 /**
  * This is the displayer interface.
@@ -29,4 +31,15 @@ interface DisplayerInterface
      * @return string|array
      */
     public function display(Exception $exception, $code);
+
+    /**
+     * Can the exception be displayed?
+     *
+     * @param \Exception                              $exception
+     * @param \Illuminate\Http\Request                $request
+     * @param \Illuminate\Contracts\Config\Repository $config
+     *
+     * @return bool
+     */
+    public function canDisplay(Exception $exception, Request $request, Repository $config);
 }
