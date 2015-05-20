@@ -37,7 +37,7 @@ class DebugDisplayer implements DisplayerInterface
     {
         $content = $this->whoops()->handleException($exception);
 
-        return new Response($content, $code, array_merge($headers, ['Content-Type' => 'text/html']));
+        return new Response($content, $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
     }
 
     /**

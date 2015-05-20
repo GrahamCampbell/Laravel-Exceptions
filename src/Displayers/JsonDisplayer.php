@@ -38,7 +38,7 @@ class JsonDisplayer implements DisplayerInterface
 
         $content = ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
 
-        return new JsonResponse($content, $code, array_merge($headers, ['Content-Type' => 'application/json']));
+        return new JsonResponse($content, $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
     }
 
     /**
