@@ -12,6 +12,7 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
+use GrahamCampbell\Exceptions\Displayers\DisplayerInterface;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Request;
@@ -120,13 +121,29 @@ class ExceptionHandler extends Handler
                 continue;
             }
 
-            if (in_array('*/*', $acceptable) || in_array($displayer->contentType(), $acceptable)) {
-                continue;
+            foreach ($this->getContentTypes($displayer) as $type) {
+                if (in_array($type, $acceptable)) {
+                    continue 2;
+                }
             }
 
             unset($displayers[$index]);
         }
 
         return array_values($displayers);
+    }
+
+    /**
+     * Get the content types to match.
+     *
+     * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface $displayer
+     *
+     * @return string[]
+     */
+    protected function getContentTypes(DisplayerInterface $displayer)
+    {
+        $type = $displayer->contentType();
+
+        return ['*/*', $type, strtok($type, '/').'/*'];
     }
 }
