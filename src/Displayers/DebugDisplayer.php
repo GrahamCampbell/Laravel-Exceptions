@@ -29,14 +29,15 @@ class DebugDisplayer implements DisplayerInterface
      *
      * @param \Exception $exception
      * @param int        $code
+     * @param string[]   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $code)
+    public function display(Exception $exception, $code, array $headers)
     {
         $content = $this->whoops()->handleException($exception);
 
-        return new Response($content, $code);
+        return new Response($content, $code, array_merge($headers, ['Content-Type' => 'text/html']));
     }
 
     /**

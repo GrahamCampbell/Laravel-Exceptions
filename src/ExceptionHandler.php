@@ -61,16 +61,14 @@ class ExceptionHandler extends Handler
     {
         $flattened = FlattenException::create($e);
         $code = $flattened->getStatusCode();
+        $headers = $flattened->getHeaders();
 
         if ($displayer = $this->getDisplayer($request, $e)) {
-            $response = (new $displayer())->display($e, $code);
-            $headers = array_merge($flattened->getHeaders(), ['Content-Type' => $displayer->contentType()]);
+            $response = (new $displayer())->display($e, $code, $headers);
         } else {
-            $response = new Response('An error has occurred and this resource cannot be displayed.', $code);
-            $headers = array_merge($flattened->getHeaders(), ['Content-Type' => 'text/plain']);
+            $content = 'An error has occurred and this resource cannot be displayed.';
+            $response = new Response($content, $code, array_merge($headers, ['Content-Type' => 'text/plain']));
         }
-
-        $response->headers = new ResponseHeaderBag($headers);
 
         return $response;
     }

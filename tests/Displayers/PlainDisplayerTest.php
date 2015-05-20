@@ -24,7 +24,7 @@ class PlainDisplayerTest extends AbstractTestCase
 {
     public function testExceptionHandlerIsInjectable()
     {
-        $actual = (new PlainDisplayer())->display(new Exception('Oh noes!'), 502);
+        $actual = (new PlainDisplayer())->display(new Exception('Oh noes!'), 502, [])->getContent();
 
         $expected = file_get_contents(__DIR__.'/stubs/plain.txt');
 

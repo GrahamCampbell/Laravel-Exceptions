@@ -28,16 +28,17 @@ class ArrayDisplayer implements DisplayerInterface
      *
      * @param \Exception $exception
      * @param int        $code
+     * @param string[]   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $code)
+    public function display(Exception $exception, $code, array $headers)
     {
         $info = ExceptionInfo::generate($code, $exception->getMessage());
 
         $content = ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
 
-        return new JsonResponse($content, $code);
+        return new JsonResponse($content, $code, array_merge($headers, ['Content-Type' => 'application/json']));
     }
 
     /**

@@ -26,10 +26,11 @@ interface DisplayerInterface
      *
      * @param \Exception $exception
      * @param int        $code
+     * @param string[]   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $code);
+    public function display(Exception $exception, $code, array $headers);
 
     /**
      * Get the supported content type.

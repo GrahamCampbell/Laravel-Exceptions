@@ -28,16 +28,15 @@ class PlainDisplayer implements DisplayerInterface
      *
      * @param \Exception $exception
      * @param int        $code
+     * @param string[]   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $code)
+    public function display(Exception $exception, $code, array $headers)
     {
         $info = ExceptionInfo::generate($code, $exception->getMessage());
 
-        $content = $this->render($info);
-
-        return new Response($content, $code);
+        return new Response($this->render($info), $code, array_merge($headers, ['Content-Type' => 'text/html']));
     }
 
     /**
