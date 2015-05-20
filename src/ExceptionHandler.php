@@ -95,7 +95,7 @@ class ExceptionHandler extends Handler
             $displayers[$index] = new $displayer();
         }
 
-        if ($filtered = $thus->getFiltered($displayers, $request->getAcceptableContentTypes())) {
+        if ($filtered = $thus->getFiltered($displayers, $request->getAcceptableContentTypes()), $e) {
             return $filtered[0];
         }
     }
@@ -105,10 +105,11 @@ class ExceptionHandler extends Handler
      *
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
      * @param string[]                                                   $acceptable
+     * @param \Exception                                                 $e
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, array $acceptable)
+    protected function getFiltered(array $displayers, array $acceptable, Exception $e)
     {
         if ($this->config->get('app.debug') !== true) {
             foreach ($displayers as $index => $displayer) {
