@@ -8,6 +8,7 @@ CHANGE LOG
 * Removed dependence on views in the plain displayer
 * Removed dependence on the container in the exception handler
 * Replaced the info trait with an exception info class
+* Made exception displayers really configurable
 
 
 ## V1.0 (04/02/2015)

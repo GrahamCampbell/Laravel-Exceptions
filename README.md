@@ -35,7 +35,21 @@ You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbe
 
 ## Configuration
 
-Laravel Exceptions requires no configuration. Just follow the simple install instructions and go!
+Laravel Exceptions supports optional configuration.
+
+To get started, you'll need to publish all vendor assets:
+
+```bash
+$ php artisan vendor:publish
+```
+
+This will create a `config/exceptions.php` file in your app that you can modify to set your configuration. Also, make sure you check for changes to the original config file in this package between releases.
+
+There is one config option:
+
+##### Exception Displayers
+
+This option (`'displayers'`) defines each of the exception displayers setup for your application. These displayers are sorted by priority. Note that when we are in debug mode, we will select the first valid displayer from the list, and when we are not in debug mode, we'll filter out all verbose displayers, then select the first valid displayer from the new list.
 
 
 ## Usage
