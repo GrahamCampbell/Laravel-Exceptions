@@ -120,8 +120,10 @@ class ExceptionHandler extends Handler
                 continue;
             }
 
-            if (in_array('*/*', $acceptable) || in_array($displayer->contentType(), $acceptable)) {
-                continue;
+            foreach ($acceptable as $type) {
+                if (starts_with($type, [$displayer->contentType(), '*/*'])) {
+                    continue 2;
+                }
             }
 
             unset($displayers[$index]);
