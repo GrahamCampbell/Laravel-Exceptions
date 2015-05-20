@@ -61,14 +61,15 @@ class ExceptionHandler extends Handler
     public function render($request, Exception $e)
     {
         $flattened = FlattenException::create($e);
-
         $code = $flattened->getStatusCode();
 
         $displayer = $this->getDisplayer($request, $e);
 
-        $content = (new $displayer())->display($e, $code);
-
-//        $this->getContent($e, $code, $ajax, $debug);
+        if ($displayer) {
+            $content = (new $displayer())->display($e, $code);
+        } else {
+            $content = 'An error has occurred and this resource cannot be displayed.';
+        }
 
         $headers = $flattened->getHeaders();
 
@@ -80,41 +81,37 @@ class ExceptionHandler extends Handler
     }
 
     /**
-     * Get the displayer class.
+     * Get the displayer instance.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Exception               $e
      *
-     * @return mixed
+     * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface|null
      */
     protected function getDisplayer(Request $request, Exception $e)
     {
-        $displayers = $this->config->get('exceptions.displayers');
+        $displayers = $this->config->get('exceptions.displayers', []);
 
-        foreach ($displayers as $displayer) {
-            if ((new $displayer())->canDisplay($e, $request, $this->config)) {
-                return $displayer;
+        foreach ($displayers as $index => $displayer) {
+            $displayers[$index] = new $displayer();
+        }
+
+        if ($this->config->get('app.debug') !== true) {
+            foreach ($displayers as $index => $displayer) {
+                if ($displayer->isVerbose()) {
+                    unset($displayers[$index]);
+                }
             }
         }
 
-        return $this->getDefaultDisplayer();
-    }
-
-    /**
-     * Get the default displayer class.
-     *
-     * @return mixed
-     */
-    protected function getDefaultDisplayer()
-    {
-        $displayers = $this->config->get('exceptions.displayers');
-
-        $default = $this->config->get('exception.default');
-
-        if (!isset($displayers[$default])) {
-            throw new InvalidArgumentException('The default displayer can not be found.');
+        foreach ($displayers as $index => $displayer) {
+            if (!$displayer->canDisplay($request, $e)) {
+                unset($displayers[$index]);
+            }
         }
 
-        return $displayers[$default];
+        if ($remaining = array_values($displayers)) {
+            return $remaining[0];
+        }
     }
 }
