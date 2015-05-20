@@ -12,7 +12,6 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Http\Request;
 
 /**
@@ -33,13 +32,19 @@ interface DisplayerInterface
     public function display(Exception $exception, $code);
 
     /**
-     * Can the exception be displayed?
+     * Can we display the exception in the given context?
      *
-     * @param \Exception                              $exception
-     * @param \Illuminate\Http\Request                $request
-     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
      *
      * @return bool
      */
-    public function canDisplay(Exception $exception, Request $request, Repository $config);
+    public function canDisplay(Exception $exception, Request $request);
+
+    /**
+     * Do we provide verbose information about the exception?
+     *
+     * @return bool
+     */
+    public function isVerbose();
 }
