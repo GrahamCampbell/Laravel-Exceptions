@@ -95,7 +95,7 @@ class ExceptionHandler extends Handler
             $displayers[$index] = new $displayer();
         }
 
-        if ($filtered = $this->getFiltered($displayers, $request->getAcceptableContentTypes()), $e) {
+        if ($filtered = $this->getFiltered($displayers, $request->getAcceptableContentTypes(), $e)) {
             return $filtered[0];
         }
     }
