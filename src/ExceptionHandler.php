@@ -17,6 +17,7 @@ use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
@@ -61,7 +62,7 @@ class ExceptionHandler extends Handler
         $flattened = FlattenException::create($e);
         $code = $flattened->getStatusCode();
 
-        if ($displayer = $this->getDisplayer($request, $e);) {
+        if ($displayer = $this->getDisplayer($request, $e)) {
             $response = (new $displayer())->display($e, $code);
             $headers = array_merge($flattened->getHeaders(), ['Content-Type' => $displayer->contentType()]);
         } else {
