@@ -39,7 +39,7 @@ interface DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Exception $exception, Request $request);
+    public function canDisplay(Request $request, Exception $exception);
 
     /**
      * Do we provide verbose information about the exception?
