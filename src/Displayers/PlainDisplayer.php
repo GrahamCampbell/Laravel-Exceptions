@@ -23,18 +23,20 @@ use Illuminate\Http\Request;
 class PlainDisplayer implements DisplayerInterface
 {
     /**
-     * Get the content associated with the given exception.
+     * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
      * @param int        $code
      *
-     * @return string
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function display(Exception $exception, $code)
     {
         $info = ExceptionInfo::generate($code, $exception->getMessage());
 
-        return $this->render($info);
+        $content = $this->render($info);
+
+        return new Response($content, $code);
     }
 
     /**
@@ -59,13 +61,13 @@ class PlainDisplayer implements DisplayerInterface
     }
 
     /**
-     * Get the supported content types.
+     * Get the supported content type.
      *
-     * @return string[]
+     * @return string
      */
-    public function contentTypes()
+    public function contentType()
     {
-        return ['text/html'];
+        return 'text/html';
     }
 
     /**

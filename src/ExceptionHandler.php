@@ -17,8 +17,7 @@ use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * This is the exception hander class.
@@ -62,21 +61,17 @@ class ExceptionHandler extends Handler
         $flattened = FlattenException::create($e);
         $code = $flattened->getStatusCode();
 
-        $displayer = $this->getDisplayer($request, $e);
-
-        if ($displayer) {
-            $content = (new $displayer())->display($e, $code);
+        if ($displayer = $this->getDisplayer($request, $e);) {
+            $response = (new $displayer())->display($e, $code);
+            $headers = array_merge($flattened->getHeaders(), ['Content-Type' => $displayer->contentType()]);
         } else {
-            $content = 'An error has occurred and this resource cannot be displayed.';
+            $response = new Response('An error has occurred and this resource cannot be displayed.', $code);
+            $headers = array_merge($flattened->getHeaders(), ['Content-Type' => 'text/plain']);
         }
 
-        $headers = $flattened->getHeaders();
+        $response->headers = new ResponseHeaderBag($headers);
 
-        if (is_array($content)) {
-            return new JsonResponse($content, $code, $headers);
-        }
-
-        return new Response($content, $code, $headers);
+        return $response;
     }
 
     /**
@@ -127,16 +122,8 @@ class ExceptionHandler extends Handler
                 continue;
             }
 
-            $types = $displayer->contentTypes();
-
-            if (in_array('*/*', $acceptable)) {
+            if (in_array('*/*', $acceptable) || in_array($displayer->contentType(), $acceptable)) {
                 continue;
-            }
-
-            foreach ($types as $type) {
-                if (in_array($type, $acceptable)) {
-                    continue 2;
-                }
             }
 
             unset($displayers[$index]);
