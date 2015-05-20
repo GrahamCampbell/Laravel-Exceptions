@@ -13,31 +13,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Exception Displayer
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify which of the exception displayers below you wish to
-    | use as your default displayer for all exceptions.
-    |
-    */
-
-    'default' => 'plain',
-
-    /*
-    |--------------------------------------------------------------------------
     | Exception Displayers
     |--------------------------------------------------------------------------
     |
     | Here are each of the exception displayers setup for your application.
-    | Default displayers has been included, but you may add as many displayers
-    | as you would like.
+    |
+    | These displayers are sorted by priority. Note that when we are in debug
+    | mode, we will select the first valid displayer from the list, and when we
+    | are not in debug mode, we'll filter out all verbose displayers, then
+    | select the first valid displayer from the new list.
     |
     */
 
     'displayers' => [
-        'array' => 'GrahamCampbell\Exceptions\Displayers\ArrayDisplayer',
-        'debug' => 'GrahamCampbell\Exceptions\Displayers\DebugDisplayer',
-        'plain' => 'GrahamCampbell\Exceptions\Displayers\PlainDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\ArrayDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\DebugDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\PlainDisplayer',
     ],
 
 ];
