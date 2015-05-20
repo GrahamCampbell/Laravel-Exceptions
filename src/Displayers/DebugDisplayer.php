@@ -12,6 +12,8 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Http\Request;
 use Whoops\Handler\PrettyPageHandler as Handler;
 use Whoops\Run as Whoops;
 
@@ -48,5 +50,19 @@ class DebugDisplayer implements DisplayerInterface
         $whoops->pushHandler(new Handler());
 
         return $whoops;
+    }
+
+    /**
+     * Can the exception be displayed?
+     *
+     * @param \Exception                              $exception
+     * @param \Illuminate\Http\Request                $request
+     * @param \Illuminate\Contracts\Config\Repository $config
+     *
+     * @return bool
+     */
+    public function canDisplay(Exception $exception, Request $request, Repository $config)
+    {
+        return $this->config->get('app.debug');
     }
 }
