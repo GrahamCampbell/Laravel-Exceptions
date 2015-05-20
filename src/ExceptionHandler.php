@@ -95,6 +95,14 @@ class ExceptionHandler extends Handler
             $displayers[$index] = new $displayer();
         }
 
+        if ($this->config->get('app.debug') !== true) {
+            foreach ($displayers as $index => $displayer) {
+                if ($displayer->isVerbose()) {
+                    unset($displayers[$index]);
+                }
+            }
+        }
+
         if ($filtered = $this->getFiltered($displayers, $request->getAcceptableContentTypes(), $e)) {
             return $filtered[0];
         }
@@ -104,20 +112,14 @@ class ExceptionHandler extends Handler
      * Get the filtered list of displayers.
      *
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
-     * @param string[]                                                   $acceptable
+     * @param \Illuminate\Http\Request                                   $request
      * @param \Exception                                                 $e
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, array $acceptable, Exception $e)
+    protected function getFiltered(array $displayers, Request $request, Exception $e)
     {
-        if ($this->config->get('app.debug') !== true) {
-            foreach ($displayers as $index => $displayer) {
-                if ($displayer->isVerbose()) {
-                    unset($displayers[$index]);
-                }
-            }
-        }
+        $acceptable = $request->getAcceptableContentTypes()
 
         foreach ($displayers as $index => $displayer) {
             if (!$displayer->canDisplay($request, $e)) {
