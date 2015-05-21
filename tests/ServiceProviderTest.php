@@ -56,4 +56,28 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $this->assertIsInjectable('GrahamCampbell\Exceptions\Filters\VerboseFilter');
     }
+
+    public function testDisplayerConfig()
+    {
+        $displayers = $this->app->config->get('exceptions.displayers');
+
+        $this->assertInternalType('array', $displayers);
+        $this->assertCount(3, $displayers);
+
+        foreach ($displayers as $displayer) {
+            $this->assertTrue(starts_with($displayer, 'GrahamCampbell\\Exceptions\\Displayers\\'));
+        }
+    }
+
+    public function testFilterConfig()
+    {
+        $filters = $this->app->config->get('exceptions.filters');
+
+        $this->assertInternalType('array', $filters);
+        $this->assertCount(3, $filters);
+
+        foreach ($filters as $filter) {
+            $this->assertTrue(starts_with($filter, 'GrahamCampbell\\Exceptions\\Filters\\'));
+        }
+    }
 }
