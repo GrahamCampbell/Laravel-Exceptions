@@ -13,6 +13,7 @@ namespace GrahamCampbell\Exceptions\Filters;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\DisplayerInterface;
+use Illuminate\Http\Request;
 
 /**
  * This is the content type filter class.
@@ -21,6 +22,25 @@ use GrahamCampbell\Exceptions\Displayers\DisplayerInterface;
  */
 class ContentTypeFilter
 {
+    /**
+     * The request instance.
+     *
+     * @var \Illuminate\Http\Request
+     */
+    protected $request;
+
+    /**
+     * Create a new content type filter instance.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return void
+     */
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     /**
      * Filter and return the displayers.
      *
@@ -31,6 +51,8 @@ class ContentTypeFilter
      */
     public function filter(array $displayers, Exception $exception)
     {
+        $acceptable = $this->request->getAcceptableContentTypes();
+
         foreach ($displayers as $index => $displayer) {
             foreach ($this->getContentTypes($displayer) as $type) {
                 if (in_array($type, $acceptable)) {
