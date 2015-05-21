@@ -60,7 +60,7 @@ class ExceptionHandler extends Handler
         $headers = $flattened->getHeaders();
 
         if ($displayer = $this->getDisplayer($e)) {
-            $response = (new $displayer())->display($e, $code, $headers);
+            $response = $displayer->display($e, $code, $headers);
         } else {
             $content = 'An error has occurred and this resource cannot be displayed.';
             $response = new Response($content, 500, array_merge($headers, ['Content-Type' => 'text/plain']));
