@@ -11,6 +11,7 @@
 
 namespace GrahamCampbell\Exceptions;
 
+use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -51,7 +52,9 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(HtmlDisplayer::class, function () {
+            return new HtmlDisplayer(__DIR__.'/Displayers/resources/error.html');
+        });
     }
 
     /**

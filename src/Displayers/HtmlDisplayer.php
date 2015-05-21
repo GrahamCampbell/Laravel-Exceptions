@@ -23,6 +23,25 @@ use Symfony\Component\HttpFoundation\Response;
 class HtmlDisplayer implements DisplayerInterface
 {
     /**
+     * The html template path.
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * Create a new html displayer instance.
+     *
+     * @param string $path
+     *
+     * @return void
+     */
+    public function __construct($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
      * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
@@ -47,7 +66,7 @@ class HtmlDisplayer implements DisplayerInterface
      */
     protected function render(array $info)
     {
-        $content = file_get_contents(__DIR__.'/resources/error.html');
+        $content = file_get_contents($this->path);
 
         $info['home_url'] = asset('/');
         $info['favicon_url'] = asset('favicon.ico');
