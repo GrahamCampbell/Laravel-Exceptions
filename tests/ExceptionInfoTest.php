@@ -11,10 +11,6 @@
 
 namespace GrahamCampbell\Tests\Exceptions;
 
-use Exception;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\GoneHttpException;
-
 /**
  * This is the exception info test class.
  *

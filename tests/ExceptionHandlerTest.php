@@ -12,8 +12,8 @@
 namespace GrahamCampbell\Tests\Exceptions;
 
 use Exception;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the exception handler test class.
