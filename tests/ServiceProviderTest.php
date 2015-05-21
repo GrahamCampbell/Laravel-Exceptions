@@ -41,4 +41,19 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\HtmlDisplayer');
     }
+
+    public function testCanDisplayFilterIsInjectable()
+    {
+        $this->assertIsInjectable('GrahamCampbell\Exceptions\Filters\CanDisplayFilter');
+    }
+
+    public function testContentTypeFilterIsInjectable()
+    {
+        $this->assertIsInjectable('GrahamCampbell\Exceptions\Filters\ContentTypeFilter');
+    }
+
+    public function testVerboseFilterIsInjectable()
+    {
+        $this->assertIsInjectable('GrahamCampbell\Exceptions\Filters\VerboseFilter');
+    }
 }
