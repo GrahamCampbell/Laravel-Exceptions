@@ -12,7 +12,6 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
-use Illuminate\Http\Request;
 
 /**
  * This is the displayer interface.
@@ -40,14 +39,13 @@ interface DisplayerInterface
     public function contentType();
 
     /**
-     * Can we display the exception in the given context?
+     * Can we display the exception?
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Exception               $exception
+     * @param \Exception $exception
      *
      * @return bool
      */
-    public function canDisplay(Request $request, Exception $exception);
+    public function canDisplay(Exception $exception);
 
     /**
      * Do we provide verbose information about the exception?

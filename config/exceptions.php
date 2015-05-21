@@ -31,4 +31,23 @@ return [
         'GrahamCampbell\Exceptions\Displayers\JsonDisplayer',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Displayer Filters
+    |--------------------------------------------------------------------------
+    |
+    | Here are each of the filters for the displayers.
+    |
+    | This allows you to apply filters to your displayers in order to work out
+    | which displayer to use for each exception. This includes things like
+    | content type negotiation.
+    |
+    */
+
+    'filters' => [
+        'GrahamCampbell\Exceptions\Filters\VerboseFilter',
+        'GrahamCampbell\Exceptions\Filters\CanDisplayFilter',
+        'GrahamCampbell\Exceptions\Filters\ContentTypeFilter',
+    ],
+
 ];
