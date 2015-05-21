@@ -71,7 +71,7 @@ class ContentTypeFilter
             unset($displayers[$index]);
         }
 
-        return $displayers;
+        return array_values($displayers);
     }
 
     /**

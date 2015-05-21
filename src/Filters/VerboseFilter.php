@@ -58,6 +58,6 @@ class VerboseFilter
             }
         }
 
-        return $displayers;
+        return array_values($displayers);
     }
 }
