@@ -13,7 +13,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
-use GrahamCampbell\TestBench\AbstractTestCase;
+use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
 
 /**
  * This is the html displayer test class.
