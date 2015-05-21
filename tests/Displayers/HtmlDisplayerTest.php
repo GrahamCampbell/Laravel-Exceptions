@@ -22,14 +22,38 @@ use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
  */
 class HtmlDisplayerTest extends AbstractTestCase
 {
-    public function testHtmlDisplayer()
+    public function testServerError()
     {
         $displayer = new HtmlDisplayer(__DIR__.'/../../src/Displayers/resources/error.html');
 
-        $actual = $displayer->display(new Exception('Oh noes!'), 502, [])->getContent();
+        $response = $displayer->display(new Exception('Oh noes!'), 502, []);
 
-        $expected = file_get_contents(__DIR__.'/stubs/html.txt');
+        $expected = file_get_contents(__DIR__.'/stubs/502-html.txt');
 
-        $this->assertSame($expected, $actual);
+        $this->assertSame($expected, $response->getContent());
+        $this->assertSame(502, $response->getStatusCode());
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
+    public function testClientError()
+    {
+        $displayer = new HtmlDisplayer(__DIR__.'/../../src/Displayers/resources/error.html');
+
+        $response = $displayer->display(new Exception('Arghhhh!'), 404, []);
+
+        $expected = file_get_contents(__DIR__.'/stubs/404-html.txt');
+
+        $this->assertSame($expected, $response->getContent());
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
+    public function testProperties()
+    {
+        $displayer = new HtmlDisplayer(__DIR__.'/../../src/Displayers/resources/error.html');
+
+        $this->assertFalse($displayer->isVerbose());
+        $this->assertTrue($displayer->canDisplay(new Exception()));
+        $this->assertSame('text/html', $displayer->contentType());
     }
 }
