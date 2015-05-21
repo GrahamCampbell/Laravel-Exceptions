@@ -50,7 +50,7 @@ class VerboseFilter
      */
     public function filter(array $displayers, Exception $exception)
     {
-        if ($this->config->get('app.debug') !== true) {
+        if ($this->config->get('app.debug', false) !== true) {
             foreach ($displayers as $index => $displayer) {
                 if ($displayer->isVerbose()) {
                     unset($displayers[$index]);
