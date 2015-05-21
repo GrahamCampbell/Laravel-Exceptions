@@ -12,7 +12,6 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
-use GrahamCampbell\Exceptions\Displayers\DisplayerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler;
 use Symfony\Component\Debug\Exception\FlattenException;
@@ -43,7 +42,7 @@ class ExceptionHandler extends Handler
     {
         $this->container = $container;
 
-        parent::__construct($container->make('Psr\Log\LoggerInterface'));
+        parent::__construct($container->log);
     }
 
     /**
