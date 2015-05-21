@@ -13,10 +13,8 @@ namespace GrahamCampbell\Exceptions;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\DisplayerInterface;
-use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler;
-use Illuminate\Http\Request;
-use Psr\Log\LoggerInterface as Log;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,25 +26,24 @@ use Symfony\Component\HttpFoundation\Response;
 class ExceptionHandler extends Handler
 {
     /**
-     * The config instance.
+     * The container instance.
      *
-     * @var \Illuminate\Contracts\Config\Repository
+     * @var \Illuminate\Contracts\Container\Container
      */
-    protected $config;
+    protected $container;
 
     /**
      * Create a new exception handler instance.
      *
-     * @param \Psr\Log\LoggerInterface                $log
-     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Contracts\Container\Container $container
      *
      * @return void
      */
-    public function __construct(Log $log, Config $config)
+    public function __construct(Container $container)
     {
-        $this->config = $config;
+        $this->container = $container;
 
-        parent::__construct($log);
+        parent::__construct($container->make('Psr\Log\LoggerInterface'));
     }
 
     /**
@@ -63,7 +60,7 @@ class ExceptionHandler extends Handler
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
-        if ($displayer = $this->getDisplayer($request, $e)) {
+        if ($displayer = $this->getDisplayer($e)) {
             $response = (new $displayer())->display($e, $code, $headers);
         } else {
             $content = 'An error has occurred and this resource cannot be displayed.';
@@ -76,28 +73,15 @@ class ExceptionHandler extends Handler
     /**
      * Get the displayer instance.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Exception               $e
+     * @param \Exception $exception
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface|null
      */
-    protected function getDisplayer(Request $request, Exception $e)
+    protected function getDisplayer(Exception $exception)
     {
-        $displayers = $this->config->get('exceptions.displayers', []);
+        $displayers = $this->make($this->container->config->get('exceptions.displayers', []));
 
-        foreach ($displayers as $index => $displayer) {
-            $displayers[$index] = new $displayer();
-        }
-
-        if ($this->config->get('app.debug') !== true) {
-            foreach ($displayers as $index => $displayer) {
-                if ($displayer->isVerbose()) {
-                    unset($displayers[$index]);
-                }
-            }
-        }
-
-        if ($filtered = $this->getFiltered($displayers, $request, $e)) {
+        if ($filtered = $this->getFiltered($displayers, $exception)) {
             return $filtered[0];
         }
     }
@@ -106,52 +90,32 @@ class ExceptionHandler extends Handler
      * Get the filtered list of displayers.
      *
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
-     * @param \Illuminate\Http\Request                                   $request
-     * @param \Exception                                                 $e
+     * @param \Exception                                                 $exception
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, Request $request, Exception $e)
+    protected function getFiltered(array $displayers, Exception $exception)
     {
-        $acceptable = $request->getAcceptableContentTypes();
-
-        foreach ($displayers as $index => $displayer) {
-            if (!$displayer->canDisplay($request, $e)) {
-                unset($displayers[$index]);
-                continue;
-            }
-
-            foreach ($this->getContentTypes($displayer) as $type) {
-                if (in_array($type, $acceptable)) {
-                    continue 2;
-                }
-            }
-
-            $split = explode('/', $displayer->contentType());
-
-            foreach ($acceptable as $type) {
-                if (preg_match('/'.$split[0].'\/.+\+'.$split[1].'/', $type)) {
-                    continue 2;
-                }
-            }
-
-            unset($displayers[$index]);
+        foreach ($this->make($this->container->config->get('exceptions.filters', [])) as $filter) {
+            $displayers = $filter->filter($displayers, $exception);
         }
 
         return array_values($displayers);
     }
 
     /**
-     * Get the content types to match.
+     * Make multiple objects using the container.
      *
-     * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface $displayer
+     * @param string [] $classes
      *
-     * @return string[]
+     * @return object[]
      */
-    protected function getContentTypes(DisplayerInterface $displayer)
+    protected function make(array $classes)
     {
-        $type = $displayer->contentType();
+        foreach ($classes as $index => $class) {
+            $classes[$index] = $this->container->make($class);
+        }
 
-        return ['*/*', $type, strtok($type, '/').'/*'];
+        return array_values($classes);
     }
 }

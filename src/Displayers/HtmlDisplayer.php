@@ -71,14 +71,13 @@ class HtmlDisplayer implements DisplayerInterface
     }
 
     /**
-     * Can we display the exception in the given context?
+     * Can we display the exception?
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Exception               $exception
+     * @param \Exception $exception
      *
      * @return bool
      */
-    public function canDisplay(Request $request, Exception $exception)
+    public function canDisplay(Exception $exception)
     {
         return true;
     }
