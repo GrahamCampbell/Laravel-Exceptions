@@ -127,6 +127,14 @@ class ExceptionHandler extends Handler
                 }
             }
 
+            $split = explode('/', $displayer->contentType());
+
+            foreach ($acceptable as $type) {
+                if (preg_match('/'.$split[0].'\/.+\+'.$split[1].'/', $type)) {
+                    continue 2;
+                }
+            }
+
             unset($displayers[$index]);
         }
 
