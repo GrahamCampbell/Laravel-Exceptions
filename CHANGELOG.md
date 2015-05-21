@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V2.0 (Upcoming)
+## V2.0 (21/05/2015)
 
 * Support both laravel 5.0 and 5.1
 * Removed dependence on views in the html displayer
