@@ -13,7 +13,6 @@ namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionInfo;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
