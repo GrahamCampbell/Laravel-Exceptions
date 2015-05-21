@@ -53,7 +53,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertSame(410, $response->getStatusCode());
-        $this->assertSame('{"success":false,"code":410,"msg":"Houston, We Have A Problem"}', $response->getContent());
+        $this->assertSame('{"success":false,"code":410,"msg":"Houston, We Have A Problem."}', $response->getContent());
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
 

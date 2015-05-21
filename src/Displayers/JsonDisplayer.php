@@ -23,6 +23,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class JsonDisplayer implements DisplayerInterface
 {
     /**
+     * The exception info instance.
+     *
+     * @var \GrahamCampbell\Exceptions\ExceptionInfo
+     */
+    protected $info;
+
+    /**
+     * Create a new html displayer instance.
+     *
+     * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
+     *
+     * @return void
+     */
+    public function __construct(ExceptionInfo $info)
+    {
+        $this->info = $info;
+    }
+
+    /**
      * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
@@ -33,7 +52,7 @@ class JsonDisplayer implements DisplayerInterface
      */
     public function display(Exception $exception, $code, array $headers)
     {
-        $info = ExceptionInfo::generate($code, $exception->getMessage());
+        $info = $this->info->generate($code, $exception->getMessage());
 
         $content = ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
 

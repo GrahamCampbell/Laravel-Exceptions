@@ -15,6 +15,7 @@ use Exception;
 use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
+use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Exceptions\Filters\VerboseFilter;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use Mockery;
@@ -29,7 +30,7 @@ class VerboseFilterTest extends AbstractTestCase
     public function testDebugStaysOnTop()
     {
         $verbose = new DebugDisplayer();
-        $standard = new JsonDisplayer();
+        $standard = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
@@ -42,7 +43,7 @@ class VerboseFilterTest extends AbstractTestCase
     public function testDebugIsRemoved()
     {
         $verbose = new DebugDisplayer();
-        $standard = new JsonDisplayer();
+        $standard = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);
@@ -54,8 +55,8 @@ class VerboseFilterTest extends AbstractTestCase
 
     public function testNoChangeInDebugMode()
     {
-        $json = new JsonDisplayer();
-        $html = new HtmlDisplayer('foo');
+        $json = new JsonDisplayer(new ExceptionInfo('foo'));
+        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
 
         $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
@@ -67,7 +68,7 @@ class VerboseFilterTest extends AbstractTestCase
 
     public function testNoChangeNotInDebugMode()
     {
-        $json = new JsonDisplayer();
+        $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);

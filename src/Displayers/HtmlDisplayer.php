@@ -23,6 +23,13 @@ use Symfony\Component\HttpFoundation\Response;
 class HtmlDisplayer implements DisplayerInterface
 {
     /**
+     * The exception info instance.
+     *
+     * @var \GrahamCampbell\Exceptions\ExceptionInfo
+     */
+    protected $info;
+
+    /**
      * The html template path.
      *
      * @var string
@@ -32,12 +39,14 @@ class HtmlDisplayer implements DisplayerInterface
     /**
      * Create a new html displayer instance.
      *
-     * @param string $path
+     * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
+     * @param string                                   $path
      *
      * @return void
      */
-    public function __construct($path)
+    public function __construct(ExceptionInfo $info, $path)
     {
+        $this->info = $info;
         $this->path = $path;
     }
 
@@ -52,7 +61,7 @@ class HtmlDisplayer implements DisplayerInterface
      */
     public function display(Exception $exception, $code, array $headers)
     {
-        $info = ExceptionInfo::generate($code, $exception->getMessage());
+        $info = $this->info->generate($code, $exception->getMessage());
 
         return new Response($this->render($info), $code, array_merge($headers, ['Content-Type' => 'text/html']));
     }

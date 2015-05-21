@@ -13,6 +13,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
+use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
 
 /**
@@ -24,7 +25,7 @@ class HtmlDisplayerTest extends AbstractTestCase
 {
     public function testServerError()
     {
-        $displayer = new HtmlDisplayer(__DIR__.'/../../src/Displayers/resources/error.html');
+        $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
         $response = $displayer->display(new Exception('Oh noes!'), 502, []);
 
@@ -37,7 +38,7 @@ class HtmlDisplayerTest extends AbstractTestCase
 
     public function testClientError()
     {
-        $displayer = new HtmlDisplayer(__DIR__.'/../../src/Displayers/resources/error.html');
+        $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
         $response = $displayer->display(new Exception('Arghhhh!'), 404, []);
 
@@ -50,7 +51,7 @@ class HtmlDisplayerTest extends AbstractTestCase
 
     public function testProperties()
     {
-        $displayer = new HtmlDisplayer(__DIR__.'/../../src/Displayers/resources/error.html');
+        $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
         $this->assertFalse($displayer->isVerbose());
         $this->assertTrue($displayer->canDisplay(new Exception()));

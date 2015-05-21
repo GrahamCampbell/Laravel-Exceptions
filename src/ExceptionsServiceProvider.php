@@ -52,8 +52,12 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(HtmlDisplayer::class, function () {
-            return new HtmlDisplayer(__DIR__.'/Displayers/resources/error.html');
+        $this->app->bind(ExceptionInfo::class, function () {
+            return new ExceptionInfo(__DIR__.'/../resources/errors.json');
+        });
+
+        $this->app->bind(HtmlDisplayer::class, function ($app) {
+            return new HtmlDisplayer($app->make(ExceptionInfo::class), __DIR__.'/../resources/error.html');
         });
     }
 
