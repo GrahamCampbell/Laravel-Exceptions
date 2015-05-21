@@ -13,7 +13,7 @@ namespace GrahamCampbell\Tests\Exceptions\Filters;
 
 use Exception;
 use GrahamCampbell\Exceptions\Filters\CanDisplayFilter;
-use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
+use GrahamCampbell\TestBench\AbstractTestCase;
 use Mockery;
 
 /**

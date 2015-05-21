@@ -13,7 +13,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
-use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
+use GrahamCampbell\TestBench\AbstractTestCase;
 
 /**
  * This is the json displayer test class.

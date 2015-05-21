@@ -16,7 +16,7 @@ use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
 use GrahamCampbell\Exceptions\Filters\ContentTypeFilter;
-use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
+use GrahamCampbell\TestBench\AbstractTestCase;
 use Mockery;
 
 /**

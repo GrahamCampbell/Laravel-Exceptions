@@ -13,7 +13,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
-use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
+use GrahamCampbell\TestBench\AbstractTestCase;
 
 /**
  * This is the debug displayer test class.
