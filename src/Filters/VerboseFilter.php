@@ -57,5 +57,7 @@ class VerboseFilter
                 }
             }
         }
+
+        return $displayers;
     }
 }

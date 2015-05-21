@@ -35,5 +35,7 @@ class CanDisplayFilter
                 unset($displayers[$index]);
             }
         }
+
+        return $displayers;
     }
 }
