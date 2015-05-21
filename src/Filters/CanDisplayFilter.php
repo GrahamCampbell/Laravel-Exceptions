@@ -30,7 +30,7 @@ class CanDisplayFilter
      */
     public function filter(array $displayers, Exception $exception)
     {
-    	foreach ($displayers as $index => $displayer) {
+        foreach ($displayers as $index => $displayer) {
             if (!$displayer->canDisplay($exception)) {
                 unset($displayers[$index]);
             }

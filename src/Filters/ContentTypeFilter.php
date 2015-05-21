@@ -31,7 +31,7 @@ class ContentTypeFilter
      */
     public function filter(array $displayers, Exception $exception)
     {
-    	foreach ($displayers as $index => $displayer) {
+        foreach ($displayers as $index => $displayer) {
             foreach ($this->getContentTypes($displayer) as $type) {
                 if (in_array($type, $acceptable)) {
                     continue 2;
