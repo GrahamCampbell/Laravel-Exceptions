@@ -22,9 +22,11 @@ use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
  */
 class HtmlDisplayerTest extends AbstractTestCase
 {
-    public function testExceptionHandlerIsInjectable()
+    public function testHtmlDisplayer()
     {
-        $actual = (new HtmlDisplayer())->display(new Exception('Oh noes!'), 502, [])->getContent();
+        $displayer = new HtmlDisplayer(__DIR__.'/../../src/Displayers/resources/error.html');
+
+        $actual = $displayer->display(new Exception('Oh noes!'), 502, [])->getContent();
 
         $expected = file_get_contents(__DIR__.'/stubs/html.txt');
 
