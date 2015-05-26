@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V2.0.1 (26/05/2015)
+
+* Fixed logger resolution in the exception handler
+
+
 ## V2.0 (21/05/2015)
 
 * Support both laravel 5.0 and 5.1
