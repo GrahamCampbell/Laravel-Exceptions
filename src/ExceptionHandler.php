@@ -42,7 +42,7 @@ class ExceptionHandler extends Handler
     {
         $this->container = $container;
 
-        parent::__construct($container->log);
+        parent::__construct($container->make('Psr\Log\LoggerInterface'));
     }
 
     /**
