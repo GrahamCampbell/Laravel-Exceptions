@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V3.0 (Upcoming)
+
+* Improved the error info class
+
+
 ## V2.0.1 (26/05/2015)
 
 * Fixed logger resolution in the exception handler
