@@ -11,6 +11,9 @@
 
 namespace GrahamCampbell\Exceptions;
 
+use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
 /**
  * This is the exception info class.
  *
@@ -40,12 +43,12 @@ class ExceptionInfo
     /**
      * Get the exception information.
      *
-     * @param int    $code
-     * @param string $msg
+     * @param \Exception $exception
+     * @param int        $code
      *
      * @return array
      */
-    public function generate($code, $msg)
+    public function generate(Exception $exception, $code)
     {
         $errors = json_decode(file_get_contents($this->path), true);
 
@@ -55,7 +58,13 @@ class ExceptionInfo
             $info = array_merge(['code' => 500], $errors[500]);
         }
 
-        $info['extra'] = (!$msg || strlen($msg) > 35 || strlen($msg) < 5) ? 'Houston, We Have A Problem.' : $msg;
+        $msg = (string) $exception->getMessage();
+
+        if ($exception instanceof HttpExceptionInterface && strlen($msg) < 36 && strlen($msg) > 4) {
+            $info['extra'] = $msg;
+        } else {
+            $info['extra'] = 'Houston, We Have A Problem.';
+        }
 
         return $info;
     }

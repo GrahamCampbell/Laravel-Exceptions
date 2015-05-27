@@ -52,7 +52,7 @@ class JsonDisplayer implements DisplayerInterface
      */
     public function display(Exception $exception, $code, array $headers)
     {
-        $info = $this->info->generate($code, $exception->getMessage());
+        $info = $this->info->generate($exception, $code);
 
         $content = ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
 
