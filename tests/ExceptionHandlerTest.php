@@ -29,7 +29,8 @@ class ExceptionHandlerTest extends AbstractTestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertSame(500, $response->getStatusCode());
-        $this->assertTrue(str_contains($response->getContent(), 'Foo Bar.'));
+        $this->assertTrue(str_contains($response->getContent(), 'Internal Server Error'));
+        $this->assertFalse(str_contains($response->getContent(), 'Foo Bar.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 

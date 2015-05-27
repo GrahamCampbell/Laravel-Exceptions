@@ -11,10 +11,10 @@
 
 namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
-use Exception;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * This is the html displayer test class.
@@ -27,7 +27,7 @@ class HtmlDisplayerTest extends AbstractTestCase
     {
         $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
-        $response = $displayer->display(new Exception('Oh noes!'), 502, []);
+        $response = $displayer->display(new HttpException(502, 'Oh noes!'), 502, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/502-html.txt');
 
@@ -40,7 +40,7 @@ class HtmlDisplayerTest extends AbstractTestCase
     {
         $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
-        $response = $displayer->display(new Exception('Arghhhh!'), 404, []);
+        $response = $displayer->display(new HttpException(404, 'Arghhhh!'), 404, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/404-html.txt');
 
@@ -54,7 +54,7 @@ class HtmlDisplayerTest extends AbstractTestCase
         $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
         $this->assertFalse($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay(new Exception()));
+        $this->assertTrue($displayer->canDisplay(new HttpException(500)));
         $this->assertSame('text/html', $displayer->contentType());
     }
 }
