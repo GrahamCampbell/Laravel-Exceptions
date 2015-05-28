@@ -30,7 +30,7 @@ class JsonDisplayer implements DisplayerInterface
     protected $info;
 
     /**
-     * Create a new html displayer instance.
+     * Create a new json displayer instance.
      *
      * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
      *
