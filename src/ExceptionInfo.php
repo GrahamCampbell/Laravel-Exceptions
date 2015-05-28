@@ -58,13 +58,16 @@ class ExceptionInfo
             $info = array_merge(['code' => 500], $errors[500]);
         }
 
-        $msg = (string) $exception->getMessage();
-
-        if ($exception instanceof HttpExceptionInterface && strlen($msg) < 36 && strlen($msg) > 4) {
-            $info['extra'] = $msg;
+        if ($exception instanceof HttpExceptionInterface) {
+            $msg = (string) $exception->getMessage();
+            $info['detail'] = (strlen($msg) > 4) ? $msg : $info['message'];
+            $info['summary'] = (strlen($msg) < 36 && strlen($msg) > 4) ? $msg : 'Houston, We Have A Problem.';
         } else {
-            $info['extra'] = 'Houston, We Have A Problem.';
+            $info['detail'] = $info['message'];
+            $info['summary'] = 'Houston, We Have A Problem.';
         }
+
+        unset($info['message']);
 
         return $info;
     }
