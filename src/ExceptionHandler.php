@@ -62,8 +62,7 @@ class ExceptionHandler extends Handler
         if ($displayer = $this->getDisplayer($e)) {
             $response = $displayer->display($e, $code, $headers);
         } else {
-            $content = 'An error has occurred and this resource cannot be displayed.';
-            $response = new Response($content, 500, array_merge($headers, ['Content-Type' => 'text/plain']));
+            $response = new Response('', $code, $headers);
         }
 
         return $response;

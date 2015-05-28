@@ -5,6 +5,7 @@ CHANGE LOG
 ## V3.0 (Upcoming)
 
 * Improved the error info class
+* Return empty body and no content type if we can't match a displayer
 
 
 ## V2.0.1 (26/05/2015)

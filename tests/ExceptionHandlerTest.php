@@ -58,7 +58,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
-    public function testTextRender()
+    public function testBadRender()
     {
         $this->app->request->headers->set('accept', 'not/acceptable');
 
@@ -66,8 +66,8 @@ class ExceptionHandlerTest extends AbstractTestCase
         $response = $handler->render($this->app->request, new NotFoundHttpException());
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertSame(500, $response->getStatusCode());
-        $this->assertSame('An error has occurred and this resource cannot be displayed.', $response->getContent());
-        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('', $response->getContent());
+        $this->assertNull($response->headers->get('Content-Type'));
     }
 }
