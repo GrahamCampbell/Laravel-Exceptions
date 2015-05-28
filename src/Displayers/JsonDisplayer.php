@@ -54,9 +54,9 @@ class JsonDisplayer implements DisplayerInterface
     {
         $info = $this->info->generate($exception, $code);
 
-        $content = ['success' => false, 'code' => $info['code'], 'msg' => $info['extra']];
+        $error = ['status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']];
 
-        return new JsonResponse($content, $code, array_merge($headers, ['Content-Type' => 'application/json']));
+        return new JsonResponse(['errors' => [$error]], $code, array_merge($headers, ['Content-Type' => 'application/json']));
     }
 
     /**
