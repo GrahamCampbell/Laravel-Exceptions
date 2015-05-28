@@ -1,1 +1,1 @@
-{"success":false,"code":500,"msg":"Gutted!"}
+{"status":500,"title":"Internal Server Error","detail":"An error has occurred and this resource cannot be displayed."}
