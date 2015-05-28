@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V3.0 (Upcoming)
+## V3.0 (28/05/2015)
 
 * Drop support for laravel 5.0
 * Improved the error info class
