@@ -62,7 +62,7 @@ class ServiceProviderTest extends AbstractTestCase
         $displayers = $this->app->config->get('exceptions.displayers');
 
         $this->assertInternalType('array', $displayers);
-        $this->assertCount(3, $displayers);
+        $this->assertCount(4, $displayers);
 
         foreach ($displayers as $displayer) {
             $this->assertTrue(starts_with($displayer, 'GrahamCampbell\\Exceptions\\Displayers\\'));

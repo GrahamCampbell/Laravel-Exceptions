@@ -12,7 +12,6 @@
 namespace GrahamCampbell\Exceptions\Filters;
 
 use Exception;
-use GrahamCampbell\Exceptions\Displayers\DisplayerInterface;
 use Illuminate\Http\Request;
 
 /**
@@ -51,40 +50,12 @@ class ContentTypeFilter
      */
     public function filter(array $displayers, Exception $exception)
     {
-        $acceptable = $this->request->getAcceptableContentTypes();
-
         foreach ($displayers as $index => $displayer) {
-            foreach ($this->getContentTypes($displayer) as $type) {
-                if (in_array($type, $acceptable)) {
-                    continue 2;
-                }
+            if (!$this->request->accepts($displayer->contentType())) {
+                unset($displayers[$index]);
             }
-
-            $split = explode('/', $displayer->contentType());
-
-            foreach ($acceptable as $type) {
-                if (preg_match('/'.$split[0].'\/.+\+'.$split[1].'/', $type)) {
-                    continue 2;
-                }
-            }
-
-            unset($displayers[$index]);
         }
 
         return array_values($displayers);
-    }
-
-    /**
-     * Get the content types to match.
-     *
-     * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface $displayer
-     *
-     * @return string[]
-     */
-    protected function getContentTypes(DisplayerInterface $displayer)
-    {
-        $type = $displayer->contentType();
-
-        return ['*/*', $type, strtok($type, '/').'/*'];
     }
 }

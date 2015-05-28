@@ -63,7 +63,7 @@ class HtmlDisplayer implements DisplayerInterface
     {
         $info = $this->info->generate($exception, $code);
 
-        return new Response($this->render($info), $code, array_merge($headers, ['Content-Type' => 'text/html']));
+        return new Response($this->render($info), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
     }
 
     /**

@@ -4,9 +4,11 @@ CHANGE LOG
 
 ## V3.0 (Upcoming)
 
+* Drop support for laravel 5.0
 * Improved the error info class
 * Return empty body and no content type if we can't match a displayer
 * Conformed to json api standards
+* Use laravel's new accepts method
 
 
 ## V2.0.1 (26/05/2015)

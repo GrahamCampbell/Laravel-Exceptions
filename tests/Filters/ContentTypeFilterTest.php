@@ -14,6 +14,7 @@ namespace GrahamCampbell\Tests\Exceptions\Filters;
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
+use GrahamCampbell\Exceptions\Displayers\JsonApiDisplayer;
 use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Exceptions\Filters\ContentTypeFilter;
@@ -33,8 +34,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['*/*']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['*/*']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 
@@ -47,8 +48,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['text/html', '*/*']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/html', '*/*']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 
@@ -61,8 +62,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['text/html']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/html']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 
@@ -75,8 +76,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['text/*']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/*']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 
@@ -89,8 +90,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['application/json', '*/*']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/json', '*/*']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 
@@ -103,8 +104,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['application/json']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/json']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 
@@ -116,13 +117,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
+        $api = new JsonApiDisplayer(new ExceptionInfo('bar'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['application/*']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/*']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json, $api], new Exception());
 
-        $this->assertSame([$json], $displayers);
+        $this->assertSame([$json, $api], $displayers);
     }
 
     public function testAcceptComplexJson()
@@ -130,13 +132,28 @@ class ContentTypeFilterTest extends AbstractTestCase
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
+        $api = new JsonApiDisplayer(new ExceptionInfo('bar'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['application/foo+json']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/foo+json']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json, $api], new Exception());
 
-        $this->assertSame([$json], $displayers);
+        $this->assertSame([], $displayers);
+    }
+
+    public function testAcceptJsonApi()
+    {
+        $debug = new DebugDisplayer();
+        $json = new JsonDisplayer(new ExceptionInfo('foo'));
+        $api = new JsonApiDisplayer(new ExceptionInfo('bar'));
+
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/vnd.api+json']);
+
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $json, $api], new Exception());
+
+        $this->assertSame([$api], $displayers);
     }
 
     public function testAcceptManyThings()
@@ -145,8 +162,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['text/*', 'application/foo+xml']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/*', 'application/foo+xml']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 
@@ -159,8 +176,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $request = Mockery::mock('Illuminate\Http\Request');
-        $request->shouldReceive('getAcceptableContentTypes')->once()->andReturn(['application/xml']);
+        $request = Mockery::mock('Illuminate\Http\Request')->makePartial();
+        $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/xml']);
 
         $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
 

@@ -29,6 +29,7 @@ return [
         'GrahamCampbell\Exceptions\Displayers\DebugDisplayer',
         'GrahamCampbell\Exceptions\Displayers\HtmlDisplayer',
         'GrahamCampbell\Exceptions\Displayers\JsonDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\JsonApiDisplayer',
     ],
 
     /*
