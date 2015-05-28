@@ -54,7 +54,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertSame(410, $response->getStatusCode());
-        $this->assertSame('{"success":false,"code":410,"msg":"Houston, We Have A Problem."}', $response->getContent());
+        $this->assertSame('{"errors":[{"status":410,"title":"Gone","detail":"The requested resource is no longer available and will not be available again."}]}', $response->getContent());
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
 

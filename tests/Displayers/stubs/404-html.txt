@@ -48,7 +48,7 @@
 
             <p>
                 Something went wrong on our servers while we were processing your request.
-                The requested resource could not be found but may be available again in the future.
+                Arghhhh!
                 This occurrence has been logged, and a highly trained team of monkeys has been
                 dispatched to deal with your problem. We're really sorry about this, and will
                 work hard to get this resolved as soon as possible.

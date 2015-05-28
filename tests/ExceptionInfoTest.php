@@ -28,7 +28,7 @@ class ExceptionInfoTest extends AbstractTestCase
     {
         $info = $this->app->make('GrahamCampbell\Exceptions\ExceptionInfo')->generate(new BadRequestHttpException('Made a mess.'), 400);
 
-        $expected = ['code' => 400, 'name' => 'Bad Request', 'message' => 'The request cannot be fulfilled due to bad syntax.', 'extra' => 'Made a mess.'];
+        $expected = ['code' => 400, 'name' => 'Bad Request', 'detail' => 'Made a mess.', 'summary' => 'Made a mess.'];
 
         $this->assertSame($expected, $info);
     }
@@ -37,7 +37,7 @@ class ExceptionInfoTest extends AbstractTestCase
     {
         $info = $this->app->make('GrahamCampbell\Exceptions\ExceptionInfo')->generate(new PreconditionFailedHttpException(':('), 412);
 
-        $expected = ['code' => 412, 'name' => 'Precondition Failed', 'message' => 'The server does not meet one of the preconditions that the requester put on the request.', 'extra' => 'Houston, We Have A Problem.'];
+        $expected = ['code' => 412, 'name' => 'Precondition Failed', 'detail' => 'The server does not meet one of the preconditions that the requester put on the request.', 'summary' => 'Houston, We Have A Problem.'];
 
         $this->assertSame($expected, $info);
     }
@@ -46,7 +46,7 @@ class ExceptionInfoTest extends AbstractTestCase
     {
         $info = $this->app->make('GrahamCampbell\Exceptions\ExceptionInfo')->generate(new UnprocessableEntityHttpException('Made a mess a really really big mess this time. Everything has broken, and unicorns are crying.'), 422);
 
-        $expected = ['code' => 422, 'name' => 'Unprocessable Entity', 'message' => 'The request was well-formed but was unable to be followed due to semantic errors.', 'extra' => 'Houston, We Have A Problem.'];
+        $expected = ['code' => 422, 'name' => 'Unprocessable Entity', 'detail' => 'Made a mess a really really big mess this time. Everything has broken, and unicorns are crying.', 'summary' => 'Houston, We Have A Problem.'];
 
         $this->assertSame($expected, $info);
     }
@@ -55,7 +55,7 @@ class ExceptionInfoTest extends AbstractTestCase
     {
         $info = $this->app->make('GrahamCampbell\Exceptions\ExceptionInfo')->generate(new Exception('Ooops.'), 666);
 
-        $expected = ['code' => 500, 'name' => 'Internal Server Error', 'message' => 'An error has occurred and this resource cannot be displayed.', 'extra' => 'Houston, We Have A Problem.'];
+        $expected = ['code' => 500, 'name' => 'Internal Server Error', 'detail' => 'An error has occurred and this resource cannot be displayed.', 'summary' => 'Houston, We Have A Problem.'];
 
         $this->assertSame($expected, $info);
     }
@@ -64,7 +64,7 @@ class ExceptionInfoTest extends AbstractTestCase
     {
         $info = $this->app->make('GrahamCampbell\Exceptions\ExceptionInfo')->generate(new InvalidArgumentException('Made another mess.'), 503);
 
-        $expected = ['code' => 503, 'name' => 'Service Unavailable', 'message' => 'The server is currently unavailable. It may be overloaded or down for maintenance.', 'extra' => 'Houston, We Have A Problem.'];
+        $expected = ['code' => 503, 'name' => 'Service Unavailable', 'detail' => 'The server is currently unavailable. It may be overloaded or down for maintenance.', 'summary' => 'Houston, We Have A Problem.'];
 
         $this->assertSame($expected, $info);
     }

@@ -1,1 +1,1 @@
-{"success":false,"code":401,"msg":"Grrrr!"}
+{"errors":[{"status":401,"title":"Unauthorized","detail":"Grrrr!"}]}
