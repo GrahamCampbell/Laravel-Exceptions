@@ -38,7 +38,7 @@
                     <h1>Error {{ $code }}</h1>
                 </div>
                 <div class="span2 ellipsis">
-                    <h2 class="pull-right">{{ $extra }}</h2>
+                    <h2 class="pull-right">{{ $summary }}</h2>
                 </div>
             </div>
             <h2>{{ $name }}</h2>
@@ -48,7 +48,7 @@
 
             <p>
                 Something went wrong on our servers while we were processing your request.
-                {{ $message }}
+                {{ $detail }}
                 This occurrence has been logged, and a highly trained team of monkeys has been
                 dispatched to deal with your problem. We're really sorry about this, and will
                 work hard to get this resolved as soon as possible.
