@@ -65,7 +65,7 @@ class ExceptionHandler extends Handler
             $response = new Response('', $code, $headers);
         }
 
-        return $response;
+        return $this->toIlluminateResponse($response, $e);
     }
 
     /**
