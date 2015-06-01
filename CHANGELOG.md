@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V3.0.1 (01/06/2015)
+
+* Make sure we're always creating an illuminate response
+
+
 ## V3.0 (28/05/2015)
 
 * Drop support for laravel 5.0
