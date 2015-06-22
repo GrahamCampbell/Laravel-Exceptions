@@ -40,7 +40,9 @@ class ExceptionsServiceProvider extends ServiceProvider
     {
         $source = realpath(__DIR__.'/../config/exceptions.php');
 
-        $this->publishes([$source => config_path('exceptions.php')]);
+        if (class_exists('Illuminate\Foundation\Application', false)) {
+            $this->publishes([$source => config_path('exceptions.php')]);
+        }
 
         $this->mergeConfigFrom($source, 'exceptions');
     }
