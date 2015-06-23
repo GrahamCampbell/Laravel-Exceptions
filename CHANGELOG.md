@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V3.1 (Upcoming)
+
+* Lumen support
+
+
 ## V3.0.1 (01/06/2015)
 
 * Make sure we're always creating an illuminate response
