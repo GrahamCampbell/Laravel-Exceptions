@@ -15,10 +15,10 @@ use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Displayers\JsonApiDisplayer;
 use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
+use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\Filters\CanDisplayFilter;
 use GrahamCampbell\Exceptions\Filters\ContentTypeFilter;
 use GrahamCampbell\Exceptions\Filters\VerboseFilter;
-use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 
 /**
