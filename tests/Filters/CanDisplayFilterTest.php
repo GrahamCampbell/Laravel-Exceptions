@@ -12,6 +12,8 @@
 namespace GrahamCampbell\Tests\Exceptions\Filters;
 
 use Exception;
+use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
+use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
 use GrahamCampbell\Exceptions\Filters\CanDisplayFilter;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use Mockery;
@@ -26,9 +28,9 @@ class CanDisplayFilterTest extends AbstractTestCase
     public function testFirstIsRemoved()
     {
         $exception = new Exception();
-        $html = Mockery::mock('GrahamCampbell\Exceptions\Displayers\HtmlDisplayer');
+        $html = Mockery::mock(HtmlDisplayer::class);
         $html->shouldReceive('canDisplay')->once()->with($exception)->andReturn(false);
-        $json = Mockery::mock('GrahamCampbell\Exceptions\Displayers\JsonDisplayer');
+        $json = Mockery::mock(JsonDisplayer::class);
         $json->shouldReceive('canDisplay')->once()->with($exception)->andReturn(true);
 
         $displayers = (new CanDisplayFilter())->filter([$html, $json], $exception);
@@ -39,9 +41,9 @@ class CanDisplayFilterTest extends AbstractTestCase
     public function testNoChange()
     {
         $exception = new Exception();
-        $html = Mockery::mock('GrahamCampbell\Exceptions\Displayers\HtmlDisplayer');
+        $html = Mockery::mock(HtmlDisplayer::class);
         $html->shouldReceive('canDisplay')->once()->with($exception)->andReturn(true);
-        $json = Mockery::mock('GrahamCampbell\Exceptions\Displayers\JsonDisplayer');
+        $json = Mockery::mock(JsonDisplayer::class);
         $json->shouldReceive('canDisplay')->once()->with($exception)->andReturn(true);
 
         $displayers = (new CanDisplayFilter())->filter([$html, $json], $exception);

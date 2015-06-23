@@ -4,7 +4,7 @@ CHANGE LOG
 
 ## V3.1 (Upcoming)
 
-* Lumen support
+* Official lumen support
 
 
 ## V3.0.1 (01/06/2015)

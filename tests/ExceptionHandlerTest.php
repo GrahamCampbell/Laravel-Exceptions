@@ -12,6 +12,8 @@
 namespace GrahamCampbell\Tests\Exceptions;
 
 use Exception;
+use GrahamCampbell\Exceptions\ExceptionHandler;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -24,10 +26,10 @@ class ExceptionHandlerTest extends AbstractTestCase
 {
     public function testBasicRender()
     {
-        $handler = $this->app->make('GrahamCampbell\Exceptions\ExceptionHandler');
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new Exception('Foo Bar.'));
 
-        $this->assertInstanceOf('Illuminate\Http\Response', $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(500, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
         $this->assertTrue(str_contains($response->getContent(), 'Internal Server Error'));
@@ -37,10 +39,10 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testNotFoundRender()
     {
-        $handler = $this->app->make('GrahamCampbell\Exceptions\ExceptionHandler');
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
-        $this->assertInstanceOf('Illuminate\Http\Response', $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
         $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
@@ -51,10 +53,10 @@ class ExceptionHandlerTest extends AbstractTestCase
     {
         $this->app->request->headers->set('accept', 'application/json');
 
-        $handler = $this->app->make('GrahamCampbell\Exceptions\ExceptionHandler');
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new GoneHttpException());
 
-        $this->assertInstanceOf('Illuminate\Http\Response', $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(410, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
         $this->assertSame('{"errors":[{"status":410,"title":"Gone","detail":"The requested resource is no longer available and will not be available again."}]}', $response->getContent());
@@ -65,10 +67,10 @@ class ExceptionHandlerTest extends AbstractTestCase
     {
         $this->app->request->headers->set('accept', 'not/acceptable');
 
-        $handler = $this->app->make('GrahamCampbell\Exceptions\ExceptionHandler');
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
-        $this->assertInstanceOf('Illuminate\Http\Response', $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
         $this->assertSame('', $response->getContent());

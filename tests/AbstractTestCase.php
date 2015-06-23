@@ -11,6 +11,7 @@
 
 namespace GrahamCampbell\Tests\Exceptions;
 
+use GrahamCampbell\Exceptions\ExceptionsServiceProvider;
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
 
 /**
@@ -29,6 +30,6 @@ abstract class AbstractTestCase extends AbstractPackageTestCase
      */
     protected function getServiceProviderClass($app)
     {
-        return 'GrahamCampbell\Exceptions\ExceptionsServiceProvider';
+        return ExceptionsServiceProvider::class;
     }
 }

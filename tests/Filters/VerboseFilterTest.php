@@ -18,6 +18,7 @@ use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Exceptions\Filters\VerboseFilter;
 use GrahamCampbell\TestBench\AbstractTestCase;
+use Illuminate\Contracts\Config\Repository;
 use Mockery;
 
 /**
@@ -32,7 +33,7 @@ class VerboseFilterTest extends AbstractTestCase
         $verbose = new DebugDisplayer();
         $standard = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
+        $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
 
         $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], new Exception());
@@ -45,7 +46,7 @@ class VerboseFilterTest extends AbstractTestCase
         $verbose = new DebugDisplayer();
         $standard = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
+        $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);
 
         $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], new Exception());
@@ -58,7 +59,7 @@ class VerboseFilterTest extends AbstractTestCase
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
 
-        $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
+        $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
 
         $displayers = (new VerboseFilter($config))->filter([$json, $html], new Exception());
@@ -70,7 +71,7 @@ class VerboseFilterTest extends AbstractTestCase
     {
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
-        $config = Mockery::mock('Illuminate\Contracts\Config\Repository');
+        $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);
 
         $displayers = (new VerboseFilter($config))->filter([$json], new Exception());

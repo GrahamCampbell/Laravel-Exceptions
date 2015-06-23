@@ -11,7 +11,15 @@
 
 namespace GrahamCampbell\Tests\Exceptions;
 
-use GrahamCampbell\TestBench\Traits\ServiceProviderTestCaseTrait;
+use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
+use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
+use GrahamCampbell\Exceptions\Displayers\JsonApiDisplayer;
+use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
+use GrahamCampbell\Exceptions\Filters\CanDisplayFilter;
+use GrahamCampbell\Exceptions\Filters\ContentTypeFilter;
+use GrahamCampbell\Exceptions\Filters\VerboseFilter;
+use GrahamCampbell\Exceptions\ExceptionHandler;
+use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 
 /**
  * This is the service provider test class.
@@ -20,41 +28,46 @@ use GrahamCampbell\TestBench\Traits\ServiceProviderTestCaseTrait;
  */
 class ServiceProviderTest extends AbstractTestCase
 {
-    use ServiceProviderTestCaseTrait;
+    use ServiceProviderTrait;
 
     public function testExceptionHandlerIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\ExceptionHandler');
+        $this->assertIsInjectable(ExceptionHandler::class);
+    }
+
+    public function testJsonApiDisplayerIsInjectable()
+    {
+        $this->assertIsInjectable(JsonApiDisplayer::class);
     }
 
     public function testJsonDisplayerIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\JsonDisplayer');
+        $this->assertIsInjectable(JsonDisplayer::class);
     }
 
     public function testDebugDisplayerIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\DebugDisplayer');
+        $this->assertIsInjectable(DebugDisplayer::class);
     }
 
     public function testHtmlDisplayerIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Displayers\HtmlDisplayer');
+        $this->assertIsInjectable(HtmlDisplayer::class);
     }
 
     public function testCanDisplayFilterIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Filters\CanDisplayFilter');
+        $this->assertIsInjectable(CanDisplayFilter::class);
     }
 
     public function testContentTypeFilterIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Filters\ContentTypeFilter');
+        $this->assertIsInjectable(ContentTypeFilter::class);
     }
 
     public function testVerboseFilterIsInjectable()
     {
-        $this->assertIsInjectable('GrahamCampbell\Exceptions\Filters\VerboseFilter');
+        $this->assertIsInjectable(VerboseFilter::class);
     }
 
     public function testDisplayerConfig()
@@ -65,7 +78,7 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertCount(4, $displayers);
 
         foreach ($displayers as $displayer) {
-            $this->assertTrue(starts_with($displayer, 'GrahamCampbell\\Exceptions\\Displayers\\'));
+            $this->assertTrue(starts_with($displayer, 'GrahamCampbell\Exceptions\Displayers'));
         }
     }
 
@@ -77,7 +90,7 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertCount(3, $filters);
 
         foreach ($filters as $filter) {
-            $this->assertTrue(starts_with($filter, 'GrahamCampbell\\Exceptions\\Filters\\'));
+            $this->assertTrue(starts_with($filter, 'GrahamCampbell\Exceptions\Filters'));
         }
     }
 }
