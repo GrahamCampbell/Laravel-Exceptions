@@ -3,7 +3,7 @@
 /*
  * This file is part of Laravel Exceptions.
  *
- * (c) Graham Campbell <graham@cachethq.io>
+ * (c) Graham Campbell <graham@alt-three.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * This is the exception hander class.
  *
- * @author Graham Campbell <graham@cachethq.io>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class ExceptionHandler extends Handler
 {
