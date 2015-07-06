@@ -13,6 +13,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Exception Transformers
+    |--------------------------------------------------------------------------
+    |
+    | Here are each of the exception transformers setup for your application.
+    |
+    | This allows you to turn your exceptions into other exceptions such as
+    | http exceptions for perfect results when passed to the displayers. Note
+    | that this list is processed in order and subsequent transformers can
+    | still modify the results of previous ones if required.
+    |
+    */
+
+    'transformers' => [
+        'GrahamCampbell\Exceptions\Transformers\CsrfTransformer',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Exception Displayers
     |--------------------------------------------------------------------------
     |

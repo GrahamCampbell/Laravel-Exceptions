@@ -56,6 +56,7 @@ class ExceptionHandler extends Handler
      */
     public function render($request, Exception $e)
     {
+        $e = $this->getTransformed($e);
         $flattened = FlattenException::create($e);
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
@@ -67,6 +68,22 @@ class ExceptionHandler extends Handler
         }
 
         return $this->toIlluminateResponse($response, $e);
+    }
+
+    /**
+     * Get the transformed exception.
+     *
+     * @param \Exception $exception
+     *
+     * @return \Exception
+     */
+    protected function getTransformed(Exception $exception)
+    {
+        foreach ($this->make($this->container->config->get('exceptions.transformers', [])) as $transformer) {
+            $exception = $transformer->transform($exception);
+        }
+
+        return $exception;
     }
 
     /**

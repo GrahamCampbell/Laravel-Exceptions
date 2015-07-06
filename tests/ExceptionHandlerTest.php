@@ -14,6 +14,8 @@ namespace GrahamCampbell\Tests\Exceptions;
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use Illuminate\Http\Response;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -46,6 +48,19 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
         $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
+    public function testCsrfExceptionRender()
+    {
+        $handler = $this->app->make(ExceptionHandler::class);
+        $response = $handler->render($this->app->request, $e = new TokenMismatchException());
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertInstanceOf(BadRequestHttpException::class, $response->exception);
+        $this->assertTrue(str_contains($response->getContent(), 'Bad Request'));
+        $this->assertTrue(str_contains($response->getContent(), 'CSRF token validation failed.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 

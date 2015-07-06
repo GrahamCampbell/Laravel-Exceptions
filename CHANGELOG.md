@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V3.2 (Upcoming)
+
+* Added exception transformers
+
+
 ## V3.1 (26/06/2015)
 
 * Official lumen support
