@@ -21,7 +21,7 @@ use Exception;
 interface TransformerInterface
 {
     /**
-     * Transform the provided exception
+     * Transform the provided exception.
      *
      * @param \Exception $exception
      *

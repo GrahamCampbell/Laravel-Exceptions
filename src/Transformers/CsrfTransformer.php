@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class CsrfTransformer implements TransformerInterface
 {
     /**
-     * Transform the provided exception
+     * Transform the provided exception.
      *
      * @param \Exception $exception
      *
@@ -31,10 +31,10 @@ class CsrfTransformer implements TransformerInterface
      */
     public function transform(Exception $exception)
     {
-    	if ($exception instanceof TokenMismatchException) {
-    		$message = $exception->getMessage();
-    		$exception = new BadRequestHttpException($message ?: 'CSRF token validation failed.');
-    	}
+        if ($exception instanceof TokenMismatchException) {
+            $message = $exception->getMessage();
+            $exception = new BadRequestHttpException($message ?: 'CSRF token validation failed.');
+        }
 
         return $exception;
     }
