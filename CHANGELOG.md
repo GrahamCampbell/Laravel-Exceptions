@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V3.2 (Upcoming)
+## V3.2 (06/07/2015)
 
 * Added exception transformers
 
