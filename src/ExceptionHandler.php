@@ -17,6 +17,7 @@ use Illuminate\Foundation\Exceptions\Handler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the exception hander class.
@@ -25,6 +26,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExceptionHandler extends Handler
 {
+    /**
+     * A list of the exception types that should not be reported.
+     *
+     * @var string[]
+     */
+    protected $dontReport = [
+        NotFoundHttpException::class,
+    ];
+
     /**
      * The container instance.
      *
