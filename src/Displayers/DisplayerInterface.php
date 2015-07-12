@@ -24,12 +24,13 @@ interface DisplayerInterface
      * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
+     * @param string     $id
      * @param int        $code
      * @param string[]   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $code, array $headers);
+    public function display(Exception $exception, $id, $code, array $headers);
 
     /**
      * Get the supported content type.

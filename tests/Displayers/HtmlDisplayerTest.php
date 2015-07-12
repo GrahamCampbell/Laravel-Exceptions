@@ -27,7 +27,7 @@ class HtmlDisplayerTest extends AbstractTestCase
     {
         $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
-        $response = $displayer->display(new HttpException(502, 'Oh noes!'), 502, []);
+        $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/502-html.txt');
 
@@ -40,7 +40,7 @@ class HtmlDisplayerTest extends AbstractTestCase
     {
         $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
-        $response = $displayer->display(new HttpException(404, 'Arghhhh!'), 404, []);
+        $response = $displayer->display(new HttpException(404, 'Arghhhh!'), 'bar', 404, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/404-html.txt');
 

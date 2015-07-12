@@ -57,6 +57,21 @@ class ExceptionHandler extends Handler
     }
 
     /**
+     * Report or log an exception.
+     *
+     * @param \Exception $e
+     *
+     * @return void
+     */
+    public function report(Exception $e)
+    {
+        if ($this->shouldReport($e)) {
+            $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
+            $this->log->error($e, ['identification' => ['id' => $id]]);
+        }
+    }
+
+    /**
      * Render an exception into a response.
      *
      * @param \Illuminate\Http\Request $request
@@ -66,13 +81,14 @@ class ExceptionHandler extends Handler
      */
     public function render($request, Exception $e)
     {
+        $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
         $e = $this->getTransformed($e);
         $flattened = FlattenException::create($e);
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
         if ($displayer = $this->getDisplayer($e)) {
-            $response = $displayer->display($e, $code, $headers);
+            $response = $displayer->display($e, $id, $code, $headers);
         } else {
             $response = new Response('', $code, $headers);
         }

@@ -54,7 +54,11 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ExceptionInfo::class, function () {
+        $this->app->singleton(ExceptionIdentifier::class, function () {
+            return new ExceptionIdentifier();
+        });
+
+        $this->app->singleton(ExceptionInfo::class, function () {
             return new ExceptionInfo(__DIR__.'/../resources/errors.json');
         });
 

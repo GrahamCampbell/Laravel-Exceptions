@@ -13,8 +13,11 @@ namespace GrahamCampbell\Tests\Exceptions;
 
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionHandler;
+use GrahamCampbell\Exceptions\ExceptionIdentifier;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
+use Mockery;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -70,11 +73,12 @@ class ExceptionHandlerTest extends AbstractTestCase
 
         $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new GoneHttpException());
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(410, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
-        $this->assertSame('{"errors":[{"status":410,"title":"Gone","detail":"The requested resource is no longer available and will not be available again."}]}', $response->getContent());
+        $this->assertSame('{"errors":[{"id":"'.$id.'","status":410,"title":"Gone","detail":"The requested resource is no longer available and will not be available again."}]}', $response->getContent());
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
@@ -90,5 +94,23 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame($e, $response->exception);
         $this->assertSame('', $response->getContent());
         $this->assertNull($response->headers->get('Content-Type'));
+    }
+
+    public function testReportHttp()
+    {
+        $this->app->instance(LoggerInterface::class, Mockery::mock(LoggerInterface::class));
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report(new NotFoundHttpException()));
+    }
+
+    public function testReportException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new Exception();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id]]);
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 }

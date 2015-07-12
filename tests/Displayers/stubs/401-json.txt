@@ -1,1 +1,1 @@
-{"errors":[{"status":401,"title":"Unauthorized","detail":"Grrrr!"}]}
+{"errors":[{"id":"bar","status":401,"title":"Unauthorized","detail":"Grrrr!"}]}

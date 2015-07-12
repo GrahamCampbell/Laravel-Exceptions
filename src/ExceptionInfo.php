@@ -44,18 +44,19 @@ class ExceptionInfo
      * Get the exception information.
      *
      * @param \Exception $exception
+     * @param string     $id
      * @param int        $code
      *
      * @return array
      */
-    public function generate(Exception $exception, $code)
+    public function generate(Exception $exception, $id, $code)
     {
         $errors = json_decode(file_get_contents($this->path), true);
 
         if (isset($errors[$code])) {
-            $info = array_merge(['code' => $code], $errors[$code]);
+            $info = array_merge(['id' => $id, 'code' => $code], $errors[$code]);
         } else {
-            $info = array_merge(['code' => 500], $errors[500]);
+            $info = array_merge(['id' => $id, 'code' => 500], $errors[500]);
         }
 
         if ($exception instanceof HttpExceptionInterface) {

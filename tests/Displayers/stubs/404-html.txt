@@ -54,6 +54,10 @@
                 work hard to get this resolved as soon as possible.
             </p>
             <p>
+                This error can be identified by <i>bar</i>.
+                You might want to take a note of this code.
+            </p>
+            <p>
                 Perhaps you would like to go to our <a href="http://localhost/">home page</a>?
             </p>
         </div>

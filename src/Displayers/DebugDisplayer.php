@@ -27,12 +27,13 @@ class DebugDisplayer implements DisplayerInterface
      * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
+     * @param string     $id
      * @param int        $code
      * @param string[]   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $code, array $headers)
+    public function display(Exception $exception, $id, $code, array $headers)
     {
         $content = $this->whoops()->handleException($exception);
 

@@ -45,16 +45,17 @@ class JsonDisplayer implements DisplayerInterface
      * Get the error response associated with the given exception.
      *
      * @param \Exception $exception
+     * @param string     $id
      * @param int        $code
      * @param string[]   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $code, array $headers)
+    public function display(Exception $exception, $id, $code, array $headers)
     {
-        $info = $this->info->generate($exception, $code);
+        $info = $this->info->generate($exception, $id, $code);
 
-        $error = ['status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']];
+        $error = ['id' => $id, 'status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']];
 
         return new JsonResponse(['errors' => [$error]], $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
     }

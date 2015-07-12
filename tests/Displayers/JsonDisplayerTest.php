@@ -27,7 +27,7 @@ class JsonDisplayerTest extends AbstractTestCase
     {
         $displayer = new JsonDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'));
 
-        $response = $displayer->display(new HttpException(500, 'Gutted!'), 500, []);
+        $response = $displayer->display(new HttpException(500, 'Gutted!'), 'foo', 500, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/500-json.txt');
 
@@ -40,7 +40,7 @@ class JsonDisplayerTest extends AbstractTestCase
     {
         $displayer = new JsonDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'));
 
-        $response = $displayer->display(new HttpException(401, 'Grrrr!'), 401, []);
+        $response = $displayer->display(new HttpException(401, 'Grrrr!'), 'bar', 401, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/401-json.txt');
 
