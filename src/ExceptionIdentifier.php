@@ -50,7 +50,7 @@ class ExceptionIdentifier
 
         // cleanup in preparation for the identification
         if (count($this->indentification) >= 16) {
-           array_shift($this->indentification);
+            array_shift($this->indentification);
         }
 
         // generate, store, and return the id
