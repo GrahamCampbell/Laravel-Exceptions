@@ -87,11 +87,7 @@ class ExceptionHandler extends Handler
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
-        if ($displayer = $this->getDisplayer($e)) {
-            $response = $displayer->display($e, $id, $code, $headers);
-        } else {
-            $response = new Response('', $code, $headers);
-        }
+        $response = $this->getDisplayer($e)->display($e, $id, $code, $headers);
 
         return $this->toIlluminateResponse($response, $e);
     }
@@ -126,6 +122,8 @@ class ExceptionHandler extends Handler
         if ($filtered = $this->getFiltered($displayers, $exception)) {
             return $filtered[0];
         }
+
+        return $this->container->make($this->container->config->get('exceptions.default'));
     }
 
     /**

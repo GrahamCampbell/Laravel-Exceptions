@@ -92,8 +92,8 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
-        $this->assertSame('', $response->getContent());
-        $this->assertNull($response->headers->get('Content-Type'));
+        $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
     public function testReportHttp()

@@ -69,4 +69,18 @@ return [
         'GrahamCampbell\Exceptions\Filters\ContentTypeFilter',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Displayer
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the default displayer for your application.
+    |
+    | This displayer will be used if your filters have filtered out all the
+    | displayers, otherwise leaving us unable to displayer the exception.
+    |
+    */
+
+    'default' => 'GrahamCampbell\Exceptions\Displayers\HtmlDisplayer',
+
 ];
