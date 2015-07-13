@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V4.0 (Upcoming)
+
+* Associated uuids with exceptions
+* Added default displayer config
+
+
 ## V3.2 (06/07/2015)
 
 * Added exception transformers
