@@ -113,7 +113,7 @@ class ExceptionHandler extends Handler
      *
      * @param \Exception $exception
      *
-     * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface|null
+     * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface
      */
     protected function getDisplayer(Exception $exception)
     {
