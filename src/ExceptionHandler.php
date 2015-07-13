@@ -36,6 +36,13 @@ class ExceptionHandler extends Handler
     ];
 
     /**
+     * The exception config.
+     *
+     * @var array
+     */
+    protected $config;
+
+    /**
      * The container instance.
      *
      * @var \Illuminate\Contracts\Container\Container
@@ -51,6 +58,7 @@ class ExceptionHandler extends Handler
      */
     public function __construct(Container $container)
     {
+        $this->config = $container->config->get('exceptions', []);
         $this->container = $container;
 
         parent::__construct($container->make(LoggerInterface::class));
@@ -101,7 +109,7 @@ class ExceptionHandler extends Handler
      */
     protected function getTransformed(Exception $exception)
     {
-        foreach ($this->make($this->container->config->get('exceptions.transformers', [])) as $transformer) {
+        foreach ($this->make(array_get($this->config, 'transformers', [])) as $transformer) {
             $exception = $transformer->transform($exception);
         }
 
@@ -117,13 +125,13 @@ class ExceptionHandler extends Handler
      */
     protected function getDisplayer(Exception $exception)
     {
-        $displayers = $this->make($this->container->config->get('exceptions.displayers', []));
+        $displayers = $this->make(array_get($this->config, 'displayers', []));
 
         if ($filtered = $this->getFiltered($displayers, $exception)) {
             return $filtered[0];
         }
 
-        return $this->container->make($this->container->config->get('exceptions.default'));
+        return $this->container->make(array_get($this->config, 'default'));
     }
 
     /**
@@ -136,7 +144,7 @@ class ExceptionHandler extends Handler
      */
     protected function getFiltered(array $displayers, Exception $exception)
     {
-        foreach ($this->make($this->container->config->get('exceptions.filters', [])) as $filter) {
+        foreach ($this->make(array_get($this->config, 'filters', [])) as $filter) {
             $displayers = $filter->filter($displayers, $exception);
         }
 
