@@ -62,7 +62,7 @@ class ExceptionIdentifier
      *
      * We're generating uuids according to the official v4 spec.
      *
-     * @return array
+     * @return string
      */
     protected function generate()
     {
