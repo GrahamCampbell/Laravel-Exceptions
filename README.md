@@ -59,6 +59,10 @@ This option (`'displayers'`) defines each of the exception displayers setup for 
 
 This option (`'filters'`) defines each of the filters for the displayers. This allows you to apply filters to your displayers in order to work out which displayer to use for each exception. This includes things like content type negotiation.
 
+##### Default Displayer
+
+This option (`'default'`) defines the default displayer for your application. This displayer will be used if your filters have filtered out all the displayers, otherwise leaving us unable to displayer the exception.
+
 
 ## Usage
 
