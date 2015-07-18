@@ -45,7 +45,7 @@ $ php artisan vendor:publish
 
 This will create a `config/exceptions.php` file in your app that you can modify to set your configuration. Also, make sure you check for changes to the original config file in this package between releases.
 
-There are three config options:
+There are a few config options:
 
 ##### Exception Transformers
 
@@ -62,6 +62,10 @@ This option (`'filters'`) defines each of the filters for the displayers. This a
 ##### Default Displayer
 
 This option (`'default'`) defines the default displayer for your application. This displayer will be used if your filters have filtered out all the displayers, otherwise leaving us unable to displayer the exception.
+
+##### Exception Levels
+
+This option (`'levels'`) defines the log levels for the each exception. If an exception passes an instance of test for each key, then the log level used is the value associated with each key.
 
 
 ## Usage

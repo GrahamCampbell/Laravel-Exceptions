@@ -7,7 +7,8 @@ CHANGE LOG
 * Associated uuids with exceptions
 * Added default displayer config
 * Resolve all the config earlier
-* Responsive HTML displayer
+* Made the html displayer responsive
+* Added exception levels
 
 
 ## V3.2 (06/07/2015)

@@ -74,9 +74,28 @@ class ExceptionHandler extends Handler
     public function report(Exception $e)
     {
         if ($this->shouldReport($e)) {
+            $level = $this->getLevel($e);
             $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
-            $this->log->error($e, ['identification' => ['id' => $id]]);
+            $this->log->{$level}($e, ['identification' => ['id' => $id]]);
         }
+    }
+
+    /**
+     * Get the exception level.
+     *
+     * @param \Exception $exception
+     *
+     * @return \Exception
+     */
+    protected function getLevel(Exception $exception)
+    {
+        foreach (array_get($this->config, 'levels', []) as $class => $level) {
+            if ($exception instanceof $class) {
+                return $level;
+            }
+        }
+
+        return 'error';
     }
 
     /**

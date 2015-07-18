@@ -18,6 +18,7 @@ use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Mockery;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -108,6 +109,52 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new Exception();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id]]);
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+    }
+
+    public function testReportBadRequestException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new BadRequestHttpException();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+    }
+
+    public function testReportCsrfException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new TokenMismatchException();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id]]);
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+    }
+
+    public function testReportFatalException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = Mockery::mock(FatalErrorException::class);
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('critical')->once()->with($e, ['identification' => ['id' => $id]]);
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+    }
+
+    public function testReportFallbackWorks()
+    {
+        $this->app->config->set('exceptions.levels', [TokenMismatchException::class => 'notice']);
+
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new BadRequestHttpException();
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id]]);
 

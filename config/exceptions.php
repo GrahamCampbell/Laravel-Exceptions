@@ -83,4 +83,23 @@ return [
 
     'default' => 'GrahamCampbell\Exceptions\Displayers\HtmlDisplayer',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Exception Levels
+    |--------------------------------------------------------------------------
+    |
+    | Here are each of the log levels for the each exception.
+    |
+    | If an exception passes an instance of test for each key, then the log
+    | level used is the value associated with each key.
+    |
+    */
+
+    'levels' => [
+        'Illuminate\Session\TokenMismatchException'                     => 'notice',
+        'Symfony\Component\HttpKernel\Exception\HttpExceptionInterface' => 'warning',
+        'Symfony\Component\Debug\Exception\FatalErrorException'         => 'critical',
+        'Exception'                                                     => 'error',
+    ],
+
 ];
