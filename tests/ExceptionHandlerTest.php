@@ -137,17 +137,6 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportFatalException()
-    {
-        $mock = Mockery::mock(LoggerInterface::class);
-        $this->app->instance(LoggerInterface::class, $mock);
-        $e = Mockery::mock(FatalErrorException::class);
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
-        $mock->shouldReceive('critical')->once()->with($e, ['identification' => ['id' => $id]]);
-
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
-    }
-
     public function testReportFallbackWorks()
     {
         $this->app->config->set('exceptions.levels', [TokenMismatchException::class => 'notice']);
