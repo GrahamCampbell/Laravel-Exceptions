@@ -85,7 +85,7 @@ class ExceptionHandler extends Handler
      *
      * @param \Exception $exception
      *
-     * @return \Exception
+     * @return string
      */
     protected function getLevel(Exception $exception)
     {
