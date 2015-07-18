@@ -18,7 +18,6 @@ use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Mockery;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
