@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V4.0 (Upcoming)
+## V4.0 (25/07/2015)
 
 * Associated uuids with exceptions
 * Added default displayer config
