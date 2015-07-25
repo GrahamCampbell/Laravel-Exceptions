@@ -109,14 +109,14 @@ class ExceptionHandler extends Handler
     public function render($request, Exception $e)
     {
         $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
-        $e = $this->getTransformed($e);
-        $flattened = FlattenException::create($e);
+        $transformed = $this->getTransformed($e);
+        $flattened = FlattenException::create($transformed);
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
-        $response = $this->getDisplayer($e)->display($e, $id, $code, $headers);
+        $response = $this->getDisplayer($e, $transformed)->display($transformed, $id, $code, $headers);
 
-        return $this->toIlluminateResponse($response, $e);
+        return $this->toIlluminateResponse($response, $transformed);
     }
 
     /**
@@ -138,15 +138,16 @@ class ExceptionHandler extends Handler
     /**
      * Get the displayer instance.
      *
-     * @param \Exception $exception
+     * @param \Exception $original
+     * @param \Exception $transformed
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface
      */
-    protected function getDisplayer(Exception $exception)
+    protected function getDisplayer(Exception $original, Exception $transformed)
     {
         $displayers = $this->make(array_get($this->config, 'displayers', []));
 
-        if ($filtered = $this->getFiltered($displayers, $exception)) {
+        if ($filtered = $this->getFiltered($displayers, $original, $transformed)) {
             return $filtered[0];
         }
 
@@ -157,14 +158,15 @@ class ExceptionHandler extends Handler
      * Get the filtered list of displayers.
      *
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
-     * @param \Exception                                                 $exception
+     * @param \Exception                                                 $original
+     * @param \Exception                                                 $transformed
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, Exception $exception)
+    protected function getFiltered(array $displayers, Exception $original, Exception $transformed)
     {
         foreach ($this->make(array_get($this->config, 'filters', [])) as $filter) {
-            $displayers = $filter->filter($displayers, $exception);
+            $displayers = $filter->filter($displayers, $original, $transformed);
         }
 
         return array_values($displayers);

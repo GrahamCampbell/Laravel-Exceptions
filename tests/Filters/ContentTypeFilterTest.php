@@ -31,6 +31,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 {
     public function testAcceptAll()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -38,13 +39,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['*/*']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([$debug, $html, $json], $displayers);
     }
 
     public function testAcceptHtmlAndAll()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -52,13 +54,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/html', '*/*']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([$debug, $html, $json], $displayers);
     }
 
     public function testAcceptJustHtml()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -66,13 +69,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/html']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([$debug, $html], $displayers);
     }
 
     public function testAcceptText()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -80,13 +84,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/*']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([$debug, $html], $displayers);
     }
 
     public function testAcceptJsonAndAll()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -94,13 +99,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/json', '*/*']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([$debug, $html, $json], $displayers);
     }
 
     public function testAcceptJustJson()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -108,13 +114,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/json']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([$json], $displayers);
     }
 
     public function testAcceptApplication()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -123,13 +130,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/*']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json, $api], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json, $api], $exception, $exception);
 
         $this->assertSame([$json, $api], $displayers);
     }
 
     public function testAcceptComplexJson()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -138,13 +146,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/foo+json']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json, $api], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json, $api], $exception, $exception);
 
         $this->assertSame([], $displayers);
     }
 
     public function testAcceptJsonApi()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
         $api = new JsonApiDisplayer(new ExceptionInfo('bar'));
@@ -152,13 +161,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/vnd.api+json']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $json, $api], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $json, $api], $exception, $exception);
 
         $this->assertSame([$api], $displayers);
     }
 
     public function testAcceptManyThings()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -166,13 +176,14 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/*', 'application/foo+xml']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([$debug, $html], $displayers);
     }
 
     public function testAcceptNothing()
     {
+        $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
@@ -180,7 +191,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/xml']);
 
-        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], new Exception());
+        $displayers = (new ContentTypeFilter($request))->filter([$debug, $html, $json], $exception, $exception);
 
         $this->assertSame([], $displayers);
     }

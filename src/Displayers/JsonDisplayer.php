@@ -73,11 +73,12 @@ class JsonDisplayer implements DisplayerInterface
     /**
      * Can we display the exception?
      *
-     * @param \Exception $exception
+     * @param \Exception $original
+     * @param \Exception $transformed
      *
      * @return bool
      */
-    public function canDisplay(Exception $exception)
+    public function canDisplay(Exception $original, Exception $transformed)
     {
         return true;
     }

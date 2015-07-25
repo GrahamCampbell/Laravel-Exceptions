@@ -30,51 +30,55 @@ class VerboseFilterTest extends AbstractTestCase
 {
     public function testDebugStaysOnTop()
     {
+        $exception = new Exception();
         $verbose = new DebugDisplayer();
         $standard = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
 
-        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], new Exception());
+        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], $exception, $exception);
 
         $this->assertSame([$verbose, $standard], $displayers);
     }
 
     public function testDebugIsRemoved()
     {
+        $exception = new Exception();
         $verbose = new DebugDisplayer();
         $standard = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);
 
-        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], new Exception());
+        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], $exception, $exception);
 
         $this->assertSame([$standard], $displayers);
     }
 
     public function testNoChangeInDebugMode()
     {
+        $exception = new Exception();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
         $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
 
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
 
-        $displayers = (new VerboseFilter($config))->filter([$json, $html], new Exception());
+        $displayers = (new VerboseFilter($config))->filter([$json, $html], $exception, $exception);
 
         $this->assertSame([$json, $html], $displayers);
     }
 
     public function testNoChangeNotInDebugMode()
     {
+        $exception = new Exception();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);
 
-        $displayers = (new VerboseFilter($config))->filter([$json], new Exception());
+        $displayers = (new VerboseFilter($config))->filter([$json], $exception, $exception);
 
         $this->assertSame([$json], $displayers);
     }

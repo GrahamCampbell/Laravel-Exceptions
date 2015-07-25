@@ -9,6 +9,7 @@ CHANGE LOG
 * Resolve all the config earlier
 * Made the html displayer responsive
 * Added exception levels
+* Allowed access to exceptions before transformation
 
 
 ## V3.2 (06/07/2015)
