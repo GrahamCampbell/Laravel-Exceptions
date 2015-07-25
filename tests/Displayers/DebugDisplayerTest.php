@@ -46,10 +46,11 @@ class DebugDisplayerTest extends AbstractTestCase
 
     public function testProperties()
     {
+        $exception = new Exception();
         $displayer = new DebugDisplayer();
 
         $this->assertTrue($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay(new Exception()));
+        $this->assertTrue($displayer->canDisplay($exception, $exception));
         $this->assertSame('text/html', $displayer->contentType());
     }
 }

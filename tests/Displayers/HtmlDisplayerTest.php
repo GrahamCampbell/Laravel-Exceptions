@@ -11,6 +11,7 @@
 
 namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
+use Exception;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
@@ -54,7 +55,7 @@ class HtmlDisplayerTest extends AbstractTestCase
         $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
 
         $this->assertFalse($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay(new HttpException(500)));
+        $this->assertTrue($displayer->canDisplay(new Exception(), new HttpException(500)));
         $this->assertSame('text/html', $displayer->contentType());
     }
 }
