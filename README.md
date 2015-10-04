@@ -73,6 +73,11 @@ This option (`'levels'`) defines the log levels for the each exception. If an ex
 There is currently no usage documentation for Laravel Exceptions, but we are open to pull requests.
 
 
+## Security
+
+If you discover a security vulnerability within this package, please send an e-mail to Graham Campbell at graham@alt-three.com. All security vulnerabilities will be promptly addressed.
+
+
 ## License
 
 Laravel Exceptions is licensed under [The MIT License (MIT)](LICENSE).
