@@ -14,7 +14,6 @@ namespace GrahamCampbell\Exceptions;
 use Exception;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the exception hander trait.
