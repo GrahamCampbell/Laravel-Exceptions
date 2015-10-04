@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V4.1 (Upcoming)
+
+* Improved lumen support
+
+
 ## V4.0 (25/07/2015)
 
 * Associated uuids with exceptions
