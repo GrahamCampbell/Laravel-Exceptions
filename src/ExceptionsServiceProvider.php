@@ -12,6 +12,7 @@
 namespace GrahamCampbell\Exceptions;
 
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -28,22 +29,24 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setupConfig();
+        $this->setupConfig($this->app);
     }
 
     /**
      * Setup the config.
      *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     *
      * @return void
      */
-    protected function setupConfig()
+    protected function setupConfig(Application $app)
     {
         $source = realpath(__DIR__.'/../config/exceptions.php');
 
         if (class_exists('Illuminate\Foundation\Application', false)) {
             $this->publishes([$source => config_path('exceptions.php')]);
         } elseif (class_exists('Laravel\Lumen\Application', false)) {
-            $this->configure('exceptions');
+            $app->configure('exceptions');
         }
 
         $this->mergeConfigFrom($source, 'exceptions');
