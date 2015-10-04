@@ -24,15 +24,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 trait ExceptionHandlerTrait
 {
     /**
-     * A list of the exception types that should not be reported.
-     *
-     * @var string[]
-     */
-    protected $dontReport = [
-        NotFoundHttpException::class,
-    ];
-
-    /**
      * The exception config.
      *
      * @var array

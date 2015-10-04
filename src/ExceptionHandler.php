@@ -25,6 +25,15 @@ class ExceptionHandler extends Handler
     use ExceptionHandlerTrait;
 
     /**
+     * A list of the exception types that should not be reported.
+     *
+     * @var string[]
+     */
+    protected $dontReport = [
+        NotFoundHttpException::class,
+    ];
+
+    /**
      * Create a new exception handler instance.
      *
      * @param \Illuminate\Contracts\Container\Container $container
