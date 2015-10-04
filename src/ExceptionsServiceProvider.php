@@ -42,6 +42,8 @@ class ExceptionsServiceProvider extends ServiceProvider
 
         if (class_exists('Illuminate\Foundation\Application', false)) {
             $this->publishes([$source => config_path('exceptions.php')]);
+        } elseif (class_exists('Laravel\Lumen\Application', false)) {
+            $this->configure('exceptions');
         }
 
         $this->mergeConfigFrom($source, 'exceptions');

@@ -12,15 +12,15 @@
 namespace GrahamCampbell\Exceptions;
 
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Foundation\Exceptions\Handler;
+use Laravel\Lumen\Exceptions\Handler;
 use Psr\Log\LoggerInterface;
 
 /**
- * This is the exception hander class.
+ * This is the lumen exception hander class.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class ExceptionHandler extends Handler
+class LumenExceptionHandler extends Handler
 {
     use ExceptionHandlerTrait;
 
