@@ -30,7 +30,7 @@ Once Laravel Exceptions is installed, you need to register the service provider.
 
 * `'GrahamCampbell\Exceptions\ExceptionsServiceProvider'`
 
-You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\ExceptionHandler` rather than extending `Illuminate\Foundation\Exceptions\Handler`.
+You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\ExceptionHandler` rather than extending `Illuminate\Foundation\Exceptions\Handler`, or if you're using Lumen, you're going to want to extend `GrahamCampbell\Exceptions\LumenExceptionHandler`.
 
 
 ## Configuration
