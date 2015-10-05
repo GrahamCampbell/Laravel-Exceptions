@@ -50,7 +50,7 @@ class DebugDisplayerTest extends AbstractTestCase
         $displayer = new DebugDisplayer();
 
         $this->assertTrue($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay($exception, $exception));
+        $this->assertTrue($displayer->canDisplay($exception, $exception, 500));
         $this->assertSame('text/html', $displayer->contentType());
     }
 }

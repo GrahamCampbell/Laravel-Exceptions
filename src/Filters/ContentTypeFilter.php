@@ -46,10 +46,11 @@ class ContentTypeFilter
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
      * @param \Exception                                                 $original
      * @param \Exception                                                 $transformed
+     * @param int                                                        $code
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    public function filter(array $displayers, Exception $original, Exception $transformed)
+    public function filter(array $displayers, Exception $original, Exception $transformed, $code)
     {
         foreach ($displayers as $index => $displayer) {
             if (!$this->request->accepts($displayer->contentType())) {
