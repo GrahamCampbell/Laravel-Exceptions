@@ -2,9 +2,11 @@ CHANGE LOG
 ==========
 
 
-## V4.1 (Upcoming)
+## V5.0 (Upcoming)
 
 * Improved lumen support
+* Updated interfaces so we can filter by code
+* Added view displayer to mimic laravel
 
 
 ## V4.0 (25/07/2015)
