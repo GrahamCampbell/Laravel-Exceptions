@@ -12,9 +12,9 @@
 namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
 use Exception;
-use Illuminate\Contracts\View\Factory;
 use GrahamCampbell\Exceptions\Displayers\ViewDisplayer;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
+use Illuminate\Contracts\View\Factory;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
