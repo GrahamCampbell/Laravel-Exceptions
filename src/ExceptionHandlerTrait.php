@@ -156,7 +156,12 @@ trait ExceptionHandlerTrait
     protected function make(array $classes)
     {
         foreach ($classes as $index => $class) {
-            $classes[$index] = $this->container->make($class);
+            try {
+                $classes[$index] = $this->container->make($class);
+            } catch (Exception $e) {
+                unset($classes[$index]);
+                $this->report($e);
+            }
         }
 
         return array_values($classes);
