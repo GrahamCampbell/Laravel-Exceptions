@@ -29,11 +29,11 @@ class CanDisplayFilterTest extends AbstractTestCase
     {
         $exception = new Exception();
         $html = Mockery::mock(HtmlDisplayer::class);
-        $html->shouldReceive('canDisplay')->once()->with($exception, $exception)->andReturn(false);
+        $html->shouldReceive('canDisplay')->once()->with($exception, $exception, 500)->andReturn(false);
         $json = Mockery::mock(JsonDisplayer::class);
-        $json->shouldReceive('canDisplay')->once()->with($exception, $exception)->andReturn(true);
+        $json->shouldReceive('canDisplay')->once()->with($exception, $exception, 500)->andReturn(true);
 
-        $displayers = (new CanDisplayFilter())->filter([$html, $json], $exception, $exception);
+        $displayers = (new CanDisplayFilter())->filter([$html, $json], $exception, $exception, 500);
 
         $this->assertSame([$json], $displayers);
     }
@@ -42,11 +42,11 @@ class CanDisplayFilterTest extends AbstractTestCase
     {
         $exception = new Exception();
         $html = Mockery::mock(HtmlDisplayer::class);
-        $html->shouldReceive('canDisplay')->once()->with($exception, $exception)->andReturn(true);
+        $html->shouldReceive('canDisplay')->once()->with($exception, $exception, 500)->andReturn(true);
         $json = Mockery::mock(JsonDisplayer::class);
-        $json->shouldReceive('canDisplay')->once()->with($exception, $exception)->andReturn(true);
+        $json->shouldReceive('canDisplay')->once()->with($exception, $exception, 500)->andReturn(true);
 
-        $displayers = (new CanDisplayFilter())->filter([$html, $json], $exception, $exception);
+        $displayers = (new CanDisplayFilter())->filter([$html, $json], $exception, $exception, 500);
 
         $this->assertSame([$html, $json], $displayers);
     }

@@ -26,13 +26,14 @@ class CanDisplayFilter
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
      * @param \Exception                                                 $original
      * @param \Exception                                                 $transformed
+     * @param int                                                        $code
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    public function filter(array $displayers, Exception $original, Exception $transformed)
+    public function filter(array $displayers, Exception $original, Exception $transformed, $code)
     {
         foreach ($displayers as $index => $displayer) {
-            if (!$displayer->canDisplay($original, $transformed)) {
+            if (!$displayer->canDisplay($original, $transformed, $code)) {
                 unset($displayers[$index]);
             }
         }

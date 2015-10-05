@@ -12,17 +12,35 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
+use Illuminate\Contracts\View\Factory;
 use Symfony\Component\HttpFoundation\Response;
-use Whoops\Handler\PrettyPageHandler as Handler;
-use Whoops\Run as Whoops;
 
 /**
- * This is the debug displayer class.
+ * This is the view displayer class.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class DebugDisplayer implements DisplayerInterface
+class ViewDisplayer implements DisplayerInterface
 {
+    /**
+     * The view factory instance.
+     *
+     * @var \Illuminate\Contracts\View\Factory
+     */
+    protected $factory;
+
+    /**
+     * Create a new view displayer instance.
+     *
+     * @param \Illuminate\Contracts\View\Factory $factory
+     *
+     * @return void
+     */
+    public function __construct(Factory $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /**
      * Get the error response associated with the given exception.
      *
@@ -35,24 +53,7 @@ class DebugDisplayer implements DisplayerInterface
      */
     public function display(Exception $exception, $id, $code, array $headers)
     {
-        $content = $this->whoops()->handleException($exception);
-
-        return new Response($content, $code, array_merge($headers, ['Content-Type' => 'text/html']));
-    }
-
-    /**
-     * Get the whoops instance.
-     *
-     * @return \Whoops\Run
-     */
-    protected function whoops()
-    {
-        $whoops = new Whoops();
-        $whoops->allowQuit(false);
-        $whoops->writeToOutput(false);
-        $whoops->pushHandler(new Handler());
-
-        return $whoops;
+        return new Response($this->factory->make("errors.{$code}"), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
     }
 
     /**
@@ -76,7 +77,7 @@ class DebugDisplayer implements DisplayerInterface
      */
     public function canDisplay(Exception $original, Exception $transformed, $code)
     {
-        return true;
+        return $this->factory->exists("errors.{$code}");
     }
 
     /**
@@ -86,6 +87,6 @@ class DebugDisplayer implements DisplayerInterface
      */
     public function isVerbose()
     {
-        return true;
+        return false;
     }
 }

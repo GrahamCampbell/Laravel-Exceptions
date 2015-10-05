@@ -55,7 +55,7 @@ class JsonDisplayerTest extends AbstractTestCase
         $displayer = new JsonDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'));
 
         $this->assertFalse($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay(new InvalidArgumentException(), new HttpException(500)));
+        $this->assertTrue($displayer->canDisplay(new InvalidArgumentException(), new HttpException(500), 500));
         $this->assertSame('application/json', $displayer->contentType());
     }
 }

@@ -148,4 +148,17 @@ class ExceptionHandlerTest extends AbstractTestCase
 
         $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
+
+    public function testBadDisplayers()
+    {
+        $this->app->config->set('exceptions.displayers', ['Ooops']);
+
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $mock->shouldReceive('error')->once();
+
+        $response = $this->app->make(ExceptionHandler::class)->render($this->app->request, new Exception());
+
+        $this->assertInstanceOf(Response::class, $response);
+    }
 }

@@ -86,7 +86,7 @@ trait ExceptionHandlerTrait
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
-        $response = $this->getDisplayer($e, $transformed)->display($transformed, $id, $code, $headers);
+        $response = $this->getDisplayer($e, $transformed, $code)->display($transformed, $id, $code, $headers);
 
         return $this->toIlluminateResponse($response, $transformed);
     }
@@ -112,14 +112,15 @@ trait ExceptionHandlerTrait
      *
      * @param \Exception $original
      * @param \Exception $transformed
+     * @param int        $code
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface
      */
-    protected function getDisplayer(Exception $original, Exception $transformed)
+    protected function getDisplayer(Exception $original, Exception $transformed, $code)
     {
         $displayers = $this->make(array_get($this->config, 'displayers', []));
 
-        if ($filtered = $this->getFiltered($displayers, $original, $transformed)) {
+        if ($filtered = $this->getFiltered($displayers, $original, $transformed, $code)) {
             return $filtered[0];
         }
 
@@ -132,13 +133,14 @@ trait ExceptionHandlerTrait
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
      * @param \Exception                                                 $original
      * @param \Exception                                                 $transformed
+     * @param int                                                        $code
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, Exception $original, Exception $transformed)
+    protected function getFiltered(array $displayers, Exception $original, Exception $transformed, $code)
     {
         foreach ($this->make(array_get($this->config, 'filters', [])) as $filter) {
-            $displayers = $filter->filter($displayers, $original, $transformed);
+            $displayers = $filter->filter($displayers, $original, $transformed, $code);
         }
 
         return array_values($displayers);
@@ -154,7 +156,12 @@ trait ExceptionHandlerTrait
     protected function make(array $classes)
     {
         foreach ($classes as $index => $class) {
-            $classes[$index] = $this->container->make($class);
+            try {
+                $classes[$index] = $this->container->make($class);
+            } catch (Exception $e) {
+                unset($classes[$index]);
+                $this->report($e);
+            }
         }
 
         return array_values($classes);

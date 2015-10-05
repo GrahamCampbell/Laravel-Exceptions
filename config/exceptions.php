@@ -45,6 +45,7 @@ return [
 
     'displayers' => [
         'GrahamCampbell\Exceptions\Displayers\DebugDisplayer',
+        'GrahamCampbell\Exceptions\Displayers\ViewDisplayer',
         'GrahamCampbell\Exceptions\Displayers\HtmlDisplayer',
         'GrahamCampbell\Exceptions\Displayers\JsonDisplayer',
         'GrahamCampbell\Exceptions\Displayers\JsonApiDisplayer',

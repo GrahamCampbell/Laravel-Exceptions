@@ -37,7 +37,7 @@ class VerboseFilterTest extends AbstractTestCase
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
 
-        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], $exception, $exception);
+        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], $exception, $exception, 500);
 
         $this->assertSame([$verbose, $standard], $displayers);
     }
@@ -51,7 +51,7 @@ class VerboseFilterTest extends AbstractTestCase
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);
 
-        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], $exception, $exception);
+        $displayers = (new VerboseFilter($config))->filter([$verbose, $standard], $exception, $exception, 500);
 
         $this->assertSame([$standard], $displayers);
     }
@@ -65,7 +65,7 @@ class VerboseFilterTest extends AbstractTestCase
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(true);
 
-        $displayers = (new VerboseFilter($config))->filter([$json, $html], $exception, $exception);
+        $displayers = (new VerboseFilter($config))->filter([$json, $html], $exception, $exception, 500);
 
         $this->assertSame([$json, $html], $displayers);
     }
@@ -78,7 +78,7 @@ class VerboseFilterTest extends AbstractTestCase
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->once()->with('app.debug', false)->andReturn(false);
 
-        $displayers = (new VerboseFilter($config))->filter([$json], $exception, $exception);
+        $displayers = (new VerboseFilter($config))->filter([$json], $exception, $exception, 500);
 
         $this->assertSame([$json], $displayers);
     }
