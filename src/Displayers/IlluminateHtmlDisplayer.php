@@ -11,12 +11,10 @@
 
 namespace GrahamCampbell\Exceptions\Displayers;
 
-use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
-use GrahamCampbell\Exceptions\Displayers\DisplayerInterface;
 use Exception;
-use Symfony\Component\HttpFoundation\Response;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use Symfony\Component\Debug\ExceptionHandler as SymfonyDisplayer;
+use Symfony\Component\HttpFoundation\Response;
 
 class IlluminateHtmlDisplayer extends HtmlDisplayer implements DisplayerInterface
 {
@@ -46,7 +44,7 @@ class IlluminateHtmlDisplayer extends HtmlDisplayer implements DisplayerInterfac
     {
         if (view()->exists("errors.{$code}")) {
             return new Response(view()->make("errors.{$code}"), $code, array_merge($headers, [
-                'Content-Type' => $this->contentType()
+                'Content-Type' => $this->contentType(),
             ]));
 
         } else {
