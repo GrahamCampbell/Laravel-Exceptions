@@ -43,7 +43,7 @@ class ExceptionsServiceProvider extends ServiceProvider
     {
         $source = realpath(__DIR__.'/../config/exceptions.php');
 
-        if (class_exists('Illuminate\Foundation\Application', false)) {
+        if (class_exists('Illuminate\Foundation\Application', false) && $app->runningInConsole()) {
             $this->publishes([$source => config_path('exceptions.php')]);
         } elseif (class_exists('Laravel\Lumen\Application', false)) {
             $app->configure('exceptions');
