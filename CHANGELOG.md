@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V5.0 (Upcoming)
+## V5.0 (06/10/2015)
 
 * Improved lumen support
 * Updated interfaces so we can filter by code
