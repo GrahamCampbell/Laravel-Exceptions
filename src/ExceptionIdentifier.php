@@ -66,7 +66,7 @@ class ExceptionIdentifier
      */
     protected function generate()
     {
-        $hash = bin2hex(Str::randomBytes(16));
+        $hash = bin2hex(random_bytes(16));
 
         $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
         $timeHi &= ~(0xf000);
