@@ -12,7 +12,6 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
-use Illuminate\Support\Str;
 
 /**
  * This is the exception identifier class.
