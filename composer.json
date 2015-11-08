@@ -13,10 +13,10 @@
         "php": ">=5.5.9",
         "illuminate/contracts": "5.1.*",
         "illuminate/support": "5.1.*",
-        "symfony/debug": "2.7.*",
-        "symfony/http-foundation": "2.7.*",
+        "symfony/debug": "^2.7",
+        "symfony/http-foundation": "^2.7",
         "filp/whoops": "1.1.*",
-        "psr/log": "~1.0"
+        "psr/log": "^1.0"
     },
     "require-dev": {
         "graham-campbell/testbench": "^3.1",
