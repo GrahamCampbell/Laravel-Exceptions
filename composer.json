@@ -13,7 +13,7 @@
         "php": ">=5.5.9",
         "illuminate/contracts": "5.1.*|5.2.*",
         "illuminate/support": "5.1.*|5.2.*",
-        "paragonie/random_compat": "^1.0.6",
+        "paragonie/random_compat": "^1.1",
         "symfony/debug": "^2.7|^3.0",
         "symfony/http-foundation": "^2.7|^3.0",
         "filp/whoops": "1.1.*",
