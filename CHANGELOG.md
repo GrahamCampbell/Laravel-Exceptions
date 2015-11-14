@@ -2,6 +2,13 @@ CHANGE LOG
 ==========
 
 
+## V5.1 (Upcoming)
+
+* Added laravel 5.2 support
+* Improved environment detection
+* Improvements to id generation
+
+
 ## V5.0 (06/10/2015)
 
 * Improved lumen support
