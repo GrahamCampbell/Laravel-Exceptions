@@ -76,7 +76,7 @@ class DebugDisplayer implements DisplayerInterface
      */
     public function canDisplay(Exception $original, Exception $transformed, $code)
     {
-        return true;
+        return class_exists(Whoops::class);
     }
 
     /**

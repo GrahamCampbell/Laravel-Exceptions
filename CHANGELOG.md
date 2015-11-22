@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V6.0 (Upcoming)
+
+* Made whoops optional
+
+
 ## V5.1 (14/11/2015)
 
 * Added laravel 5.2 support
