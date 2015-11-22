@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V6.0 (Upcoming)
+## V6.0 (22/11/2015)
 
 * Made whoops optional
 
