@@ -23,6 +23,10 @@
         "name": "Not Acceptable",
         "message": "The requested resource is only capable of generating content not acceptable."
     },
+    "408": {
+        "name": "Request Timeout",
+        "message": "The server did not receive a complete request message in time."
+    },
     "409": {
         "name": "Conflict",
         "message": "The request could not be processed because of conflict in the request."
@@ -33,19 +37,35 @@
     },
     "411": {
         "name": "Length Required",
-        "message": "The request did not specify the length of its content, which is required by the requested resource."
+        "message": "The request did not specify the length of its content, which is required by the resource."
     },
     "412": {
         "name": "Precondition Failed",
         "message": "The server does not meet one of the preconditions that the requester put on the request."
     },
+    "413": {
+        "name": "Payload Too Large",
+        "message": "The server cannot process the request because the request payload is too large."
+    },
+    "414": {
+        "name": "URI Too Long",
+        "message": "The request-target is longer than the server is willing to interpret."
+    },
     "415": {
         "name": "Unsupported Media Type",
         "message": "The request entity has a media type which the server or resource does not support."
     },
+    "417": {
+        "name": "Expectation Failed",
+        "message": "The expectation given could not be met by at least one of the inbound servers."
+    },
     "422": {
         "name": "Unprocessable Entity",
         "message": "The request was well-formed but was unable to be followed due to semantic errors."
+    },
+    "426": {
+        "name": "Upgrade Required",
+        "message": "The server cannot process the request using the current protocol."
     },
     "428": {
         "name": "Precondition Required",
