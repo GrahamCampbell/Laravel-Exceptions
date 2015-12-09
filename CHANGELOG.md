@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V6.1 (09/12/2015)
+
+* Support more client error codes
+
+
 ## V6.0 (22/11/2015)
 
 * Made whoops optional
