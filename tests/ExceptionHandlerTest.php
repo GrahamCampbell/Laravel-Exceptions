@@ -14,6 +14,7 @@ namespace GrahamCampbell\Tests\Exceptions;
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Mockery;
@@ -40,6 +41,18 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertTrue(str_contains($response->getContent(), 'Internal Server Error'));
         $this->assertFalse(str_contains($response->getContent(), 'Foo Bar.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
+    public function testHttpResponseExceptionRender()
+    {
+        $handler = $this->app->make(ExceptionHandler::class);
+        $response = $handler->render($this->app->request, $e = new HttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain'])));
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame($e, $response->exception);
+        $this->assertSame('Naughty!', $response->getContent());
+        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
     public function testNotFoundRender()
