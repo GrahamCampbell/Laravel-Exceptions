@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V7.0 (Upcoming)
+## V7.0 (11/12/2015)
 
 * Support exceptions with getResponse methods
 * Modfied the filters to be passed the request
