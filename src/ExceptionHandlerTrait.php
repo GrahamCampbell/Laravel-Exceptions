@@ -12,6 +12,7 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
+use Illuminate\Http\Request;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -80,15 +81,32 @@ trait ExceptionHandlerTrait
      */
     public function render($request, Exception $e)
     {
-        $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
-        $transformed = $this->getTransformed($e);
+        if (method_exists($e, 'getResponse')) {
+            $response = $e->getResponse();
+        } else {
+            $response = $this->getResponse($e);
+        }
+
+        return $this->toIlluminateResponse($response, $transformed);
+    }
+
+    /**
+     * Get the approprate response object.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function getResponse(Request $request, Exception $exception)
+    {
+        $id = $this->container->make(ExceptionIdentifier::class)->identify($exception);
+        $transformed = $this->getTransformed($request, $exception);
         $flattened = FlattenException::create($transformed);
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
-        $response = $this->getDisplayer($e, $transformed, $code)->display($transformed, $id, $code, $headers);
-
-        return $this->toIlluminateResponse($response, $transformed);
+        return $this->getDisplayer($request, $exception, $transformed, $code)->display($transformed, $id, $code, $headers);
     }
 
     /**
@@ -110,17 +128,18 @@ trait ExceptionHandlerTrait
     /**
      * Get the displayer instance.
      *
-     * @param \Exception $original
-     * @param \Exception $transformed
-     * @param int        $code
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $original
+     * @param \Exception               $transformed
+     * @param int                      $code
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface
      */
-    protected function getDisplayer(Exception $original, Exception $transformed, $code)
+    protected function getDisplayer(Request $request, Exception $original, Exception $transformed, $code)
     {
         $displayers = $this->make(array_get($this->config, 'displayers', []));
 
-        if ($filtered = $this->getFiltered($displayers, $original, $transformed, $code)) {
+        if ($filtered = $this->getFiltered($displayers, $request, $original, $transformed, $code)) {
             return $filtered[0];
         }
 
@@ -131,16 +150,17 @@ trait ExceptionHandlerTrait
      * Get the filtered list of displayers.
      *
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
+     * @param \Illuminate\Http\Request                                   $request
      * @param \Exception                                                 $original
      * @param \Exception                                                 $transformed
      * @param int                                                        $code
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, Exception $original, Exception $transformed, $code)
+    protected function getFiltered(array $displayers, Request $request, Exception $original, Exception $transformed, $code)
     {
         foreach ($this->make(array_get($this->config, 'filters', [])) as $filter) {
-            $displayers = $filter->filter($displayers, $original, $transformed, $code);
+            $displayers = $filter->filter($displayers, $request, $original, $transformed, $code);
         }
 
         return array_values($displayers);

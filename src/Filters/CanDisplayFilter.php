@@ -12,6 +12,7 @@
 namespace GrahamCampbell\Exceptions\Filters;
 
 use Exception;
+use Illuminate\Http\Request;
 
 /**
  * This is the can display filter class.
@@ -24,13 +25,14 @@ class CanDisplayFilter
      * Filter and return the displayers.
      *
      * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
+     * @param \Illuminate\Http\Request                                   $request
      * @param \Exception                                                 $original
      * @param \Exception                                                 $transformed
      * @param int                                                        $code
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    public function filter(array $displayers, Exception $original, Exception $transformed, $code)
+    public function filter(array $displayers, Request $request, Exception $original, Exception $transformed, $code)
     {
         foreach ($displayers as $index => $displayer) {
             if (!$displayer->canDisplay($original, $transformed, $code)) {
