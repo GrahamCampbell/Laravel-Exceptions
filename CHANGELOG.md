@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V7.0 (Upcoming)
+
+* Support exceptions with getResponse methods
+* Modfied the filters to be passed the request
+
+
 ## V6.1 (09/12/2015)
 
 * Support more client error codes
