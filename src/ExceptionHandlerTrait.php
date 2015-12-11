@@ -17,7 +17,7 @@ use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * This is the exception hander trait.
+ * This is the exception handler trait.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
