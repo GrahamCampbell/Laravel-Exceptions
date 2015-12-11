@@ -29,7 +29,7 @@ class ExceptionIdentifier
      *
      * @var string[]
      */
-    protected $indentification;
+    protected $identification;
 
     /**
      * Identify the given exception.
@@ -43,17 +43,17 @@ class ExceptionIdentifier
         $hash = spl_object_hash($exception);
 
         // if we know about the exception, return it's id
-        if (isset($this->indentification[$hash])) {
-            return $this->indentification[$hash];
+        if (isset($this->identification[$hash])) {
+            return $this->identification[$hash];
         }
 
         // cleanup in preparation for the identification
-        if (count($this->indentification) >= 16) {
-            array_shift($this->indentification);
+        if (count($this->identification) >= 16) {
+            array_shift($this->identification);
         }
 
         // generate, store, and return the id
-        return $this->indentification[$hash] = $this->generate();
+        return $this->identification[$hash] = $this->generate();
     }
 
     /**
