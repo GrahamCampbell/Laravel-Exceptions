@@ -81,10 +81,11 @@ trait ExceptionHandlerTrait
      */
     public function render($request, Exception $e)
     {
+        $transformed = $this->getTransformed($e);
+
         if (method_exists($e, 'getResponse')) {
             $response = $e->getResponse();
         } else {
-            $transformed = $this->getTransformed($e);
             $response = $this->getResponse($request, $e, $transformed);
         }
 
