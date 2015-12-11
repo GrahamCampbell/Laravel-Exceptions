@@ -14,7 +14,6 @@ namespace GrahamCampbell\Exceptions;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\Debug\Exception\FlattenException;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * This is the exception handler trait.
