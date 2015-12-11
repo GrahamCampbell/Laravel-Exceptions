@@ -84,7 +84,8 @@ trait ExceptionHandlerTrait
         if (method_exists($e, 'getResponse')) {
             $response = $e->getResponse();
         } else {
-            $response = $this->getResponse($e);
+            $transformed = $this->getTransformed($e);
+            $response = $this->getResponse($request, $e, $transformed);
         }
 
         return $this->toIlluminateResponse($response, $transformed);
@@ -94,14 +95,15 @@ trait ExceptionHandlerTrait
      * Get the approprate response object.
      *
      * @param \Illuminate\Http\Request $request
+     * @param \Exception               $transformed
      * @param \Exception               $exception
      *
      * @return \Illuminate\Http\Response
      */
-    protected function getResponse(Request $request, Exception $exception)
+    protected function getResponse(Request $request, Exception $exception, Exception $transformed)
     {
         $id = $this->container->make(ExceptionIdentifier::class)->identify($exception);
-        $transformed = $this->getTransformed($request, $exception);
+
         $flattened = FlattenException::create($transformed);
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
