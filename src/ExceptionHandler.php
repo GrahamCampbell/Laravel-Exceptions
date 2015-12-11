@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * This is the exception hander class.
+ * This is the exception handler class.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
