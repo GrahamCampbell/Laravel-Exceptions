@@ -27,7 +27,7 @@ class ViewDisplayerTest extends AbstractTestCase
 {
     public function testError()
     {
-        $displayer = new ViewDisplayer($factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('make')->once()->with('errors.502')->andReturn("Gutted.\n");
 
@@ -40,7 +40,7 @@ class ViewDisplayerTest extends AbstractTestCase
 
     public function testPropertiesTrue()
     {
-        $displayer = new ViewDisplayer($factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(true);
 
@@ -51,7 +51,7 @@ class ViewDisplayerTest extends AbstractTestCase
 
     public function testPropertiesFalse()
     {
-        $displayer = new ViewDisplayer($factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(false);
 
