@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V8.0 (05/03/2016)
+
+* Pass through info to the user provided error views
+* Fixed some typos including a protected property
+
+
 ## V7.0 (11/12/2015)
 
 * Support exceptions with getResponse methods
