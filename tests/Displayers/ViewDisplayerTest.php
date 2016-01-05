@@ -13,6 +13,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayers;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\ViewDisplayer;
+use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
 use Illuminate\Contracts\View\Factory;
 use Mockery;
@@ -27,9 +28,9 @@ class ViewDisplayerTest extends AbstractTestCase
 {
     public function testError()
     {
-        $displayer = new ViewDisplayer($factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
-        $factory->shouldReceive('make')->once()->with('errors.502')->andReturn("Gutted.\n");
+        $factory->shouldReceive('make')->once()->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!', 'summary' => 'Oh noes!'])->andReturn("Gutted.\n");
 
         $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
 
@@ -40,7 +41,7 @@ class ViewDisplayerTest extends AbstractTestCase
 
     public function testPropertiesTrue()
     {
-        $displayer = new ViewDisplayer($factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(true);
 
@@ -51,7 +52,7 @@ class ViewDisplayerTest extends AbstractTestCase
 
     public function testPropertiesFalse()
     {
-        $displayer = new ViewDisplayer($factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(false);
 

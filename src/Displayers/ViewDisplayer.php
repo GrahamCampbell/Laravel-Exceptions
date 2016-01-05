@@ -12,6 +12,7 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
+use GrahamCampbell\Exceptions\ExceptionInfo;
 use Illuminate\Contracts\View\Factory;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,6 +24,13 @@ use Symfony\Component\HttpFoundation\Response;
 class ViewDisplayer implements DisplayerInterface
 {
     /**
+     * The exception info instance.
+     *
+     * @var \GrahamCampbell\Exceptions\ExceptionInfo
+     */
+    protected $info;
+
+    /**
      * The view factory instance.
      *
      * @var \Illuminate\Contracts\View\Factory
@@ -32,12 +40,14 @@ class ViewDisplayer implements DisplayerInterface
     /**
      * Create a new view displayer instance.
      *
-     * @param \Illuminate\Contracts\View\Factory $factory
+     * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
+     * @param \Illuminate\Contracts\View\Factory       $factory
      *
      * @return void
      */
-    public function __construct(Factory $factory)
+    public function __construct(ExceptionInfo $info, Factory $factory)
     {
+        $this->info = $info;
         $this->factory = $factory;
     }
 
@@ -53,7 +63,9 @@ class ViewDisplayer implements DisplayerInterface
      */
     public function display(Exception $exception, $id, $code, array $headers)
     {
-        return new Response($this->factory->make("errors.{$code}"), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
+        $info = $this->info->generate($exception, $id, $code);
+
+        return new Response($this->factory->make("errors.{$code}", $info), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
     }
 
     /**
