@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.1 (Upcoming)
+
+* Added a transformer for laravel's new auth exception
+
+
 ## V8.0 (05/03/2016)
 
 * Pass through info to the user provided error views
