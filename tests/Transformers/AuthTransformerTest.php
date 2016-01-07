@@ -31,7 +31,7 @@ class AuthTransformerTest extends AbstractTestCase
         $transformed = (new AuthTransformer())->transform($exception);
 
         $this->assertInstanceOf(AccessDeniedHttpException::class, $transformed);
-        $this->assertNull($transformed->getMessage());
+        $this->assertSame('', $transformed->getMessage());
     }
 
     public function testTransformedWithOriginalMessage()

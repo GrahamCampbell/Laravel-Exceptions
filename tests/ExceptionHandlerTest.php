@@ -159,7 +159,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new AuthorizationException();
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
-        $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id]]);
+        $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
 
         $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
