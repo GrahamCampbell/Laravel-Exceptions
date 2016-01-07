@@ -26,6 +26,7 @@ return [
     */
 
     'transformers' => [
+        'GrahamCampbell\Exceptions\Transformers\AuthTransformer',
         'GrahamCampbell\Exceptions\Transformers\CsrfTransformer',
     ],
 
@@ -97,6 +98,7 @@ return [
     */
 
     'levels' => [
+        'Illuminate\Auth\Access\AuthorizationException'                 => 'warning',
         'Illuminate\Session\TokenMismatchException'                     => 'notice',
         'Symfony\Component\HttpKernel\Exception\HttpExceptionInterface' => 'warning',
         'Symfony\Component\Debug\Exception\FatalErrorException'         => 'critical',

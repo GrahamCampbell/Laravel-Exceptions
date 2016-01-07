@@ -14,11 +14,13 @@ namespace GrahamCampbell\Tests\Exceptions;
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Mockery;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -64,6 +66,19 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
         $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
+    public function testAuthExceptionRender()
+    {
+        $handler = $this->app->make(ExceptionHandler::class);
+        $response = $handler->render($this->app->request, $e = new AuthorizationException('This action is unauthorized.'));
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(403, $response->getStatusCode());
+        $this->assertInstanceOf(AccessDeniedHttpException::class, $response->exception);
+        $this->assertTrue(str_contains($response->getContent(), 'Forbidden'));
+        $this->assertTrue(str_contains($response->getContent(), 'This action is unauthorized.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -132,6 +147,17 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new BadRequestHttpException();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+    }
+
+    public function testReportAuthException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new AuthorizationException();
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
 
