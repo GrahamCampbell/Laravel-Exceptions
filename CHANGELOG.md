@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V8.1 (Upcoming)
+## V8.1 (07/03/2016)
 
 * Added a transformer for laravel's new auth exception
 
