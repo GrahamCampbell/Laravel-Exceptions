@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.2 (Upcoming)
+
+* Support both whoops ^1.1 and ^2.0
+
+
 ## V8.1 (07/03/2016)
 
 * Added a transformer for laravel's new auth exception
