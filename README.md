@@ -41,6 +41,8 @@ If you want to have the debug error pages available, you're going to need to req
 $ composer require filp/whoops --dev
 ```
 
+We support both Whoops `^1.1` or `^2.0`, so feel free to use either.
+
 Once Laravel Exceptions is installed, you need to register the service provider. Open up `config/app.php` and add the following to the `providers` key.
 
 * `'GrahamCampbell\Exceptions\ExceptionsServiceProvider'`
