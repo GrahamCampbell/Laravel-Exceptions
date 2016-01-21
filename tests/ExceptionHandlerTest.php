@@ -15,6 +15,7 @@ use Exception;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
@@ -95,6 +96,19 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
+    public function testModelExceptionRender()
+    {
+        $handler = $this->app->make(ExceptionHandler::class);
+        $response = $handler->render($this->app->request, $e = new ModelNotFoundException('Model not found!'));
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(403, $response->getStatusCode());
+        $this->assertInstanceOf(NotFoundHttpException::class, $response->exception);
+        $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
+        $this->assertTrue(str_contains($response->getContent(), 'Model not found!'));
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
     public function testJsonRender()
     {
         $this->app->request->headers->set('accept', 'application/json');
@@ -171,6 +185,17 @@ class ExceptionHandlerTest extends AbstractTestCase
         $e = new TokenMismatchException();
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id]]);
+
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+    }
+
+    public function testReportModelException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new ModelNotFoundException();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
 
         $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }

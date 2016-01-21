@@ -28,6 +28,7 @@ return [
     'transformers' => [
         'GrahamCampbell\Exceptions\Transformers\AuthTransformer',
         'GrahamCampbell\Exceptions\Transformers\CsrfTransformer',
+        'GrahamCampbell\Exceptions\Transformers\ModelTransformer',
     ],
 
     /*
@@ -99,6 +100,7 @@ return [
 
     'levels' => [
         'Illuminate\Auth\Access\AuthorizationException'                 => 'warning',
+        'Illuminate\Database\Eloquent\ModelNotFoundException'           => 'warning',
         'Illuminate\Session\TokenMismatchException'                     => 'notice',
         'Symfony\Component\HttpKernel\Exception\HttpExceptionInterface' => 'warning',
         'Symfony\Component\Debug\Exception\FatalErrorException'         => 'critical',
