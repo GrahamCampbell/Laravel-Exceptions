@@ -14,6 +14,7 @@ namespace GrahamCampbell\Exceptions;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * This is the exception handler trait.
@@ -82,9 +83,9 @@ trait ExceptionHandlerTrait
     {
         $transformed = $this->getTransformed($e);
 
-        if (method_exists($e, 'getResponse')) {
-            $response = $e->getResponse();
-        } else {
+        $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+
+        if (!$response instanceof Response) {
             $response = $this->getResponse($request, $e, $transformed);
         }
 
