@@ -102,7 +102,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $response = $handler->render($this->app->request, $e = new ModelNotFoundException('Model not found!'));
 
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
         $this->assertInstanceOf(NotFoundHttpException::class, $response->exception);
         $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
         $this->assertTrue(str_contains($response->getContent(), 'Model not found!'));
