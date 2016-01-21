@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V8.3 (Upcoming)
+## V8.3 (21/01/2016)
 
 * Deal with model not found exceptions
 
