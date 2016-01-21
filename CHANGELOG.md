@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.3 (Upcoming)
+
+* Deal with model not found exceptions
+
+
 ## V8.2 (15/01/2016)
 
 * Support both whoops ^1.1 and ^2.0
