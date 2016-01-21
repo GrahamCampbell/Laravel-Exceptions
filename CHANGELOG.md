@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.3.1 (21/01/2016)
+
+* Fixed with response exceptions
+
+
 ## V8.3 (21/01/2016)
 
 * Deal with model not found exceptions
