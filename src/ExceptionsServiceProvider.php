@@ -13,7 +13,7 @@ namespace GrahamCampbell\Exceptions;
 
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Filters\VerboseFilter;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
@@ -68,11 +68,11 @@ class ExceptionsServiceProvider extends ServiceProvider
             return new ExceptionInfo(__DIR__.'/../resources/errors.json');
         });
 
-        $this->app->bind(HtmlDisplayer::class, function ($app) {
+        $this->app->bind(HtmlDisplayer::class, function (Container $app) {
             return new HtmlDisplayer($app->make(ExceptionInfo::class), __DIR__.'/../resources/error.html');
         });
 
-        $this->app->bind(VerboseFilter::class, function ($app) {
+        $this->app->bind(VerboseFilter::class, function (Container $app) {
             return new VerboseFilter($app->config->get('app.debug', false));
         });
     }
