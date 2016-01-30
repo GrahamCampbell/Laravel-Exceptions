@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V8.3.2 (30/01/2016)
+
+* Improved service provider
+* Fixed some typos
+
+
 ## V8.3.1 (21/01/2016)
 
 * Fixed with response exceptions
