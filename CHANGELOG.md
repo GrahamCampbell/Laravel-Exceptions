@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.3.4 (27/03/2016)
+
+* Another fix for lumen
+
+
 ## V8.3.3 (27/03/2016)
 
 * Fixed the lumen exception handler
