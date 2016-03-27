@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Exceptions\Handler;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -25,6 +26,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class LumenExceptionHandler extends Handler
 {
     use ExceptionHandlerTrait;
+
+    /**
+     * The logger instance.
+     *
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $log;
 
     /**
      * A list of the exception types that should not be reported.
@@ -46,6 +54,7 @@ class LumenExceptionHandler extends Handler
     {
         $this->config = $container->config->get('exceptions', []);
         $this->container = $container;
+        $this->log = $container->make(LoggerInterface::class);
     }
 
     /**
