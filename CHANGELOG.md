@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.3.5 (27/03/2016)
+
+* Added missing import
+
+
 ## V8.3.4 (27/03/2016)
 
 * Another fix for lumen
