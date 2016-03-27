@@ -45,7 +45,5 @@ class LumenExceptionHandler extends Handler
     {
         $this->config = $container->config->get('exceptions', []);
         $this->container = $container;
-
-        parent::__construct($container->make(LoggerInterface::class));
     }
 }
