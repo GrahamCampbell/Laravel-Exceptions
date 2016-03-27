@@ -13,7 +13,6 @@ namespace GrahamCampbell\Exceptions;
 
 use Illuminate\Contracts\Container\Container;
 use Laravel\Lumen\Exceptions\Handler;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
