@@ -11,6 +11,7 @@
 
 namespace GrahamCampbell\Exceptions;
 
+use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Exceptions\Handler;
