@@ -12,6 +12,7 @@
 namespace GrahamCampbell\Exceptions;
 
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Http\Response;
 use Laravel\Lumen\Exceptions\Handler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -44,5 +45,22 @@ class LumenExceptionHandler extends Handler
     {
         $this->config = $container->config->get('exceptions', []);
         $this->container = $container;
+    }
+
+    /**
+     * Map exception into an illuminate response.
+     *
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Exception                                 $e
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function toIlluminateResponse($response, Exception $e)
+    {
+        $response = new Response($response->getContent(), $response->getStatusCode(), $response->headers->all());
+
+        $response->exception = $e;
+
+        return $response;
     }
 }
