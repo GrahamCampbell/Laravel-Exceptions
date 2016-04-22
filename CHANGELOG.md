@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.4 (Upcoming)
+
+* Added laravel 5.3 support
+
+
 ## V8.3.6 (27/03/2016)
 
 * Fixed broken logging on lumen
