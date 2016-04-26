@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V8.4 (Upcoming)
+## V8.4 (26/04/2016)
 
 * Added laravel 5.3 support
 
