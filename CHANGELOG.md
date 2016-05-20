@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.5 (20/05/2016)
+
+* Improved early crash support
+
+
 ## V8.4 (26/04/2016)
 
 * Added laravel 5.3 support
