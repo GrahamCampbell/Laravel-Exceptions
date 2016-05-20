@@ -86,7 +86,13 @@ trait ExceptionHandlerTrait
         $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
 
         if (!$response instanceof Response) {
-            $response = $this->getResponse($request, $e, $transformed);
+            try {
+                $response = $this->getResponse($request, $e, $transformed);
+            } catch (Exception $e) {
+                $this->report($e);
+
+                $response = new Response('Internal server error.', 500);
+            }
         }
 
         return $this->toIlluminateResponse($response, $transformed);
