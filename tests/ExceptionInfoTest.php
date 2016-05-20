@@ -69,4 +69,13 @@ class ExceptionInfoTest extends AbstractTestCase
 
         $this->assertSame($expected, $info);
     }
+
+    public function testFallback()
+    {
+        $info = (new ExceptionInfo())->generate(new BadRequestHttpException('Made a mess.'), 'foo', 400);
+
+        $expected = ['id' => 'foo', 'code' => 500, 'name' => 'Internal Server Error', 'detail' => 'An error has occurred and this resource cannot be displayed.', 'summary' => 'Made a mess.'];
+
+        $this->assertSame($expected, $info);
+    }
 }
