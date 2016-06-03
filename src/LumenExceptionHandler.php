@@ -28,13 +28,6 @@ class LumenExceptionHandler extends Handler
     use ExceptionHandlerTrait;
 
     /**
-     * The logger instance.
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $log;
-
-    /**
      * A list of the exception types that should not be reported.
      *
      * @var string[]
@@ -54,7 +47,6 @@ class LumenExceptionHandler extends Handler
     {
         $this->config = $container->config->get('exceptions', []);
         $this->container = $container;
-        $this->log = $container->make(LoggerInterface::class);
     }
 
     /**
