@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class ExceptionHandler extends Handler
+class NewExceptionHandler extends Handler
 {
     use ExceptionHandlerTrait;
 
