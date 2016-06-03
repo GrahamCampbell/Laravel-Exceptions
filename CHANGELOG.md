@@ -2,6 +2,13 @@ CHANGE LOG
 ==========
 
 
+## V8.6 (03/06/2016)
+
+* Added a new laravel 5.3 specific handler
+* Improvements to the exception handler trait
+* Cleaned up the lumen handler
+
+
 ## V8.5 (20/05/2016)
 
 * Improved early crash support
