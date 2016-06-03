@@ -15,7 +15,6 @@ use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Exceptions\Handler;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
