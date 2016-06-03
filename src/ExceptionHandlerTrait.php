@@ -13,6 +13,7 @@ namespace GrahamCampbell\Exceptions;
 
 use Exception;
 use Illuminate\Http\Request;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -46,10 +47,16 @@ trait ExceptionHandlerTrait
      */
     public function report(Exception $e)
     {
-        if ($this->shouldReport($e)) {
+        if ($this->shouldntReport($e)) {
+            return;
+        }
+
+        try {
             $level = $this->getLevel($e);
             $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
-            $this->log->{$level}($e, ['identification' => ['id' => $id]]);
+            $this->container->make(LoggerInterface::class)->{$level}($e, ['identification' => ['id' => $id]]);
+        } catch (Exception $ex) {
+            throw $e;
         }
     }
 
