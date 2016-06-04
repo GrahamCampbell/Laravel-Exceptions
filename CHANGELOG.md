@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.6.1 (04/06/2016)
+
+* Corrected logging error supression
+
+
 ## V8.6 (03/06/2016)
 
 * Added a new laravel 5.3 specific handler
