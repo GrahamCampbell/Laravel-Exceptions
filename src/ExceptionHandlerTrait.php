@@ -52,12 +52,15 @@ trait ExceptionHandlerTrait
         }
 
         try {
-            $level = $this->getLevel($e);
-            $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
-            $this->container->make(LoggerInterface::class)->{$level}($e, ['identification' => ['id' => $id]]);
+            $logger = $this->container->make(LoggerInterface::class);
         } catch (Exception $ex) {
             throw $e;
         }
+
+        $level = $this->getLevel($e);
+        $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
+
+        $logger->{$level}($e, ['identification' => ['id' => $id]]);
     }
 
     /**
