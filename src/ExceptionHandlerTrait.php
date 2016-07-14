@@ -25,20 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 trait ExceptionHandlerTrait
 {
     /**
-     * The exception config.
-     *
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * The container instance.
-     *
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    protected $container;
-
-    /**
      * Report or log an exception.
      *
      * @param \Exception $e
