@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.6.2 (14/07/2016)
+
+* Moved properties out of the trait to fix L5.3
+
+
 ## V8.6.1 (04/06/2016)
 
 * Corrected logging error supression
