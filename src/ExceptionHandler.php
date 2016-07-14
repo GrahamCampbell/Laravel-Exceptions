@@ -26,6 +26,20 @@ class ExceptionHandler extends Handler
     use ExceptionHandlerTrait;
 
     /**
+     * The exception config.
+     *
+     * @var array
+     */
+    protected $config;
+
+    /**
+     * The container instance.
+     *
+     * @var \Illuminate\Contracts\Container\Container
+     */
+    protected $container;
+
+    /**
      * A list of the exception types that should not be reported.
      *
      * @var string[]
