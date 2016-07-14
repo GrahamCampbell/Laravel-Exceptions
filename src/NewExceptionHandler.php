@@ -25,6 +25,13 @@ class NewExceptionHandler extends Handler
     use ExceptionHandlerTrait;
 
     /**
+     * The exception config.
+     *
+     * @var array
+     */
+    protected $config;
+
+    /**
      * A list of the exception types that should not be reported.
      *
      * @var string[]
