@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.7 (21/07/2016)
+
+* Ensure fonts are loaded over https
+
+
 ## V8.6.2 (14/07/2016)
 
 * Moved properties out of the trait to fix L5.3
