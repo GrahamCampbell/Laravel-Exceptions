@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V8.8 (Upcoming)
+## V8.8 (31/07/2016)
 
 * Tweaked the transformers
 
