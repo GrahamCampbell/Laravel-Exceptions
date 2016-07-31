@@ -32,7 +32,7 @@ class AuthTransformer implements TransformerInterface
     public function transform(Exception $exception)
     {
         if ($exception instanceof AuthorizationException) {
-            $exception = new AccessDeniedHttpException($exception->getMessage(), $exception->getCode(), $exception);
+            $exception = new AccessDeniedHttpException($exception->getMessage(), $exception, $exception->getCode());
         }
 
         return $exception;
