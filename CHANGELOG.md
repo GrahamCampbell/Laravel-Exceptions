@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V8.8 (Upcoming)
+
+* Tweaked the transformers
+
+
 ## V8.7 (21/07/2016)
 
 * Ensure fonts are loaded over https

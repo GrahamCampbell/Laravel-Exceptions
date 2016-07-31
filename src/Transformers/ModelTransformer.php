@@ -32,8 +32,7 @@ class ModelTransformer implements TransformerInterface
     public function transform(Exception $exception)
     {
         if ($exception instanceof ModelNotFoundException) {
-            $message = $exception->getMessage();
-            $exception = new NotFoundHttpException($message ?: null);
+            $exception = new NotFoundHttpException($exception->getMessage(), $exception, $exception->getCode());
         }
 
         return $exception;
