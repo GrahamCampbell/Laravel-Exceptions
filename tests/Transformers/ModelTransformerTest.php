@@ -32,6 +32,7 @@ class ModelTransformerTest extends AbstractTestCase
 
         $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
         $this->assertEmpty($transformed->getMessage());
+        $this->assertSame($exception, $transformed->getPrevious());
     }
 
     public function testTransformedWithOriginalMessage()
@@ -42,6 +43,7 @@ class ModelTransformerTest extends AbstractTestCase
 
         $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
         $this->assertSame('Foo!', $transformed->getMessage());
+        $this->assertSame($exception, $transformed->getPrevious());
     }
 
     public function testNoChange()

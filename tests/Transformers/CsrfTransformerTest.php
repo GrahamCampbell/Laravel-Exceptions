@@ -32,6 +32,7 @@ class CsrfTransformerTest extends AbstractTestCase
 
         $this->assertInstanceOf(BadRequestHttpException::class, $transformed);
         $this->assertSame('CSRF token validation failed.', $transformed->getMessage());
+        $this->assertSame($exception, $transformed->getPrevious());
     }
 
     public function testTransformedWithOldMessage()
@@ -42,6 +43,7 @@ class CsrfTransformerTest extends AbstractTestCase
 
         $this->assertInstanceOf(BadRequestHttpException::class, $transformed);
         $this->assertSame('Foo!', $transformed->getMessage());
+        $this->assertSame($exception, $transformed->getPrevious());
     }
 
     public function testNoChange()
