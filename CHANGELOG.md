@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V9.0 (05/08/2016)
+
+* Removed http not found from don't report
+* Report http not found as a notice by default
+
+
 ## V8.8 (31/07/2016)
 
 * Tweaked the transformers
