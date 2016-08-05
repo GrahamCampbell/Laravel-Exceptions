@@ -140,9 +140,13 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testReportHttp()
     {
-        $this->app->instance(LoggerInterface::class, Mockery::mock(LoggerInterface::class));
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new NotFoundHttpException();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report(new NotFoundHttpException()));
+        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
     public function testReportException()

@@ -15,7 +15,6 @@ use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Exceptions\Handler;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the lumen exception hander class.
@@ -45,9 +44,7 @@ class LumenExceptionHandler extends Handler
      *
      * @var string[]
      */
-    protected $dontReport = [
-        NotFoundHttpException::class,
-    ];
+    protected $dontReport = [];
 
     /**
      * Create a new exception handler instance.

@@ -14,7 +14,6 @@ namespace GrahamCampbell\Exceptions;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Exceptions\Handler;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the exception handler class.
@@ -44,9 +43,7 @@ class ExceptionHandler extends Handler
      *
      * @var string[]
      */
-    protected $dontReport = [
-        NotFoundHttpException::class,
-    ];
+    protected $dontReport = [];
 
     /**
      * Create a new exception handler instance.
