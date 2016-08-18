@@ -81,6 +81,10 @@ trait ExceptionHandlerTrait
 
         $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
 
+        if ($e instanceof ValidationException) {
+            return $this->convertValidationExceptionToResponse($e, $request);
+        }
+
         if (!$response instanceof Response) {
             try {
                 $response = $this->getResponse($request, $e, $transformed);
