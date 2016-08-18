@@ -7,6 +7,10 @@
         "name": "Unauthorized",
         "message": "Authentication is required and has failed or has not yet been provided."
     },
+    "402": {
+        "name": "Payment Required",
+        "message": "Payment is required and has failed or has not yet been provided."
+    },
     "403": {
         "name": "Forbidden",
         "message": "The request was a valid request, but the server is refusing to respond to it."
