@@ -67,7 +67,7 @@ class LumenExceptionHandler extends Handler
      *
      * @return \Illuminate\Http\Response
      */
-    protected function toIlluminateResponse($response, Exception $e)
+    protected function baseToIlluminateResponse($response, Exception $e)
     {
         $response = new Response($response->getContent(), $response->getStatusCode(), $response->headers->all());
 
