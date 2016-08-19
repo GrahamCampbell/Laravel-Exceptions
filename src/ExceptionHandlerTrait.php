@@ -12,9 +12,11 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -92,6 +94,24 @@ trait ExceptionHandlerTrait
         }
 
         return $this->toIlluminateResponse($response, $transformed);
+    }
+
+    /**
+     * Map exception into an illuminate response.
+     *
+     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Exception  $e
+     * @return \Illuminate\Http\Response
+     */
+    protected function toIlluminateResponse($response, Exception $e)
+    {
+        if (!$response instanceof SymfonyRedirectResponse) {
+            return parent::toIlluminateResponse($response, $e);
+        }
+
+        $response = new RedirectResponse($response->getTargetUrl(), $response->getStatusCode(), $response->headers->all());
+
+        return method_exists($response, 'withException') ? $response->withException($e) : $response;
     }
 
     /**

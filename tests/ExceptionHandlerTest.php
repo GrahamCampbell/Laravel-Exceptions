@@ -17,10 +17,12 @@ use GrahamCampbell\Exceptions\ExceptionIdentifier;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Mockery;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
@@ -56,6 +58,19 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame($e, $response->exception);
         $this->assertSame('Naughty!', $response->getContent());
         $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+    }
+
+    public function testHttpRedirectResponseExceptionRender()
+    {
+        $handler = $this->app->make(ExceptionHandler::class);
+        $response = $handler->render($this->app->request, $e = new HttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302)));
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame(302, $response->getStatusCode());
+
+        if (property_exists($response, 'exception')) {
+            $this->assertSame($e, $response->exception);
+        }
     }
 
     public function testNotFoundRender()
