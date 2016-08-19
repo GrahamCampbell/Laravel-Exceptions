@@ -99,8 +99,9 @@ trait ExceptionHandlerTrait
     /**
      * Map exception into an illuminate response.
      *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @param  \Exception  $e
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Exception                                 $e
+     *
      * @return \Illuminate\Http\Response
      */
     protected function toIlluminateResponse($response, Exception $e)
