@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V9.1 (19/08/2016)
+
+* Added proper support for redirect responses
+* Added support for the 402 response code
+
+
 ## V9.0 (05/08/2016)
 
 * Removed http not found from don't report
