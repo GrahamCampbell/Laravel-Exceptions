@@ -107,12 +107,25 @@ trait ExceptionHandlerTrait
     protected function toIlluminateResponse($response, Exception $e)
     {
         if (!$response instanceof SymfonyRedirectResponse) {
-            return parent::toIlluminateResponse($response, $e);
+            return $this->baseToIlluminateResponse($response, $e);
         }
 
         $response = new RedirectResponse($response->getTargetUrl(), $response->getStatusCode(), $response->headers->all());
 
         return method_exists($response, 'withException') ? $response->withException($e) : $response;
+    }
+
+    /**
+     * Map exception into an illuminate response.
+     *
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Exception                                 $e
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function baseToIlluminateResponse($response, Exception $e)
+    {
+        return parent::toIlluminateResponse($response, $e);
     }
 
     /**
