@@ -37,7 +37,7 @@ class QueryTransformer implements TransformerInterface
                 $exception = new ConflictHttpException($exception->getMessage(), $exception, $exception->getCode());
             }
             else {
-                $exception = new BadRequestHttpException($exception->getMessage(), $exception, $exception->getCode());
+                $exception = new BadRequestHttpException($exception->getMessage(), $exception); // getCode can have letters, e.g. 42S22 so cannot go in.
             }
         }
         return $exception;
