@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class ContentTypeFilter
+class ContentTypeFilter implements FilterInterface
 {
     /**
      * Filter and return the displayers.

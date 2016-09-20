@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class VerboseFilter
+class VerboseFilter implements FilterInterface
 {
     /**
      * Is debug mode enabled?
