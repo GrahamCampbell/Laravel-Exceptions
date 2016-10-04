@@ -14,6 +14,7 @@ namespace GrahamCampbell\Exceptions;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
@@ -26,6 +27,72 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait ExceptionHandlerTrait
 {
+    /**
+     * Render an exception into a response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $e
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Exception $e)
+    {
+        $transformed = $this->getTransformed($e);
+
+        $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+
+        if ($e instanceof ValidationException) {
+            return $this->convertValidationExceptionToResponse($e, $request);
+        } elseif (! $response instanceof Response) {
+            try {
+                $response = $this->getResponse($request, $e, $transformed);
+            } catch (Exception $e) {
+                $this->report($e);
+
+                $response = new Response('Internal server error.', 500);
+            }
+        }
+
+        return $this->toIlluminateResponse($response, $transformed);
+    }
+
+    /**
+     * Get the transformed exception.
+     *
+     * @param \Exception $exception
+     *
+     * @return \Exception
+     */
+    protected function getTransformed(Exception $exception)
+    {
+        foreach ($this->make(array_get($this->config, 'transformers', [])) as $transformer) {
+            $exception = $transformer->transform($exception);
+        }
+
+        return $exception;
+    }
+
+    /**
+     * Make multiple objects using the container.
+     *
+     * @param string [] $classes
+     *
+     * @return object[]
+     */
+    protected function make(array $classes)
+    {
+        foreach ($classes as $index => $class) {
+            try {
+                $classes[$index] = $this->container->make($class);
+            } catch (Exception $e) {
+                unset($classes[$index]);
+                $this->report($e);
+            }
+        }
+
+        return array_values($classes);
+    }
+
     /**
      * Report or log an exception.
      *
@@ -70,65 +137,6 @@ trait ExceptionHandlerTrait
     }
 
     /**
-     * Render an exception into a response.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Exception               $e
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Exception $e)
-    {
-        $transformed = $this->getTransformed($e);
-
-        $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
-
-        if (!$response instanceof Response) {
-            try {
-                $response = $this->getResponse($request, $e, $transformed);
-            } catch (Exception $e) {
-                $this->report($e);
-
-                $response = new Response('Internal server error.', 500);
-            }
-        }
-
-        return $this->toIlluminateResponse($response, $transformed);
-    }
-
-    /**
-     * Map exception into an illuminate response.
-     *
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param \Exception                                 $e
-     *
-     * @return \Illuminate\Http\Response
-     */
-    protected function toIlluminateResponse($response, Exception $e)
-    {
-        if (!$response instanceof SymfonyRedirectResponse) {
-            return $this->baseToIlluminateResponse($response, $e);
-        }
-
-        $response = new RedirectResponse($response->getTargetUrl(), $response->getStatusCode(), $response->headers->all());
-
-        return method_exists($response, 'withException') ? $response->withException($e) : $response;
-    }
-
-    /**
-     * Map exception into an illuminate response.
-     *
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param \Exception                                 $e
-     *
-     * @return \Illuminate\Http\Response
-     */
-    protected function baseToIlluminateResponse($response, Exception $e)
-    {
-        return parent::toIlluminateResponse($response, $e);
-    }
-
-    /**
      * Get the approprate response object.
      *
      * @param \Illuminate\Http\Request $request
@@ -145,23 +153,8 @@ trait ExceptionHandlerTrait
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
-        return $this->getDisplayer($request, $exception, $transformed, $code)->display($transformed, $id, $code, $headers);
-    }
-
-    /**
-     * Get the transformed exception.
-     *
-     * @param \Exception $exception
-     *
-     * @return \Exception
-     */
-    protected function getTransformed(Exception $exception)
-    {
-        foreach ($this->make(array_get($this->config, 'transformers', [])) as $transformer) {
-            $exception = $transformer->transform($exception);
-        }
-
-        return $exception;
+        return $this->getDisplayer($request, $exception, $transformed, $code)->display($transformed, $id, $code,
+            $headers);
     }
 
     /**
@@ -196,8 +189,13 @@ trait ExceptionHandlerTrait
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, Request $request, Exception $original, Exception $transformed, $code)
-    {
+    protected function getFiltered(
+        array $displayers,
+        Request $request,
+        Exception $original,
+        Exception $transformed,
+        $code
+    ) {
         foreach ($this->make(array_get($this->config, 'filters', [])) as $filter) {
             $displayers = $filter->filter($displayers, $request, $original, $transformed, $code);
         }
@@ -206,23 +204,35 @@ trait ExceptionHandlerTrait
     }
 
     /**
-     * Make multiple objects using the container.
+     * Map exception into an illuminate response.
      *
-     * @param string [] $classes
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Exception                                 $e
      *
-     * @return object[]
+     * @return \Illuminate\Http\Response
      */
-    protected function make(array $classes)
+    protected function toIlluminateResponse($response, Exception $e)
     {
-        foreach ($classes as $index => $class) {
-            try {
-                $classes[$index] = $this->container->make($class);
-            } catch (Exception $e) {
-                unset($classes[$index]);
-                $this->report($e);
-            }
+        if (! $response instanceof SymfonyRedirectResponse) {
+            return $this->baseToIlluminateResponse($response, $e);
         }
 
-        return array_values($classes);
+        $response = new RedirectResponse($response->getTargetUrl(), $response->getStatusCode(),
+            $response->headers->all());
+
+        return method_exists($response, 'withException') ? $response->withException($e) : $response;
+    }
+
+    /**
+     * Map exception into an illuminate response.
+     *
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \Exception                                 $e
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function baseToIlluminateResponse($response, Exception $e)
+    {
+        return parent::toIlluminateResponse($response, $e);
     }
 }
