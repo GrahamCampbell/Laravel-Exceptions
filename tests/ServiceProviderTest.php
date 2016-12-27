@@ -33,7 +33,6 @@ class ServiceProviderTest extends AbstractTestCase
 
     public function testExceptionHandlerIsInjectable()
     {
-      
         $this->assertIsInjectable($this->getHandlerClass());
     }
 
