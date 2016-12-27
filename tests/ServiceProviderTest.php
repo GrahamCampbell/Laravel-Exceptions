@@ -19,6 +19,7 @@ use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\Filters\CanDisplayFilter;
 use GrahamCampbell\Exceptions\Filters\ContentTypeFilter;
 use GrahamCampbell\Exceptions\Filters\VerboseFilter;
+use GrahamCampbell\Exceptions\NewExceptionHandler;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 
 /**
@@ -32,7 +33,19 @@ class ServiceProviderTest extends AbstractTestCase
 
     public function testExceptionHandlerIsInjectable()
     {
-        $this->assertIsInjectable(ExceptionHandler::class);
+      
+        $this->assertIsInjectable($this->getHandlerClass());
+    }
+
+    protected function getHandlerClass()
+    {
+        $app = $this->app;
+
+        if (version_compare($app::VERSION, '5.3') < 0) {
+            return ExceptionHandler::class;
+        }
+
+        return NewExceptionHandler::class;
     }
 
     public function testJsonApiDisplayerIsInjectable()
