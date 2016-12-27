@@ -248,7 +248,9 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     protected function getExceptionHandler()
     {
-        if (version_compare($this->app::VERSION, '5.3') < 0) {
+        $app = $this->app;
+
+        if (version_compare($app::VERSION, '5.3') < 0) {
             return $this->app->make(ExceptionHandler::class);
         }
 
