@@ -14,6 +14,7 @@ namespace GrahamCampbell\Tests\Exceptions;
 use Exception;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
+use GrahamCampbell\Exceptions\NewExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -37,7 +38,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 {
     public function testBasicRender()
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new Exception('Foo Bar.'));
 
         $this->assertInstanceOf(Response::class, $response);
@@ -50,7 +51,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testHttpResponseExceptionRender()
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new HttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain'])));
 
         $this->assertInstanceOf(Response::class, $response);
@@ -62,7 +63,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testHttpRedirectResponseExceptionRender()
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new HttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302)));
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -75,7 +76,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testNotFoundRender()
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
         $this->assertInstanceOf(Response::class, $response);
@@ -87,7 +88,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testAuthExceptionRender()
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new AuthorizationException('This action is unauthorized.'));
 
         $this->assertInstanceOf(Response::class, $response);
@@ -100,7 +101,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testCsrfExceptionRender()
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new TokenMismatchException());
 
         $this->assertInstanceOf(Response::class, $response);
@@ -113,7 +114,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testModelExceptionRender()
     {
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new ModelNotFoundException('Model not found!'));
 
         $this->assertInstanceOf(Response::class, $response);
@@ -128,7 +129,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     {
         $this->app->request->headers->set('accept', 'application/json');
 
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new GoneHttpException());
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
 
@@ -143,7 +144,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     {
         $this->app->request->headers->set('accept', 'not/acceptable');
 
-        $handler = $this->app->make(ExceptionHandler::class);
+        $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
         $this->assertInstanceOf(Response::class, $response);
@@ -161,7 +162,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+        $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
     public function testReportException()
@@ -172,7 +173,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+        $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
     public function testReportBadRequestException()
@@ -183,7 +184,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+        $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
     public function testReportAuthException()
@@ -194,7 +195,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+        $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
     public function testReportCsrfException()
@@ -205,7 +206,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+        $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
     public function testReportModelException()
@@ -216,7 +217,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+        $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
     public function testReportFallbackWorks()
@@ -229,7 +230,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id]]);
 
-        $this->assertNull($this->app->make(ExceptionHandler::class)->report($e));
+        $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
     public function testBadDisplayers()
@@ -240,8 +241,17 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->app->instance(LoggerInterface::class, $mock);
         $mock->shouldReceive('error')->once();
 
-        $response = $this->app->make(ExceptionHandler::class)->render($this->app->request, new Exception());
+        $response = $this->getExceptionHandler()->render($this->app->request, new Exception());
 
         $this->assertInstanceOf(Response::class, $response);
+    }
+
+    protected function getExceptionHandler()
+    {
+        if (version_compare($this->app::VERSION, '5.3') < 0) {
+            return $this->app->make(ExceptionHandler::class);
+        }
+
+        return $this->app->make(NewExceptionHandler::class);
     }
 }
