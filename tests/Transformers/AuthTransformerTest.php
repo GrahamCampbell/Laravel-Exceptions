@@ -26,7 +26,7 @@ class AuthTransformerTest extends AbstractTestCase
 {
     public function testTransformedWithNoMessage()
     {
-        if (!class_exists(AuthorizationException::class) {
+        if (!class_exists(AuthorizationException::class)) {
             $this->markTestSkipped('Laravel version too old.');
         }
 
@@ -41,7 +41,7 @@ class AuthTransformerTest extends AbstractTestCase
 
     public function testTransformedWithOriginalMessage()
     {
-        if (!class_exists(AuthorizationException::class) {
+        if (!class_exists(AuthorizationException::class)) {
             $this->markTestSkipped('Laravel version too old.');
         }
 
