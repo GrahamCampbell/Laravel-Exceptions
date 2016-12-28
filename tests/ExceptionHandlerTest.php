@@ -88,7 +88,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testAuthExceptionRender()
     {
-        if (!class_exists(AuthorizationException::class) {
+        if (!class_exists(AuthorizationException::class)) {
             $this->markTestSkipped('Laravel version too old.');
         }
 
@@ -193,7 +193,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testReportAuthException()
     {
-        if (!class_exists(AuthorizationException::class) {
+        if (!class_exists(AuthorizationException::class)) {
             $this->markTestSkipped('Laravel version too old.');
         }
 
