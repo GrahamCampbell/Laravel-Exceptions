@@ -88,6 +88,10 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testAuthExceptionRender()
     {
+        if (!class_exists(AuthorizationException::class) {
+            $this->markTestSkipped('Laravel version too old.');
+        }
+
         $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new AuthorizationException('This action is unauthorized.'));
 
@@ -189,6 +193,10 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testReportAuthException()
     {
+        if (!class_exists(AuthorizationException::class) {
+            $this->markTestSkipped('Laravel version too old.');
+        }
+
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new AuthorizationException();
