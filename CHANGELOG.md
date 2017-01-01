@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V9.2 (01/01/2017)
+
+* Added laravel 5.4 support
+* Implemented the filter interface correctly
+
+
 ## V9.1 (19/08/2016)
 
 * Added proper support for redirect responses
