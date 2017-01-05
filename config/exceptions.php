@@ -46,6 +46,7 @@ return [
     */
 
     'displayers' => [
+        'GrahamCampbell\Exceptions\Displayers\AuthDisplayer',
         'GrahamCampbell\Exceptions\Displayers\DebugDisplayer',
         'GrahamCampbell\Exceptions\Displayers\ViewDisplayer',
         'GrahamCampbell\Exceptions\Displayers\HtmlDisplayer',
