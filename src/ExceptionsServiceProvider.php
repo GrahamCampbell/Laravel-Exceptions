@@ -74,12 +74,9 @@ class ExceptionsServiceProvider extends ServiceProvider
 
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
             $info = $app->make(ExceptionInfo::class);
-            $assets = function ($path) {
-                if ($this->app instanceof LumenApplication) {
-                    return $app->make(LumenGenerator::class)->asset($path);
-                }
-
-                return $app->make(LaravelGenerator::class)->asset($path);
+            $generator = $app->make($this->app instanceof LumenApplication ? LumenGenerator::class : LaravelGenerator::class);
+            $assets = function ($path) use ($generator) {
+                return $generator->asset($path);
             };
             $path = __DIR__.'/../resources/error.html';
 
