@@ -20,7 +20,8 @@ use GrahamCampbell\Exceptions\NewExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Exception\HttpResponseException as OldHttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
@@ -58,7 +59,14 @@ class ExceptionHandlerTest extends AbstractTestCase
     public function testHttpResponseExceptionRender()
     {
         $handler = $this->getExceptionHandler();
-        $response = $handler->render($this->app->request, $e = new HttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain'])));
+
+        if (class_exists(OldHttpResponseException::class)) {
+            $e = new OldHttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain']));
+        } else {
+            $e = new NewHttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain']));
+        }
+
+        $response = $handler->render($this->app->request, $e);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(403, $response->getStatusCode());
@@ -70,7 +78,14 @@ class ExceptionHandlerTest extends AbstractTestCase
     public function testHttpRedirectResponseExceptionRender()
     {
         $handler = $this->getExceptionHandler();
-        $response = $handler->render($this->app->request, $e = new HttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302)));
+
+        if (class_exists(OldHttpResponseException::class)) {
+            $e = new OldHttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302));
+        } else {
+            $e = new NewHttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302));
+        }
+
+        $response = $handler->render($this->app->request, $e);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(302, $response->getStatusCode());
@@ -239,6 +254,12 @@ class ExceptionHandlerTest extends AbstractTestCase
      */
     public function testReportFail()
     {
+        $app = $this->app;
+
+        if (version_compare($app::VERSION, '5.3') < 0) {
+            return $this->markTestSkipped('Laravel version too old.');
+        }
+
         $mock = Mockery::mock(LoggerInterface::class);
 
         $this->app->bind(LoggerInterface::class, function () {
