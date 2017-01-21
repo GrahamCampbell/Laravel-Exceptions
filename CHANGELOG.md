@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V9.3 (21/01/2017)
+
+* Fixed the html displayer on lumen
+* Fixed some edge case crashes
+
+
 ## V9.2 (01/01/2017)
 
 * Added laravel 5.4 support
