@@ -13,9 +13,9 @@ namespace GrahamCampbell\Tests\Exceptions;
 
 use Exception;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
-use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
+use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Exceptions\NewExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\Container;
