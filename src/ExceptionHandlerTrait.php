@@ -15,9 +15,11 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 /**
  * This is the exception handler trait.
@@ -89,7 +91,11 @@ trait ExceptionHandlerTrait
             } catch (Exception $e) {
                 $this->report($e);
 
-                $response = new Response('Internal server error.', 500);
+                $response = new Response('Internal server error.', 500, ['Content-Type' => 'text/plain']);
+            } catch (Throwable $e) {
+                $this->report($e = new FatalThrowableError($e));
+
+                $response = new Response('Internal server error.', 500, ['Content-Type' => 'text/plain']);
             }
         }
 
@@ -220,6 +226,9 @@ trait ExceptionHandlerTrait
             } catch (Exception $e) {
                 unset($classes[$index]);
                 $this->report($e);
+            } catch (Throwable $e) {
+                unset($classes[$index]);
+                $this->report($e = new FatalThrowableError($e));
             }
         }
 
