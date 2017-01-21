@@ -80,7 +80,7 @@ class ExceptionsServiceProvider extends ServiceProvider
                 }
 
                 return $app->make(LaravelGenerator::class)->asset($path);
-            }
+            };
             $path = __DIR__.'/../resources/error.html';
 
             return new HtmlDisplayer($info, $assets, realpath($path));
