@@ -12,22 +12,28 @@
 namespace GrahamCampbell\Tests\Exceptions;
 
 use Exception;
+use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
+use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
 use GrahamCampbell\Exceptions\NewExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
+use InvalidArgumentException;
 use Mockery;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TypeError;
 
 /**
  * This is the exception handler test class.
@@ -158,6 +164,53 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
+    public function testRenderException()
+    {
+        $this->app->bind(HtmlDisplayer::class, function (Container $app) {
+            $info = $app->make(ExceptionInfo::class);
+            $assets = function ($path) {
+                throw new RuntimeException('Oh no...');
+            };
+            $path = __DIR__.'/../resources/error.html';
+
+            return new HtmlDisplayer($info, $assets, realpath($path));
+        });
+
+        $handler = $this->getExceptionHandler();
+        $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame($e, $response->exception);
+        $this->assertSame('Internal server error.', $response->getContent());
+        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+    }
+
+    /**
+     * @requires PHP 7
+     */
+    public function testRenderThrowable()
+    {
+        $this->app->bind(HtmlDisplayer::class, function (Container $app) {
+            $info = $app->make(ExceptionInfo::class);
+            $assets = function ($path) {
+                throw new TypeError('Foo.');
+            };
+            $path = __DIR__.'/../resources/error.html';
+
+            return new HtmlDisplayer($info, $assets, realpath($path));
+        });
+
+        $handler = $this->getExceptionHandler();
+        $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame($e, $response->exception);
+        $this->assertSame('Internal server error.', $response->getContent());
+        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+    }
+
     public function testReportHttp()
     {
         $mock = Mockery::mock(LoggerInterface::class);
@@ -178,6 +231,37 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id]]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Bar.
+     */
+    public function testReportFail()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+
+        $this->app->bind(LoggerInterface::class, function () {
+            throw new RuntimeException('Foo.');
+        });
+
+        $this->getExceptionHandler()->report(new InvalidArgumentException('Bar.'));
+    }
+
+    /**
+     * @requires PHP 7
+     * @expectedException \TypeError
+     * @expectedExceptionMessage Foo.
+     */
+    public function testReportFailThrowable()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+
+        $this->app->bind(LoggerInterface::class, function () {
+            throw new TypeError('Foo.');
+        });
+
+        $this->getExceptionHandler()->report(new InvalidArgumentException('Baz.'));
     }
 
     public function testReportBadRequestException()
