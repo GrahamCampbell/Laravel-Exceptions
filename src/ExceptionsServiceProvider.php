@@ -14,9 +14,11 @@ namespace GrahamCampbell\Exceptions;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Filters\VerboseFilter;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Routing\UrlGenerator as LaravelGenerator;
 use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
+use Laravel\Lumen\Routing\UrlGenerator as LumenGenerator;
 
 /**
  * This is the exceptions service provider class.
@@ -65,15 +67,26 @@ class ExceptionsServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(ExceptionInfo::class, function () {
-            return new ExceptionInfo(__DIR__.'/../resources/errors.json');
+            $path = __DIR__.'/../resources/errors.json';
+
+            return new ExceptionInfo(realpath($path));
         });
 
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
-            return new HtmlDisplayer($app->make(ExceptionInfo::class), __DIR__.'/../resources/error.html');
+            $info = $app->make(ExceptionInfo::class);
+            $generator = $app->make($this->app instanceof LumenApplication ? LumenGenerator::class : LaravelGenerator::class);
+            $assets = function ($path) use ($generator) {
+                return $generator->asset($path);
+            };
+            $path = __DIR__.'/../resources/error.html';
+
+            return new HtmlDisplayer($info, $assets, realpath($path));
         });
 
         $this->app->bind(VerboseFilter::class, function (Container $app) {
-            return new VerboseFilter($app->config->get('app.debug', false));
+            $debug = $app->config->get('app.debug', false);
+
+            return new VerboseFilter($debug);
         });
     }
 

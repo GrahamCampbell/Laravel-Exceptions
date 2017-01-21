@@ -56,8 +56,13 @@ class VerboseFilterTest extends AbstractTestCase
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
+
+        $assets = function ($path) {
+            return 'https://example.com/'.ltrim($path, '/');
+        };
+
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = new HtmlDisplayer(new ExceptionInfo('foo'), $assets, 'foo');
 
         $displayers = (new VerboseFilter(true))->filter([$json, $html], $request, $exception, $exception, 500);
 
