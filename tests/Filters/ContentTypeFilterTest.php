@@ -196,7 +196,6 @@ class ContentTypeFilterTest extends AbstractTestCase
         $this->assertSame([], $displayers);
     }
 
-
     protected function getHtmlDisplayer()
     {
         $assets = function ($path) {
