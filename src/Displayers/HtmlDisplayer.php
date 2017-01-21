@@ -30,6 +30,13 @@ class HtmlDisplayer implements DisplayerInterface
     protected $info;
 
     /**
+     * The asset generator function.
+     *
+     * @var callable
+     */
+    protected $assets;
+
+    /**
      * The html template path.
      *
      * @var string
@@ -40,13 +47,15 @@ class HtmlDisplayer implements DisplayerInterface
      * Create a new html displayer instance.
      *
      * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
+     * @param callable                                 $assets
      * @param string                                   $path
      *
      * @return void
      */
-    public function __construct(ExceptionInfo $info, $path)
+    public function __construct(ExceptionInfo $info, callable $assets, $path)
     {
         $this->info = $info;
+        $this->assets = $assets;
         $this->path = $path;
     }
 
@@ -78,8 +87,9 @@ class HtmlDisplayer implements DisplayerInterface
     {
         $content = file_get_contents($this->path);
 
-        $info['home_url'] = asset('/');
-        $info['favicon_url'] = asset('favicon.ico');
+        $generator = $this->assets;
+        $info['home_url'] = $generator('/');
+        $info['favicon_url'] = $generator('favicon.ico');
 
         foreach ($info as $key => $val) {
             $content = str_replace("{{ $$key }}", $val, $content);
