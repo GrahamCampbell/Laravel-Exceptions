@@ -36,7 +36,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
@@ -51,7 +51,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
@@ -66,7 +66,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
@@ -81,7 +81,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
@@ -96,7 +96,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
@@ -111,7 +111,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
@@ -126,7 +126,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
         $api = new JsonApiDisplayer(new ExceptionInfo('bar'));
 
@@ -142,7 +142,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
         $api = new JsonApiDisplayer(new ExceptionInfo('bar'));
 
@@ -173,7 +173,7 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
@@ -188,11 +188,21 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = new HtmlDisplayer(new ExceptionInfo('foo'), 'foo');
+        $html = $this->getHtmlDisplayer();
         $json = new JsonDisplayer(new ExceptionInfo('foo'));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
         $this->assertSame([], $displayers);
+    }
+
+
+    protected function getHtmlDisplayer()
+    {
+        $assets = function ($path) {
+            return 'https://example.com/'.ltrim($path, '/');
+        };
+
+        return new HtmlDisplayer(new ExceptionInfo('foo'), $assets, 'foo');
     }
 }

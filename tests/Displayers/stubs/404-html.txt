@@ -31,7 +31,7 @@
             .ellipsis{overflow: hidden;white-space: nowrap;text-overflow: ellipsis;-o-text-overflow: ellipsis;}
         }
     </style>
-    <link rel="shortcut icon" href="http://localhost/favicon.ico">
+    <link rel="shortcut icon" href="https://example.com/favicon.ico">
 </head>
 <body>
 <div class="wrapper">
@@ -62,7 +62,7 @@
                 You might want to take a note of this code.
             </p>
             <p>
-                Perhaps you would like to go to our <a href="http://localhost/">home page</a>?
+                Perhaps you would like to go to our <a href="https://example.com/">home page</a>?
             </p>
         </div>
     </div>

@@ -26,7 +26,7 @@ class HtmlDisplayerTest extends AbstractTestCase
 {
     public function testServerError()
     {
-        $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
+        $displayer = $this->getHtmlDisplayer();
 
         $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
 
@@ -39,7 +39,7 @@ class HtmlDisplayerTest extends AbstractTestCase
 
     public function testClientError()
     {
-        $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
+        $displayer = $this->getHtmlDisplayer();
 
         $response = $displayer->display(new HttpException(404, 'Arghhhh!'), 'bar', 404, []);
 
@@ -52,10 +52,21 @@ class HtmlDisplayerTest extends AbstractTestCase
 
     public function testProperties()
     {
-        $displayer = new HtmlDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), __DIR__.'/../../resources/error.html');
+        $displayer = $this->getHtmlDisplayer();
 
         $this->assertFalse($displayer->isVerbose());
         $this->assertTrue($displayer->canDisplay(new Exception(), new HttpException(500), 500));
         $this->assertSame('text/html', $displayer->contentType());
+    }
+
+    protected function getHtmlDisplayer()
+    {
+        $info = new ExceptionInfo(__DIR__.'/../../resources/errors.json');
+
+        $assets = function ($path) {
+            return 'https://example.com/'.ltrim($path, '/');
+        };
+
+        return new HtmlDisplayer($info, $assets, __DIR__.'/../../resources/error.html');
     }
 }
