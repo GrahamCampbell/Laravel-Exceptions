@@ -45,7 +45,7 @@ We support both Whoops `^1.1` or `^2.0`, so feel free to use either.
 
 Once Laravel Exceptions is installed, you need to register the service provider. Open up `config/app.php` and add the following to the `providers` key.
 
-* `'GrahamCampbell\Exceptions\ExceptionsServiceProvider'`
+* `GrahamCampbell\Exceptions\ExceptionsServiceProvider::class`
 
 You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\NewExceptionHandler` for Laravel 5.3 or `GrahamCampbell\Exceptions\ExceptionHandler` for Laravel 5.1/5.2, rather than extending `Illuminate\Foundation\Exceptions\Handler`, or if you're using Lumen, you're going to want to extend `GrahamCampbell\Exceptions\LumenExceptionHandler`.
 
