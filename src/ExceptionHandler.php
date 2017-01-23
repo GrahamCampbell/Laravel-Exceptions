@@ -57,6 +57,8 @@ class ExceptionHandler extends Handler
         $this->config = $container->config->get('exceptions', []);
         $this->container = $container;
 
-        parent::__construct($container->make(LoggerInterface::class));
+        $container->make(LoggerInterface::class);
+
+        parent::__construct($container);
     }
 }
