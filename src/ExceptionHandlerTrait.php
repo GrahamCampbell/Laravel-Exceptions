@@ -12,8 +12,10 @@
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Debug\Exception\FlattenException;
@@ -85,7 +87,11 @@ trait ExceptionHandlerTrait
 
         $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
 
-        if (!$response instanceof Response) {
+        if ($e instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $e);
+        } elseif ($e instanceof ValidationException) {
+            return $this->convertValidationExceptionToResponse($e, $request);
+        } elseif (!$response instanceof Response) {
             try {
                 $response = $this->getResponse($request, $e, $transformed);
             } catch (Exception $e) {
