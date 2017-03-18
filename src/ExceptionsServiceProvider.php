@@ -44,20 +44,19 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     protected function setupConfig()
     {
-        $file['source'] = realpath(__DIR__.'/../config/exceptions.php');
-        $file['json'] = realpath(__DIR__.'/../resources/errors.json');
-        $file['html'] = realpath(__DIR__.'/../resources/error.html');
-
+        $source = realpath(__DIR__.'/../config/exceptions.php');
+        $json = realpath(__DIR__.'/../resources/errors.json');
+        $html = realpath(__DIR__.'/../resources/error.html');
 
         if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
-            $this->publishes([$file['source'] => config_path('exceptions.php')]);
-            $this->publishes([$file['json'] => resource_path('views/errors/errors.json')]);
-            $this->publishes([$file['html'] => resource_path('views/errors/errors.html')]);
+            $this->publishes([$source => config_path('exceptions.php')]);
+            $this->publishes([$json => resource_path('views/errors/errors.json')]);
+            $this->publishes([$html => resource_path('views/errors/errors.html')]);
         } elseif ($this->app instanceof LumenApplication) {
             $this->app->configure('exceptions');
         }
-
-        $this->mergeConfigFrom($file['source'], 'exceptions');
+        
+        $this->mergeConfigFrom($source, 'exceptions');
     }
 
     /**
