@@ -44,15 +44,20 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     protected function setupConfig()
     {
-        $source = realpath(__DIR__.'/../config/exceptions.php');
+        $file['source'] = realpath(__DIR__.'/../config/exceptions.php');
+        $file['json'] = realpath(__DIR__.'/../resources/errors.json');
+        $file['html'] = realpath(__DIR__.'/../resources/error.html');
+
 
         if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
-            $this->publishes([$source => config_path('exceptions.php')]);
+            $this->publishes([$file['source'] => config_path('exceptions.php')]);
+            $this->publishes([$file['json'] => resource_path('views/errors/errors.json')]);
+            $this->publishes([$file['html'] => resource_path('views/errors/errors.html')]);
         } elseif ($this->app instanceof LumenApplication) {
             $this->app->configure('exceptions');
         }
 
-        $this->mergeConfigFrom($source, 'exceptions');
+        $this->mergeConfigFrom($file['source'], 'exceptions');
     }
 
     /**
@@ -67,9 +72,8 @@ class ExceptionsServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(ExceptionInfo::class, function () {
-            $path = __DIR__.'/../resources/errors.json';
-
-            return new ExceptionInfo(realpath($path));
+            $path = config('exceptions.views.json');
+            return new ExceptionInfo($path);
         });
 
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
@@ -78,9 +82,9 @@ class ExceptionsServiceProvider extends ServiceProvider
             $assets = function ($path) use ($generator) {
                 return $generator->asset($path);
             };
-            $path = __DIR__.'/../resources/error.html';
+            $path = config('exceptions.views.html');
 
-            return new HtmlDisplayer($info, $assets, realpath($path));
+            return new HtmlDisplayer($info, $assets, $path);
         });
 
         $this->app->bind(VerboseFilter::class, function (Container $app) {

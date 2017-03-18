@@ -109,4 +109,8 @@ return [
         'Exception'                                                               => 'error',
     ],
 
+    'views' => [
+        'html' => resource_path('views/errors/errors.html'),
+        'json' => resource_path('views/errors/errors.json'),
+    ],
 ];
