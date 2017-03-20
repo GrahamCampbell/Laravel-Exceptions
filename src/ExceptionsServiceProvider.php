@@ -55,7 +55,6 @@ class ExceptionsServiceProvider extends ServiceProvider
         } elseif ($this->app instanceof LumenApplication) {
             $this->app->configure('exceptions');
         }
-        
         $this->mergeConfigFrom($source, 'exceptions');
     }
 
