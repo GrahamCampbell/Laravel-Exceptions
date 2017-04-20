@@ -66,14 +66,14 @@ class ExceptionsServiceProvider extends ServiceProvider
             return new ExceptionIdentifier();
         });
 
-        $this->app->singleton(ExceptionInfo::class, function () {
+        $this->app->singleton(ExceptionInfoInterface::class, function () {
             $path = __DIR__.'/../resources/errors.json';
 
             return new ExceptionInfo(realpath($path));
         });
 
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
-            $info = $app->make(ExceptionInfo::class);
+            $info = $app->make(ExceptionInfoInterface::class);
             $generator = $app->make($this->app instanceof LumenApplication ? LumenGenerator::class : LaravelGenerator::class);
             $assets = function ($path) use ($generator) {
                 return $generator->asset($path);

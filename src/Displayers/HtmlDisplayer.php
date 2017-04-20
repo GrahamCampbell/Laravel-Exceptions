@@ -12,7 +12,7 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
-use GrahamCampbell\Exceptions\ExceptionInfo;
+use GrahamCampbell\Exceptions\ExceptionInfoInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -25,7 +25,7 @@ class HtmlDisplayer implements DisplayerInterface
     /**
      * The exception info instance.
      *
-     * @var \GrahamCampbell\Exceptions\ExceptionInfo
+     * @var \GrahamCampbell\Exceptions\ExceptionInfoInterface
      */
     protected $info;
 
@@ -46,13 +46,13 @@ class HtmlDisplayer implements DisplayerInterface
     /**
      * Create a new html displayer instance.
      *
-     * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
-     * @param callable                                 $assets
-     * @param string                                   $path
+     * @param \GrahamCampbell\Exceptions\ExceptionInfoInterface $info
+     * @param callable                                          $assets
+     * @param string                                            $path
      *
      * @return void
      */
-    public function __construct(ExceptionInfo $info, callable $assets, $path)
+    public function __construct(ExceptionInfoInterface $info, callable $assets, $path)
     {
         $this->info = $info;
         $this->assets = $assets;
