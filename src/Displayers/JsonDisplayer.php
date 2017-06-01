@@ -12,7 +12,7 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
-use GrahamCampbell\Exceptions\ExceptionInfo;
+use GrahamCampbell\Exceptions\ExceptionInfoInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -25,18 +25,18 @@ class JsonDisplayer implements DisplayerInterface
     /**
      * The exception info instance.
      *
-     * @var \GrahamCampbell\Exceptions\ExceptionInfo
+     * @var \GrahamCampbell\Exceptions\ExceptionInfoInterface
      */
     protected $info;
 
     /**
      * Create a new json displayer instance.
      *
-     * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
+     * @param \GrahamCampbell\Exceptions\ExceptionInfoInterface $info
      *
      * @return void
      */
-    public function __construct(ExceptionInfo $info)
+    public function __construct(ExceptionInfoInterface $info)
     {
         $this->info = $info;
     }

@@ -12,7 +12,7 @@
 namespace GrahamCampbell\Exceptions\Displayers;
 
 use Exception;
-use GrahamCampbell\Exceptions\ExceptionInfo;
+use GrahamCampbell\Exceptions\ExceptionInfoInterface;
 use Illuminate\Contracts\View\Factory;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,7 +26,7 @@ class ViewDisplayer implements DisplayerInterface
     /**
      * The exception info instance.
      *
-     * @var \GrahamCampbell\Exceptions\ExceptionInfo
+     * @var \GrahamCampbell\Exceptions\ExceptionInfoInterface
      */
     protected $info;
 
@@ -40,12 +40,12 @@ class ViewDisplayer implements DisplayerInterface
     /**
      * Create a new view displayer instance.
      *
-     * @param \GrahamCampbell\Exceptions\ExceptionInfo $info
-     * @param \Illuminate\Contracts\View\Factory       $factory
+     * @param \GrahamCampbell\Exceptions\ExceptionInfoInterface $info
+     * @param \Illuminate\Contracts\View\Factory                $factory
      *
      * @return void
      */
-    public function __construct(ExceptionInfo $info, Factory $factory)
+    public function __construct(ExceptionInfoInterface $info, Factory $factory)
     {
         $this->info = $info;
         $this->factory = $factory;

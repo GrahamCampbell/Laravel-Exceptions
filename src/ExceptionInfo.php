@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class ExceptionInfo
+class ExceptionInfo implements ExceptionInfoInterface
 {
     /**
      * The error info path.

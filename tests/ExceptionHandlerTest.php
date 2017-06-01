@@ -15,7 +15,7 @@ use Exception;
 use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
-use GrahamCampbell\Exceptions\ExceptionInfo;
+use GrahamCampbell\Exceptions\ExceptionInfoInterface;
 use GrahamCampbell\Exceptions\NewExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\Container;
@@ -182,7 +182,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     public function testRenderException()
     {
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
-            $info = $app->make(ExceptionInfo::class);
+            $info = $app->make(ExceptionInfoInterface::class);
             $assets = function ($path) {
                 throw new RuntimeException('Oh no...');
             };
@@ -207,7 +207,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     public function testRenderThrowable()
     {
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
-            $info = $app->make(ExceptionInfo::class);
+            $info = $app->make(ExceptionInfoInterface::class);
             $assets = function ($path) {
                 throw new TypeError('Foo.');
             };
