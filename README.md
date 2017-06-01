@@ -43,12 +43,70 @@ $ composer require filp/whoops --dev
 
 We support both Whoops `^1.1` or `^2.0`, so feel free to use either.
 
-Once Laravel Exceptions is installed, you need to register the service provider. Open up `config/app.php` and add the following to the `providers` key.
+#### Register Service Provider
+Once Laravel Exceptions is installed, you need to register the service provider.
 
-* `'GrahamCampbell\Exceptions\ExceptionsServiceProvider'`
+* Modify `config/app.php` and add the following to the `providers` key.
 
-You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\NewExceptionHandler` for Laravel 5.3 or `GrahamCampbell\Exceptions\ExceptionHandler` for Laravel 5.1/5.2, rather than extending `Illuminate\Foundation\Exceptions\Handler`, or if you're using Lumen, you're going to want to extend `GrahamCampbell\Exceptions\LumenExceptionHandler`.
+```php
+/*
+ * Application Service Providers...
+ */
 
+...
+App\Providers\EventServiceProvider::class,
+App\Providers\RouteServiceProvider::class,
+...
+GrahamCampbell\Exceptions\ExceptionsServiceProvider::class,
+```
+
+or
+
+```php
+'GrahamCampbell\Exceptions\ExceptionsServiceProvider'
+```
+
+#### Laravel Customization
+Based on the version of Laravel (or Lumen) you will need to change `App\Exceptions\Hanlder` to extend the appropriate Exceptions handler
+
+
+##### Laravel 5.3 or greater
+* Modify `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\NewExceptionHandler`
+```php
+use Illuminate\Auth\AuthenticationException;
+//use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use GrahamCampbell\Exceptions\NewExceptionHandler as ExceptionHandler;
+
+class Handler extends ExceptionHandler
+{
+  ...
+```  
+
+##### Laravel 5.1 / 5.2
+Modify `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\ExceptionHandler`
+
+##### Lumen
+Modify `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\LumenExceptionHandler`.
+
+####  Adjust Render Method
+* Modify `App\Exceptions\Hander` class `render` method.  Add the following above `parent::render..`
+
+```php
+if ($exception instanceof \Illuminate\Auth\AuthenticationException){
+    return $this->unauthenticated($request, $exception);
+}
+```
+
+Your `render` method should look similar to the following
+```php
+public function render($request, Exception $exception)
+{
+    if ($exception instanceof \Illuminate\Auth\AuthenticationException){
+        return $this->unauthenticated($request, $exception);
+    }
+    return parent::render($request, $exception);
+}
+```
 
 ## Configuration
 
