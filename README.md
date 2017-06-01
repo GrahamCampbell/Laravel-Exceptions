@@ -30,7 +30,7 @@ Instead, you may of course manually update your require block and run `composer 
 ```json
 {
     "require": {
-        "graham-campbell/exceptions": "^9.0"
+        "graham-campbell/exceptions": "^10.0"
     }
 }
 ```
