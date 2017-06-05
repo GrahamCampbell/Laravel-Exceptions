@@ -29,6 +29,7 @@ return [
         'GrahamCampbell\Exceptions\Transformers\AuthTransformer',
         'GrahamCampbell\Exceptions\Transformers\CsrfTransformer',
         'GrahamCampbell\Exceptions\Transformers\ModelTransformer',
+        'GrahamCampbell\Exceptions\Transformers\QueryTransformer',
     ],
 
     /*
