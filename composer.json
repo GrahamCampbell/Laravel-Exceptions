@@ -44,6 +44,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "10.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "GrahamCampbell\\Exceptions\\ExceptionsServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",
