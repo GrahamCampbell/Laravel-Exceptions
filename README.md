@@ -36,7 +36,7 @@ If you want to have the debug error pages available, you're going to need to req
 $ composer require filp/whoops --dev
 ```
 
-We support both Whoops `^1.1` or `^2.0`, so feel free to use either.
+Our debug displayer will automatically detect the presence of Whoops. Feel free to go and have a read of our source code to give you a better understanding of how this works. Do note that we support both Whoops `^1.1` or `^2.0`.
 
 
 ## Configuration
