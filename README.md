@@ -17,23 +17,18 @@ Laravel Exceptions was created by, and is maintained by [Graham Campbell](https:
 
 ## Installation
 
-Either [PHP](https://php.net) 5.5+ or [HHVM](http://hhvm.com) 3.6+ are required.
+Laravel Exceptions requires [PHP](https://php.net) 5.5+. This particular version supports Laravel 5.1, 5.2, 5.3, or 5.4 only.
 
-To get the latest version of Laravel Exceptions, simply require the project using [Composer](https://getcomposer.org):
+To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
 ```bash
 $ composer require graham-campbell/exceptions
 ```
 
-Instead, you may of course manually update your require block and run `composer update` if you so choose:
+Once  installed, you need to register the `GrahamCampbell\Exceptions\ExceptionsServiceProvider` service provider in your `config/app.php`. You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\NewExceptionHandler` for Laravel 5.3/5.4 or `GrahamCampbell\Exceptions\ExceptionHandler` for Laravel 5.1/5.2, rather than extending `Illuminate\Foundation\Exceptions\Handler`, or if you're using Lumen, you're going to want to extend `GrahamCampbell\Exceptions\LumenExceptionHandler`.
 
-```json
-{
-    "require": {
-        "graham-campbell/exceptions": "^10.0"
-    }
-}
-```
+
+## Whoops Support
 
 If you want to have the debug error pages available, you're going to need to require [Whoops](https://github.com/filp/whoops):
 
@@ -42,12 +37,6 @@ $ composer require filp/whoops --dev
 ```
 
 We support both Whoops `^1.1` or `^2.0`, so feel free to use either.
-
-Once Laravel Exceptions is installed, you need to register the service provider. Open up `config/app.php` and add the following to the `providers` key.
-
-* `'GrahamCampbell\Exceptions\ExceptionsServiceProvider'`
-
-You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\NewExceptionHandler` for Laravel 5.3 or `GrahamCampbell\Exceptions\ExceptionHandler` for Laravel 5.1/5.2, rather than extending `Illuminate\Foundation\Exceptions\Handler`, or if you're using Lumen, you're going to want to extend `GrahamCampbell\Exceptions\LumenExceptionHandler`.
 
 
 ## Configuration
