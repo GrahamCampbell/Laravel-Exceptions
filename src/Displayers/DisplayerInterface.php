@@ -30,7 +30,7 @@ interface DisplayerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $id, $code, array $headers);
+    public function display(Exception $exception, string $id, int $code, array $headers);
 
     /**
      * Get the supported content type.
@@ -48,7 +48,7 @@ interface DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Exception $original, Exception $transformed, $code);
+    public function canDisplay(Exception $original, Exception $transformed, int $code);
 
     /**
      * Do we provide verbose information about the exception?

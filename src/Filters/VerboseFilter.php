@@ -35,7 +35,7 @@ class VerboseFilter implements FilterInterface
      *
      * @return void
      */
-    public function __construct($debug)
+    public function __construct(bool $debug)
     {
         $this->debug = $debug;
     }
@@ -51,7 +51,7 @@ class VerboseFilter implements FilterInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    public function filter(array $displayers, Request $request, Exception $original, Exception $transformed, $code)
+    public function filter(array $displayers, Request $request, Exception $original, Exception $transformed, int $code)
     {
         if ($this->debug !== true) {
             foreach ($displayers as $index => $displayer) {

@@ -15,5 +15,5 @@ interface ExceptionInfoInterface
      *
      * @return array
      */
-    public function generate(Exception $exception, $id, $code);
+    public function generate(Exception $exception, string $id, int $code);
 }

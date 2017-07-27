@@ -35,7 +35,7 @@ class ExceptionInfo implements ExceptionInfoInterface
      *
      * @return void
      */
-    public function __construct($path = null)
+    public function __construct(string $path = null)
     {
         $this->path = $path;
     }
@@ -49,7 +49,7 @@ class ExceptionInfo implements ExceptionInfoInterface
      *
      * @return array
      */
-    public function generate(Exception $exception, $id, $code)
+    public function generate(Exception $exception, string $id, int $code)
     {
         $errors = $this->path ? json_decode(file_get_contents($this->path), true) : [500 => ['name' => 'Internal Server Error', 'message' => 'An error has occurred and this resource cannot be displayed.']];
 

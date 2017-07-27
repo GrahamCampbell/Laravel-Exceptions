@@ -61,7 +61,7 @@ class ViewDisplayer implements DisplayerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Exception $exception, $id, $code, array $headers)
+    public function display(Exception $exception, string $id, int $code, array $headers)
     {
         $info = $this->info->generate($exception, $id, $code);
 
@@ -87,7 +87,7 @@ class ViewDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Exception $original, Exception $transformed, $code)
+    public function canDisplay(Exception $original, Exception $transformed, int $code)
     {
         return $this->factory->exists("errors.{$code}");
     }

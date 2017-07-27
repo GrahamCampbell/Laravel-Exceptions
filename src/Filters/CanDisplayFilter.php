@@ -32,7 +32,7 @@ class CanDisplayFilter implements FilterInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    public function filter(array $displayers, Request $request, Exception $original, Exception $transformed, $code)
+    public function filter(array $displayers, Request $request, Exception $original, Exception $transformed, int $code)
     {
         foreach ($displayers as $index => $displayer) {
             if (!$displayer->canDisplay($original, $transformed, $code)) {

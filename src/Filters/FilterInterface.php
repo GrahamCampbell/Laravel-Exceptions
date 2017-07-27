@@ -32,5 +32,5 @@ interface FilterInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
      */
-    public function filter(array $displayers, Request $request, Exception $original, Exception $transformed, $code);
+    public function filter(array $displayers, Request $request, Exception $original, Exception $transformed, int $code);
 }
