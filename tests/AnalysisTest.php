@@ -14,7 +14,11 @@ declare(strict_types=1);
 namespace GrahamCampbell\Tests\Exceptions;
 
 use GrahamCampbell\Analyzer\AnalysisTrait;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Exception\HttpResponseException as OldHttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException;
 use Laravel\Lumen\Application;
+use Laravel\Lumen\Routing\UrlGenerator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -47,6 +51,12 @@ class AnalysisTest extends TestCase
      */
     protected function getIgnored()
     {
-        return [Application::class];
+        return [
+            Application::class,
+            AuthorizationException::class,
+            OldHttpResponseException::class,
+            NewHttpResponseException::class,
+            UrlGenerator::class,
+        ];
     }
 }
