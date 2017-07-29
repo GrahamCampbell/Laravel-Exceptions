@@ -132,7 +132,7 @@ class ExceptionHandler
         if ($this->config === null) {
             $config = $container->config->get('exceptions', []);
         }
-        
+
         return array_get($this->config, $key);
     }
 
