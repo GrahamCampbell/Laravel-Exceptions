@@ -18,7 +18,6 @@ use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
 use GrahamCampbell\Exceptions\ExceptionHandler;
 use GrahamCampbell\Exceptions\ExceptionIdentifier;
 use GrahamCampbell\Exceptions\ExceptionInfoInterface;
-use GrahamCampbell\Exceptions\NewExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -111,10 +110,6 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testAuthExceptionRender()
     {
-        if (!class_exists(AuthorizationException::class)) {
-            $this->markTestSkipped('Laravel version too old.');
-        }
-
         $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new AuthorizationException('This action is unauthorized.'));
 
@@ -203,9 +198,6 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
-    /**
-     * @requires PHP 7
-     */
     public function testRenderThrowable()
     {
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
@@ -272,7 +264,6 @@ class ExceptionHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @requires PHP 7
      * @expectedException \TypeError
      * @expectedExceptionMessage Foo.
      */
@@ -300,10 +291,6 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     public function testReportAuthException()
     {
-        if (!class_exists(AuthorizationException::class)) {
-            $this->markTestSkipped('Laravel version too old.');
-        }
-
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new AuthorizationException();
@@ -363,12 +350,6 @@ class ExceptionHandlerTest extends AbstractTestCase
 
     protected function getExceptionHandler()
     {
-        $app = $this->app;
-
-        if (version_compare($app::VERSION, '5.3') < 0) {
-            return $this->app->make(ExceptionHandler::class);
-        }
-
-        return $this->app->make(NewExceptionHandler::class);
+        return $this->app->make(ExceptionHandler::class);
     }
 }

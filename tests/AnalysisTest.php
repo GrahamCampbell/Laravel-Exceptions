@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace GrahamCampbell\Tests\Exceptions;
 
 use GrahamCampbell\Analyzer\AnalysisTrait;
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Exception\HttpResponseException as OldHttpResponseException;
 use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException;
 use Laravel\Lumen\Application;
@@ -53,9 +53,9 @@ class AnalysisTest extends TestCase
     {
         return [
             Application::class,
-            AuthorizationException::class,
             OldHttpResponseException::class,
             NewHttpResponseException::class,
+            Responsable::class,
             UrlGenerator::class,
         ];
     }

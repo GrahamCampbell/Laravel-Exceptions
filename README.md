@@ -17,7 +17,7 @@ Laravel Exceptions was created by, and is maintained by [Graham Campbell](https:
 
 ## Installation
 
-Laravel Exceptions requires [PHP](https://php.net) 7. This particular version supports Laravel 5.1, 5.2, 5.3, 5.4, or 5.5 only.
+Laravel Exceptions requires [PHP](https://php.net) 7. This particular version supports Laravel 5.3, 5.4, or 5.5 only.
 
 To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
@@ -25,7 +25,7 @@ To get the latest version, simply require the project using [Composer](https://g
 $ composer require graham-campbell/exceptions
 ```
 
-Once  installed, you need to register the `GrahamCampbell\Exceptions\ExceptionsServiceProvider` service provider in your `config/app.php`. You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\NewExceptionHandler` for Laravel 5.3/5.4 or `GrahamCampbell\Exceptions\ExceptionHandler` for Laravel 5.1/5.2, rather than extending `Illuminate\Foundation\Exceptions\Handler`, or if you're using Lumen, you're going to want to extend `GrahamCampbell\Exceptions\LumenExceptionHandler`.
+Once  installed, you need to register the `GrahamCampbell\Exceptions\ExceptionsServiceProvider` service provider in your `config/app.php`. You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\ExceptionHandler`.
 
 
 ## Whoops Support
