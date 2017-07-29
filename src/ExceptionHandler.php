@@ -198,7 +198,7 @@ class ExceptionHandler
         if (!$response instanceof Response) {
             if ($response instanceof SymfonyRedirectResponse) {
                 $response = new RedirectResponse($response->getTargetUrl(), $response->getStatusCode(), $response->headers->all());
-            } elseif (!$response instanceof Response) {
+            } else {
                 $response = new Response($response->getContent(), $response->getStatusCode(), $response->headers->all());
             }
         }
