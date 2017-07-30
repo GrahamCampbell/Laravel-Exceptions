@@ -38,7 +38,7 @@ class ExceptionHandler
     /**
      * The exception config.
      *
-     * @var array
+     * @var array|null
      */
     protected $config;
 
@@ -65,7 +65,6 @@ class ExceptionHandler
      */
     public function __construct(Container $container)
     {
-        $this->config = $container->config->get('exceptions', []);
         $this->container = $container;
     }
 
@@ -130,7 +129,7 @@ class ExceptionHandler
     protected function getConfigItem(string $key)
     {
         if ($this->config === null) {
-            $config = $container->config->get('exceptions', []);
+            $this->config = $this->container->config->get('exceptions', []);
         }
 
         return array_get($this->config, $key);
