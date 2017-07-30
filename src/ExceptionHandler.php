@@ -125,7 +125,7 @@ class ExceptionHandler implements HandlerInterface
      * Render an exception to the console.
      *
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception $e
+     * @param \Exception                                        $e
      *
      * @return void
      */
