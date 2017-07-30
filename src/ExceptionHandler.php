@@ -23,6 +23,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
@@ -118,6 +119,19 @@ class ExceptionHandler implements HandlerInterface
         return !is_null(collect($this->dontReport)->first(function ($type) use ($e) {
             return $e instanceof $type;
         }));
+    }
+
+    /**
+     * Render an exception to the console.
+     *
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Exception $e
+     *
+     * @return void
+     */
+    public function renderForConsole($output, Exception $e)
+    {
+        (new ConsoleApplication())->renderException($e, $output);
     }
 
     /**
