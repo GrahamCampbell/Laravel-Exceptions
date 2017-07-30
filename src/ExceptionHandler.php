@@ -15,6 +15,7 @@ namespace GrahamCampbell\Exceptions;
 
 use Exception;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Debug\ExceptionHandler as HandlerInterface;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Exception\HttpResponseException as OldHttpResponseException;
 use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException;
@@ -33,7 +34,7 @@ use Throwable;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class ExceptionHandler
+class ExceptionHandler implements HandlerInterface
 {
     /**
      * The exception config.
