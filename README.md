@@ -25,7 +25,9 @@ To get the latest version, simply require the project using [Composer](https://g
 $ composer require graham-campbell/exceptions
 ```
 
-Once  installed, you need to register the `GrahamCampbell\Exceptions\ExceptionsServiceProvider` service provider in your `config/app.php`, or if you're using Laravel 5.5, this can be done via the automatic package discovery. You then MUST change your `App\Exceptions\Handler` class to extend `GrahamCampbell\Exceptions\ExceptionHandler`.
+Once  installed, you need to register the `GrahamCampbell\Exceptions\ExceptionsServiceProvider` service provider in your `config/app.php`, or if you're using Laravel 5.5, this can be done via the automatic package discovery.
+
+You then MUST change your `App\Exceptions\Handler` to extend `GrahamCampbell\Exceptions\ExceptionHandler`.
 
 
 ## Whoops Support
