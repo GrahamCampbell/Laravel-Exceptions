@@ -32,7 +32,7 @@ class ViewDisplayerTest extends AbstractTestCase
     public function testError()
     {
         $view = Mockery::mock(View::class);
-        $view->shouldReceive('with')->once();
+        $view->shouldReceive('with')->once()->andReturn($view);
         $view->shouldReceive('render')->once()->andReturn("Gutted.\n");
 
         $factory = Mockery::mock(Factory::class);
