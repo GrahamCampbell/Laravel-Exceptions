@@ -2,6 +2,16 @@ CHANGE LOG
 ==========
 
 
+## V10.0 (06/08/2017)
+
+* Support PHP 7.0, 7.1, 7.2
+* Support Laravel 5.3 - 5.5
+* Dropped multiple handlers
+* Added exception info interface
+* Pass through exception to views
+* More type hints
+
+
 ## V9.3 (21/01/2017)
 
 * Fixed the html displayer on lumen
