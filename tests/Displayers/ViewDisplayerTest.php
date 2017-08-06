@@ -18,6 +18,7 @@ use GrahamCampbell\Exceptions\Displayers\ViewDisplayer;
 use GrahamCampbell\Exceptions\ExceptionInfo;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Mockery;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -30,10 +31,14 @@ class ViewDisplayerTest extends AbstractTestCase
 {
     public function testError()
     {
-        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
+        $view = Mockery::mock(View::class);
+        $view->shouldReceive('with')->once();
+        $view->shouldReceive('render')->once()->andReturn("Gutted.\n");
 
-        $factory->shouldReceive('make')->once()->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!', 'summary' => 'Oh noes!'])->andReturn("Gutted.\n");
+        $factory = Mockery::mock(Factory::class);
+        $factory->shouldReceive('make')->once()->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!', 'summary' => 'Oh noes!'])->andReturn($view);
 
+        $displayer = new ViewDisplayer(new ExceptionInfo(__DIR__.'/../../resources/errors.json'), $factory);
         $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
 
         $this->assertSame("Gutted.\n", $response->getContent());
