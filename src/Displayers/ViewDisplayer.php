@@ -82,7 +82,7 @@ class ViewDisplayer implements DisplayerInterface
     {
         $view = $this->factory->make("errors.{$code}", $info);
 
-        return $view->withException($exception)->render();
+        return $view->with('exception', $exception)->render();
     }
 
     /**
