@@ -29,7 +29,7 @@ class ExceptionIdentifier
      *
      * @var string[]
      */
-    protected $identification;
+    protected $identification = [];
 
     /**
      * Identify the given exception.

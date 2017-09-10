@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V9.4 (Upcoming)
+
+* Backported php 7.2 support
+
+
 ## V9.3 (21/01/2017)
 
 * Fixed the html displayer on lumen

@@ -36,6 +36,14 @@ matrix:
       env: LARAVEL_VERSION=5.3.*
     - php: 7.1
       env: LARAVEL_VERSION=5.4.*
+    - php: 7.2
+      env: LARAVEL_VERSION=5.1.*
+    - php: 7.2
+      env: LARAVEL_VERSION=5.2.*
+    - php: 7.2
+      env: LARAVEL_VERSION=5.3.*
+    - php: 7.2
+      env: LARAVEL_VERSION=5.4.*
     - php: hhvm
       env: LARAVEL_VERSION=5.1.*
     - php: hhvm
