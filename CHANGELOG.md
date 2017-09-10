@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V9.4 (Upcoming)
+## V9.4 (10/09/2017)
 
 * Backported php 7.2 support
 
