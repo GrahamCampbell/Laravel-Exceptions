@@ -13,9 +13,9 @@
         "php": "^7.0",
         "illuminate/contracts": "5.3.*|5.4.*|5.5.*",
         "illuminate/support": "5.3.*|5.4.*|5.5.*",
-        "symfony/console": "^3.1",
-        "symfony/debug": "^3.1",
-        "symfony/http-foundation": "^3.1",
+        "symfony/console": "^3.1|^4.0",
+        "symfony/debug": "^3.1|^4.0",
+        "symfony/http-foundation": "^3.1|^4.0",
         "psr/log": "^1.0"
     },
     "require-dev": {
