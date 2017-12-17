@@ -50,7 +50,7 @@ class ExceptionIdentifier
         }
 
         // cleanup in preparation for the identification
-        if (count($this->identification) >= 16) {
+        if (null !== $this->identification && count($this->identification) >= 16) {
             array_shift($this->identification);
         }
 
