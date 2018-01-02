@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V10.1 (02/01/2018)
+
+* Allow symfony 4 dependencies
+* Fixed config when inside phar
+
+
 ## V10.0 (06/08/2017)
 
 * Support PHP 7.0, 7.1, 7.2
