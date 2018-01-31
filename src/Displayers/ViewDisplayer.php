@@ -65,7 +65,23 @@ class ViewDisplayer implements DisplayerInterface
     {
         $info = $this->info->generate($exception, $id, $code);
 
-        return new Response($this->factory->make("errors.{$code}", $info), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
+        return new Response($this->render($exception, $info, $code), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
+    }
+
+    /**
+     * Render the page with given info and exception.
+     *
+     * @param \Exception $exception
+     * @param array      $info
+     * @param int        $code
+     *
+     * @return string
+     */
+    protected function render(Exception $exception, array $info, $code)
+    {
+        $view = $this->factory->make("errors.{$code}", $info);
+
+        return $view->with('exception', $exception)->render();
     }
 
     /**
