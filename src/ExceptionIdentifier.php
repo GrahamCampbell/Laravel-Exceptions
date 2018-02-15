@@ -50,7 +50,7 @@ class ExceptionIdentifier
         }
 
         // cleanup in preparation for the identification
-        if ($this->is_countable(count($this->identification)) >= 16) {
+        if ($this->isCountable($this->identification) && count($this->identification) >= 16) {
             array_shift($this->identification);
         }
 
@@ -82,13 +82,8 @@ class ExceptionIdentifier
         return vsprintf('%08s-%04s-%04s-%02s%02s-%012s', $params);
     }
 
-    /**
-     * Checks to see if a variable is countable (for PHP 7.2 compatability)
-     * @param  mixed  $var
-     * @return boolean
-     */
-    public function is_countable($var)
+    public function isCountable($var)
     {
-        return is_array($var) || $var instanceof Countable;
+        return is_array($var) || $var instanceof \Countable;
     }
 }
