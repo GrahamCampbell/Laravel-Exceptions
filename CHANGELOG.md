@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V11.0 (02/03/2018)
+
+* Support PHP 7.1 or 7.2
+* Support Laravel 5.5 or 5.6
+
+
 ## V10.1 (02/01/2018)
 
 * Allow symfony 4 dependencies
