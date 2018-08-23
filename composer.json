@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "filp/whoops": "^2.1.4",
-        "graham-campbell/analyzer": "^2.0",
+        "graham-campbell/analyzer": "^2.1",
         "graham-campbell/testbench": "^5.0",
         "mockery/mockery": "^1.0",
         "phpunit/phpunit": "^6.5|^7.0"
@@ -44,7 +44,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "11.0-dev"
+            "dev-master": "11.1-dev"
         },
         "laravel": {
             "providers": [
