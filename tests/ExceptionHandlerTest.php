@@ -26,6 +26,7 @@ use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Mockery;
 use Psr\Log\LoggerInterface;
@@ -52,8 +53,8 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(500, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
-        $this->assertTrue(str_contains($response->getContent(), 'Internal Server Error'));
-        $this->assertFalse(str_contains($response->getContent(), 'Foo Bar.'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Internal Server Error'));
+        $this->assertFalse(Str::contains($response->getContent(), 'Foo Bar.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -104,7 +105,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
-        $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -116,8 +117,8 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(403, $response->getStatusCode());
         $this->assertInstanceOf(AccessDeniedHttpException::class, $response->exception);
-        $this->assertTrue(str_contains($response->getContent(), 'Forbidden'));
-        $this->assertTrue(str_contains($response->getContent(), 'This action is unauthorized.'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Forbidden'));
+        $this->assertTrue(Str::contains($response->getContent(), 'This action is unauthorized.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -129,8 +130,8 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(400, $response->getStatusCode());
         $this->assertInstanceOf(BadRequestHttpException::class, $response->exception);
-        $this->assertTrue(str_contains($response->getContent(), 'Bad Request'));
-        $this->assertTrue(str_contains($response->getContent(), 'CSRF token validation failed.'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Bad Request'));
+        $this->assertTrue(Str::contains($response->getContent(), 'CSRF token validation failed.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -142,8 +143,8 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertInstanceOf(NotFoundHttpException::class, $response->exception);
-        $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
-        $this->assertTrue(str_contains($response->getContent(), 'Model not found!'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Model not found!'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -172,7 +173,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
-        $this->assertTrue(str_contains($response->getContent(), 'Not Found'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -242,10 +243,6 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertNull($this->getExceptionHandler()->report($e));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Bar.
-     */
     public function testReportFail()
     {
         $app = $this->app;
@@ -260,13 +257,12 @@ class ExceptionHandlerTest extends AbstractTestCase
             throw new RuntimeException('Foo.');
         });
 
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Bar');
+
         $this->getExceptionHandler()->report(new InvalidArgumentException('Bar.'));
     }
 
-    /**
-     * @expectedException \TypeError
-     * @expectedExceptionMessage Foo.
-     */
     public function testReportFailThrowable()
     {
         $mock = Mockery::mock(LoggerInterface::class);
@@ -274,6 +270,9 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->app->bind(LoggerInterface::class, function () {
             throw new TypeError('Foo.');
         });
+
+        $this->expectException(TypeError::class);
+        $this->expectExceptionMessage('Foo');
 
         $this->getExceptionHandler()->report(new InvalidArgumentException('Baz.'));
     }
