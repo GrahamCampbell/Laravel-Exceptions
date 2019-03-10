@@ -22,6 +22,7 @@ use GrahamCampbell\Exceptions\Filters\CanDisplayFilter;
 use GrahamCampbell\Exceptions\Filters\ContentTypeFilter;
 use GrahamCampbell\Exceptions\Filters\VerboseFilter;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
+use Illuminate\Support\Str;
 
 /**
  * This is the service provider test class.
@@ -76,11 +77,10 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $displayers = $this->app->config->get('exceptions.displayers');
 
-        $this->assertInternalType('array', $displayers);
         $this->assertCount(5, $displayers);
 
         foreach ($displayers as $displayer) {
-            $this->assertTrue(starts_with($displayer, 'GrahamCampbell\Exceptions\Displayers'));
+            $this->assertTrue(Str::startsWith($displayer, 'GrahamCampbell\Exceptions\Displayers'));
         }
     }
 
@@ -88,11 +88,10 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $filters = $this->app->config->get('exceptions.filters');
 
-        $this->assertInternalType('array', $filters);
         $this->assertCount(3, $filters);
 
         foreach ($filters as $filter) {
-            $this->assertTrue(starts_with($filter, 'GrahamCampbell\Exceptions\Filters'));
+            $this->assertTrue(Str::startsWith($filter, 'GrahamCampbell\Exceptions\Filters'));
         }
     }
 }
