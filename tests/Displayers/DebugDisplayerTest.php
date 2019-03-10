@@ -30,7 +30,6 @@ class DebugDisplayerTest extends AbstractTestCase
 
         $response = $displayer->display(new Exception('Down for maintenance!'), 'foo', 503, []);
 
-        $this->assertGreaterThan(10, strlen($response->getContent()));
         $this->assertSame(503, $response->getStatusCode());
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
@@ -41,7 +40,6 @@ class DebugDisplayerTest extends AbstractTestCase
 
         $response = $displayer->display(new Exception('Naughty!'), 'bar', 403, []);
 
-        $this->assertGreaterThan(10, strlen($response->getContent()));
         $this->assertSame(403, $response->getStatusCode());
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
