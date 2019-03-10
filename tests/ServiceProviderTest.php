@@ -77,7 +77,6 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $displayers = $this->app->config->get('exceptions.displayers');
 
-        $this->assertIsArray($displayers);
         $this->assertCount(5, $displayers);
 
         foreach ($displayers as $displayer) {
@@ -89,7 +88,6 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $filters = $this->app->config->get('exceptions.filters');
 
-        $this->assertIsArray($filters);
         $this->assertCount(3, $filters);
 
         foreach ($filters as $filter) {
