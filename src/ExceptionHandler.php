@@ -92,7 +92,7 @@ class ExceptionHandler implements HandlerInterface
         $level = $this->getLevel($e);
         $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
 
-        $logger->$level($e, ['identification' => ['id' => $id]]);
+        $logger->$level($e, ['identification' => ['id' => $id], 'exception' => $e]);
     }
 
     /**
