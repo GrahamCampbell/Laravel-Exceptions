@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V11.3 (Upcoming)
+
+* Pass the exception has context to the logger
+
+
 ## V11.2 (10/03/2019)
 
 * Added Laravel 5.8 support
