@@ -2,9 +2,10 @@ CHANGE LOG
 ==========
 
 
-## V11.3 (Upcoming)
+## V11.3 (03/06/2019)
 
 * Pass the exception has context to the logger
+* Added implementation of validation transformer
 
 
 ## V11.2 (10/03/2019)
