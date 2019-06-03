@@ -35,7 +35,7 @@ class ValidationTransformer implements TransformerInterface
     public function transform(Exception $exception)
     {
         if ($exception instanceof ValidationException) {
-            $exception = new UnprocessableEntityHttpException(head($exception->errors()), $exception->getCode(), $exception);
+            $exception = new UnprocessableEntityHttpException(head(head($exception->errors())), $exception, $exception->getCode());
         }
 
         return $exception;

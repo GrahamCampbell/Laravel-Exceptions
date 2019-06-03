@@ -20,7 +20,7 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 use Mockery;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * This is the validation transformer test class.
@@ -35,7 +35,7 @@ class ValidationTransformerTest extends AbstractTestCase
 
         $transformed = (new ValidationTransformer())->transform($exception);
 
-        $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
+        $this->assertInstanceOf(UnprocessableEntityHttpException::class, $transformed);
         $this->assertSame('Foo', $transformed->getMessage());
         $this->assertSame($exception, $transformed->getPrevious());
     }
@@ -46,7 +46,7 @@ class ValidationTransformerTest extends AbstractTestCase
 
         $transformed = (new ValidationTransformer())->transform($exception);
 
-        $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
+        $this->assertInstanceOf(UnprocessableEntityHttpException::class, $transformed);
         $this->assertSame('Bar', $transformed->getMessage());
         $this->assertSame($exception, $transformed->getPrevious());
     }
