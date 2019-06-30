@@ -27,6 +27,10 @@
         "name": "Not Acceptable",
         "message": "The requested resource is only capable of generating content not acceptable."
     },
+    "407": {
+        "name": "Proxy Authentication Required",
+        "message": "Proxy authentication is required and has failed or has not yet been provided."
+    },
     "408": {
         "name": "Request Timeout",
         "message": "The server did not receive a complete request message in time."
@@ -59,13 +63,37 @@
         "name": "Unsupported Media Type",
         "message": "The request entity has a media type which the server or resource does not support."
     },
+    "416": {
+        "name": "Requested Range Not Satisfiable",
+        "message": "The range specified by the Range header field in the request cannot be fulfilled."
+    },
     "417": {
         "name": "Expectation Failed",
         "message": "The expectation given could not be met by at least one of the inbound servers."
     },
+    "418": {
+        "name": "I'm a teapot",
+        "message": "The server refuses the attempt to brew coffee with a teapot."
+    },
+    "421": {
+        "name": "Misdirected Request",
+        "message": "The request was directed at a server that is not able to produce a response."
+    },
     "422": {
         "name": "Unprocessable Entity",
         "message": "The request was well-formed but was unable to be followed due to semantic errors."
+    },
+    "423": {
+        "name": "Locked",
+        "message": "The resource that is being accessed is locked."
+    },
+    "424": {
+        "name": "Failed Dependency",
+        "message": "The request failed due to failure of a previous request."
+    },
+    "425": {
+        "name": "Too Early",
+        "message": "The server is unwilling to risk processing a request that might be replayed."
     },
     "426": {
         "name": "Upgrade Required",
@@ -78,6 +106,14 @@
     "429": {
         "name": "Too Many Requests",
         "message": "The user has sent too many requests in a given amount of time."
+    },
+    "431": {
+        "name": "Request Header Fields Too Large",
+        "message": "The server is unwilling to process the request because its header fields are too large."
+    },
+    "451": {
+        "name": "Unavailable For Legal Reasons",
+        "message": "The server is unwilling to process the request due to legal reasons."
     },
     "500": {
         "name": "Internal Server Error",
@@ -102,5 +138,25 @@
     "505": {
         "name": "HTTP Version Not Supported",
         "message": "The server does not support the HTTP protocol version used in the request."
+    },
+    "506": {
+        "name": "Variant Also Negotiates",
+        "message": "The server has an internal configuration error relating to content negotiation."
+    },
+    "507": {
+        "name": "Insufficient Storage",
+        "message": "The server has an internal configuration error relating to free memory."
+    },
+    "508": {
+        "name": "Loop Detected",
+        "message": "The server detected an infinite loop while processing the request."
+    },
+    "510": {
+        "name": "Not Extended",
+        "message": "Further extensions to the request are required for the server to fulfill it."
+    },
+    "511": {
+        "name": "Network Authentication Required",
+        "message": "The client needs to authenticate to gain network access."
     }
 }

@@ -81,4 +81,17 @@ class ExceptionInfoTest extends AbstractTestCase
 
         $this->assertSame($expected, $info);
     }
+
+    public function testErrorsJson()
+    {
+        $path = __DIR__.'/../resources/errors.json';
+
+        $this->assertFileExists($path);
+
+        $decoded = json_decode(file_get_contents($path), true);
+
+        $this->assertCount(40, $decoded);
+        $this->assertSame('I\'m a teapot', $decoded[418]['name']);
+        $this->assertSame('The resource that is being accessed is locked.', $decoded[423]['message']);
+    }
 }
