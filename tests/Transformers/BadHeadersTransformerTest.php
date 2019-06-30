@@ -16,8 +16,8 @@ namespace GrahamCampbell\Tests\Exceptions\Transformers;
 use GrahamCampbell\Exceptions\Transformers\BadHeadersTransformer;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use InvalidArgumentException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * This is the bad headers transformer test class.

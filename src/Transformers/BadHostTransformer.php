@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace GrahamCampbell\Exceptions\Transformers;
 
 use Exception;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the bad host transformer class.
