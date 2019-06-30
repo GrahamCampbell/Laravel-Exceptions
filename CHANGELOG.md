@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V11.4 (Upcoming)
+
+* Transform http foundation exceptions from symfony
+
+
 ## V11.3 (03/06/2019)
 
 * Pass the exception has context to the logger

@@ -20,6 +20,7 @@ use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Routing\UrlGenerator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 
 /**
  * This is the analysis test class.
@@ -56,6 +57,7 @@ class AnalysisTest extends TestCase
             OldHttpResponseException::class,
             NewHttpResponseException::class,
             Responsable::class,
+            SuspiciousOperationException::class,
             UrlGenerator::class,
         ];
     }

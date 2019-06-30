@@ -31,6 +31,8 @@ use InvalidArgumentException;
 use Mockery;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
+use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -106,6 +108,32 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame($e, $response->exception);
         $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
+    public function testBadHeadersExceptionRender()
+    {
+        $handler = $this->getExceptionHandler();
+        $response = $handler->render($this->app->request, $e = new ConflictingHeadersException('Oh no!'));
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertInstanceOf(BadRequestHttpException::class, $response->exception);
+        $this->assertTrue(Str::contains($response->getContent(), 'Bad Request'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Bad headers provided.'));
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+    }
+
+    public function testBadHostExceptionRender()
+    {
+        $handler = $this->getExceptionHandler();
+        $response = $handler->render($this->app->request, $e = new SuspiciousOperationException('Oh no!'));
+
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertInstanceOf(NotFoundHttpException::class, $response->exception);
+        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
+        $this->assertTrue(Str::contains($response->getContent(), 'Bad hostname provided.'));
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
@@ -284,6 +312,28 @@ class ExceptionHandlerTest extends AbstractTestCase
         $e = new BadRequestHttpException();
         $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
+
+        $this->assertNull($this->getExceptionHandler()->report($e));
+    }
+
+    public function testReportBadHeadersException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new ConflictingHeadersException();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
+
+        $this->assertNull($this->getExceptionHandler()->report($e));
+    }
+
+    public function testReportBadHostException()
+    {
+        $mock = Mockery::mock(LoggerInterface::class);
+        $this->app->instance(LoggerInterface::class, $mock);
+        $e = new SuspiciousOperationException();
+        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
     }

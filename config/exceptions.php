@@ -28,6 +28,8 @@ return [
     */
 
     'transformers' => [
+        'GrahamCampbell\Exceptions\Transformers\BadHeadersTransformer',
+        'GrahamCampbell\Exceptions\Transformers\BadHostTransformer',
         'GrahamCampbell\Exceptions\Transformers\AuthTransformer',
         'GrahamCampbell\Exceptions\Transformers\CsrfTransformer',
         'GrahamCampbell\Exceptions\Transformers\ModelTransformer',
@@ -104,10 +106,11 @@ return [
         'Illuminate\Auth\Access\AuthorizationException'                           => 'warning',
         'Illuminate\Database\Eloquent\ModelNotFoundException'                     => 'warning',
         'Illuminate\Session\TokenMismatchException'                               => 'notice',
+        'Symfony\Component\Debug\Exception\FatalErrorException'                   => 'critical',
+        'Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface'    => 'notice',
         'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'            => 'notice',
         'Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException' => 'error',
         'Symfony\Component\HttpKernel\Exception\HttpExceptionInterface'           => 'warning',
-        'Symfony\Component\Debug\Exception\FatalErrorException'                   => 'critical',
         'Exception'                                                               => 'error',
     ],
 
