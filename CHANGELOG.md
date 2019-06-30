@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V12.0 (Upcoming)
+## V12.0 (30/06/2019)
 
 * Transform http foundation exceptions from symfony
 * Support the less used status codes and messages
