@@ -22,6 +22,7 @@ use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
@@ -147,7 +148,7 @@ class ExceptionHandler implements HandlerInterface
             $this->config = $this->container->config->get('exceptions', []);
         }
 
-        return array_get($this->config, $key);
+        return Arr::get($this->config, $key);
     }
 
     /**
@@ -300,7 +301,7 @@ class ExceptionHandler implements HandlerInterface
     /**
      * Make multiple objects using the container.
      *
-     * @param string [] $classes
+     * @param string[] $classes
      *
      * @return object[]
      */

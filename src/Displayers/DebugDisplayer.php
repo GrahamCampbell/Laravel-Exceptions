@@ -52,7 +52,7 @@ class DebugDisplayer implements DisplayerInterface
         $whoops = new Whoops();
         $whoops->allowQuit(false);
         $whoops->writeToOutput(false);
-        $whoops->pushHandler(new Handler());
+        $whoops->appendHandler(new Handler());
 
         return $whoops;
     }
