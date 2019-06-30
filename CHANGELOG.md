@@ -2,10 +2,11 @@ CHANGE LOG
 ==========
 
 
-## V11.4 (Upcoming)
+## V12.0 (Upcoming)
 
 * Transform http foundation exceptions from symfony
 * Support the less used status codes and messages
+* Require Whoops 2.4 or newer
 
 
 ## V11.3 (03/06/2019)

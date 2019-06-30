@@ -19,7 +19,7 @@
         "psr/log": "^1.0"
     },
     "require-dev": {
-        "filp/whoops": "^2.1.4",
+        "filp/whoops": "^2.4",
         "graham-campbell/analyzer": "^2.1",
         "graham-campbell/testbench": "^5.2",
         "mockery/mockery": "^1.0",
