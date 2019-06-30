@@ -16,8 +16,8 @@ namespace GrahamCampbell\Tests\Exceptions\Transformers;
 use GrahamCampbell\Exceptions\Transformers\BadHostTransformer;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use InvalidArgumentException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * This is the bad host transformer test class.
