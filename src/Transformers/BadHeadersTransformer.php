@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace GrahamCampbell\Exceptions\Transformers;
 
 use Exception;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * This is the bad headers transformer class.
