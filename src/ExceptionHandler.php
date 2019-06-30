@@ -175,7 +175,7 @@ class ExceptionHandler implements HandlerInterface
      * @param \Illuminate\Http\Request $request
      * @param \Exception               $e
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function render($request, Exception $e)
     {
@@ -206,7 +206,7 @@ class ExceptionHandler implements HandlerInterface
      * @param \Symfony\Component\HttpFoundation\Response $response
      * @param \Exception                                 $e
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     protected function toIlluminateResponse($response, Exception $e)
     {
@@ -228,7 +228,7 @@ class ExceptionHandler implements HandlerInterface
      * @param \Exception               $transformed
      * @param \Exception               $exception
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function getResponse(Request $request, Exception $exception, Exception $transformed)
     {
