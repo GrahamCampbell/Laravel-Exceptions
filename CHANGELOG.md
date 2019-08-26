@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V12.1 (26/08/2019)
+
+* Added Laravel 6 support
+
+
 ## V12.0 (30/06/2019)
 
 * Transform http foundation exceptions from symfony
