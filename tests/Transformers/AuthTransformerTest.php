@@ -26,18 +26,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class AuthTransformerTest extends AbstractTestCase
 {
-    public function testTransformedWithNoMessage()
-    {
-        $exception = new AuthorizationException();
-        $exception->message = '';
-
-        $transformed = (new AuthTransformer())->transform($exception);
-
-        $this->assertInstanceOf(AccessDeniedHttpException::class, $transformed);
-        $this->assertEmpty($transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
-    }
-
     public function testTransformedWithOriginalMessage()
     {
         $exception = new AuthorizationException('Foo!');
