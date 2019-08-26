@@ -29,6 +29,7 @@ class AuthTransformerTest extends AbstractTestCase
     public function testTransformedWithNoMessage()
     {
         $exception = new AuthorizationException();
+        $exception->message = '';
 
         $transformed = (new AuthTransformer())->transform($exception);
 
