@@ -72,7 +72,7 @@ class FactoryTest extends AbstractTestCase
 
     public function testFactoryBadContent()
     {
-        $i = InformationFactory::create(__DIR__.'/../stubs/garbage.json');
+        $i = InformationFactory::create(__DIR__.'/stubs/garbage.json');
 
         $this->assertInstanceOf(NullInformation::class, $i);
     }

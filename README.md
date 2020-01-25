@@ -17,7 +17,7 @@ Laravel Exceptions was created by, and is maintained by [Graham Campbell](https:
 
 ## Installation
 
-Laravel Exceptions requires [PHP](https://php.net) 7.1-7.4. This particular version supports Laravel 7.
+Laravel Exceptions requires [PHP](https://php.net) 7.2-7.4. This particular version supports Laravel 7.
 
 | Exceptions | L5.1               | L5.2               | L5.3               | L5.4               | L5.5               | L5.6               | L5.7               | L5.8               | L6                 | L7                 |
 |------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|
