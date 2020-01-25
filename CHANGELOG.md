@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V14.0 (Upcoming)
+
+* Support only Laravel 7
+
+
 ## V13.0 (Upcoming)
 
 * Support only Laravel 6

@@ -25,8 +25,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Throwable;
@@ -74,11 +73,11 @@ class ExceptionHandler implements HandlerInterface
     /**
      * Report or log an exception.
      *
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         if ($this->shouldntReport($e)) {
             return;
@@ -99,11 +98,11 @@ class ExceptionHandler implements HandlerInterface
     /**
      * Determine if the exception should be reported.
      *
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return bool
      */
-    public function shouldReport(Exception $e)
+    public function shouldReport(Throwable $e)
     {
         return !$this->shouldntReport($e);
     }
@@ -126,13 +125,13 @@ class ExceptionHandler implements HandlerInterface
      * Render an exception to the console.
      *
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception                                        $e
+     * @param \Throwable                                        $e
      *
      * @return void
      */
-    public function renderForConsole($output, Exception $e)
+    public function renderForConsole($output, Throwable $e)
     {
-        (new ConsoleApplication())->renderException($e, $output);
+        (new ConsoleApplication())->renderThrowable($e, $output);
     }
 
     /**
@@ -173,11 +172,11 @@ class ExceptionHandler implements HandlerInterface
      * Render an exception into a response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception               $e
+     * @param \Throwable               $e
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         $transformed = $this->getTransformed($e);
 
@@ -191,7 +190,7 @@ class ExceptionHandler implements HandlerInterface
             try {
                 $response = $this->getResponse($request, $e, $transformed);
             } catch (Throwable $e) {
-                $this->report($this->ensureException($e));
+                $this->report($e);
 
                 $response = new Response('Internal server error.', 500, ['Content-Type' => 'text/plain']);
             }
@@ -218,7 +217,7 @@ class ExceptionHandler implements HandlerInterface
             }
         }
 
-        return $response->withException($this->ensureException($e));
+        return $response->withException($e);
     }
 
     /**
@@ -299,20 +298,6 @@ class ExceptionHandler implements HandlerInterface
     }
 
     /**
-     * Ensure the given throwable is an exception.
-     *
-     * If it's not, we'll convert it to a FatalThrowableError exception.
-     *
-     * @param \Throwable $e
-     *
-     * @return \Exception
-     */
-    protected function ensureException(Throwable $e)
-    {
-        return $e instanceof Exception ? $e : new FatalThrowableError($e);
-    }
-
-    /**
      * Make multiple objects using the container.
      *
      * @param string[] $classes
@@ -326,7 +311,7 @@ class ExceptionHandler implements HandlerInterface
                 $classes[$index] = $this->container->make($class);
             } catch (Throwable $e) {
                 unset($classes[$index]);
-                $this->report($this->ensureException($e));
+                $this->report($e);
             }
         }
 

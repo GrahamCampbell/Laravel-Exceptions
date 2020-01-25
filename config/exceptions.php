@@ -110,7 +110,6 @@ return [
         Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class            => 'notice',
         Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException::class => 'error',
         Symfony\Component\HttpKernel\Exception\HttpExceptionInterface::class           => 'warning',
-        Symfony\Component\Debug\Exception\FatalErrorException::class                   => 'critical',
         Exception::class                                                               => 'error',
         Throwable::class                                                               => 'critical',
     ],
