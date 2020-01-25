@@ -1,7 +1,7 @@
 Laravel Exceptions
 ==================
 
-Laravel Exceptions was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and provides a powerful error response system for both development and production for [Laravel 5](http://laravel.com). It optionally utilises the [Whoops](https://github.com/filp/whoops) package for the development error pages. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Exceptions/releases), [security policy](https://github.com/GrahamCampbell/Laravel-Exceptions/security/policy), [license](LICENSE), [code of conduct](.github/CODE_OF_CONDUCT.md), and [contribution guidelines](.github/CONTRIBUTING.md).
+Laravel Exceptions was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and provides a powerful error response system for both development and production for [Laravel](http://laravel.com). It optionally utilises the [Whoops](https://github.com/filp/whoops) package for the development error pages. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Exceptions/releases), [security policy](https://github.com/GrahamCampbell/Laravel-Exceptions/security/policy), [license](LICENSE), [code of conduct](.github/CODE_OF_CONDUCT.md), and [contribution guidelines](.github/CONTRIBUTING.md).
 
 ![Banner](https://user-images.githubusercontent.com/2829600/71477346-60993680-27e1-11ea-881f-01ac5caaa169.png)
 
@@ -17,7 +17,7 @@ Laravel Exceptions was created by, and is maintained by [Graham Campbell](https:
 
 ## Installation
 
-Laravel Exceptions requires [PHP](https://php.net) 7.1-7.4. This particular version supports Laravel 5.5-5.8 and 6 only.
+Laravel Exceptions requires [PHP](https://php.net) 7.1-7.4. This particular version supports Laravel 5.5-6.
 
 To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
