@@ -15,7 +15,6 @@ namespace GrahamCampbell\Tests\Exceptions\Information;
 
 use GrahamCampbell\Exceptions\Information\ArrayInformation;
 use GrahamCampbell\Exceptions\Information\InformationFactory;
-use GrahamCampbell\Exceptions\Information\InformationInterface;
 use GrahamCampbell\Exceptions\Information\NullInformation;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

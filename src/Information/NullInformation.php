@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace GrahamCampbell\Exceptions\Information;
 
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 /**
