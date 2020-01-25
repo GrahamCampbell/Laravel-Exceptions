@@ -7,9 +7,10 @@ CHANGE LOG
 * Support only Laravel 7
 
 
-## V13.0 (Upcoming)
+## V13.0 (25/01/2020)
 
 * Support only Laravel 6
+* Support only PHP 7.2 - 7.4
 * Renamed various classes and interfaces
 * Work with throwables rather than exceptions
 
