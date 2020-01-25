@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V14.0 (Upcoming)
+## V14.0 (25/01/2020)
 
 * Support only Laravel 7
 
