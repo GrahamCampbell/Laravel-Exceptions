@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace GrahamCampbell\Tests\Exceptions\Identifier;
 
 use Exception;
-use GrahamCampbell\TestBench\AbstractTestCase;
 use GrahamCampbell\Exceptions\Identifier\HashingIdentifier;
+use GrahamCampbell\TestBench\AbstractTestCase;
 
 /**
  * This is the hashing identifier test class.
