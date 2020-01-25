@@ -15,7 +15,6 @@ namespace GrahamCampbell\Exceptions;
 
 use Exception;
 use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
-use GrahamCampbell\Exceptions\Information\InformationInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as HandlerInterface;
 use Illuminate\Contracts\Support\Responsable;
@@ -283,10 +282,10 @@ class ExceptionHandler implements HandlerInterface
      * Get the filtered list of displayers.
      *
      * @param \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[] $displayers
-     * @param \Illuminate\Http\Request                                   $request
-     * @param \Throwable                                                 $original
-     * @param \Throwable                                                 $transformed
-     * @param int                                                        $code
+     * @param \Illuminate\Http\Request                                  $request
+     * @param \Throwable                                                $original
+     * @param \Throwable                                                $transformed
+     * @param int                                                       $code
      *
      * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[]
      */
