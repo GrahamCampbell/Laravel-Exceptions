@@ -16,6 +16,7 @@ namespace Laravel\Lumen\Exceptions;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Response;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
 
@@ -38,7 +39,7 @@ class Handler implements ExceptionHandler
     public function report(Exception $e)
     {
         if ($this->shouldReport($e)) {
-            app('Psr\Log\LoggerInterface')->error($e);
+            app(LoggerInterface::class)->error($e);
         }
     }
 

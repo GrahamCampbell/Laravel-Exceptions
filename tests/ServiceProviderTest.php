@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace GrahamCampbell\Tests\Exceptions;
 
-use GrahamCampbell\Exceptions\Displayers\DebugDisplayer;
-use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
-use GrahamCampbell\Exceptions\Displayers\JsonApiDisplayer;
-use GrahamCampbell\Exceptions\Displayers\JsonDisplayer;
+use GrahamCampbell\Exceptions\Displayer\DebugDisplayer;
+use GrahamCampbell\Exceptions\Displayer\HtmlDisplayer;
+use GrahamCampbell\Exceptions\Displayer\JsonApiDisplayer;
+use GrahamCampbell\Exceptions\Displayer\JsonDisplayer;
 use GrahamCampbell\Exceptions\ExceptionHandler;
-use GrahamCampbell\Exceptions\Filters\CanDisplayFilter;
-use GrahamCampbell\Exceptions\Filters\ContentTypeFilter;
-use GrahamCampbell\Exceptions\Filters\VerboseFilter;
+use GrahamCampbell\Exceptions\Filter\CanDisplayFilter;
+use GrahamCampbell\Exceptions\Filter\ContentTypeFilter;
+use GrahamCampbell\Exceptions\Filter\VerboseFilter;
+use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
+use GrahamCampbell\Exceptions\Information\InformationInterface;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 use Illuminate\Support\Str;
 
@@ -36,6 +38,16 @@ class ServiceProviderTest extends AbstractTestCase
     public function testExceptionHandlerIsInjectable()
     {
         $this->assertIsInjectable(ExceptionHandler::class);
+    }
+
+    public function testExceptionIdentifierIsInjectable()
+    {
+        $this->assertIsInjectable(IdentifierInterface::class);
+    }
+
+    public function testExceptionInformationIsInjectable()
+    {
+        $this->assertIsInjectable(InformationInterface::class);
     }
 
     public function testJsonApiDisplayerIsInjectable()
@@ -80,7 +92,7 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertCount(5, $displayers);
 
         foreach ($displayers as $displayer) {
-            $this->assertTrue(Str::startsWith($displayer, 'GrahamCampbell\Exceptions\Displayers'));
+            $this->assertTrue(Str::startsWith($displayer, 'GrahamCampbell\Exceptions\Displayer'));
         }
     }
 
@@ -91,7 +103,7 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertCount(3, $filters);
 
         foreach ($filters as $filter) {
-            $this->assertTrue(Str::startsWith($filter, 'GrahamCampbell\Exceptions\Filters'));
+            $this->assertTrue(Str::startsWith($filter, 'GrahamCampbell\Exceptions\Filter'));
         }
     }
 }

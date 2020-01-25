@@ -2,6 +2,13 @@ CHANGE LOG
 ==========
 
 
+## V13.0 (Upcoming)
+
+* Support only Laravel 6
+* Renamed various classes and interfaces
+* Work with throwables rather than exceptions
+
+
 ## V12.1 (26/08/2019)
 
 * Added Laravel 6 support

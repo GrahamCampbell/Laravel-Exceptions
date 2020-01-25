@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
+use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
+use GrahamCampbell\Exceptions\Information\InformationInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as HandlerInterface;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Exception\HttpResponseException as OldHttpResponseException;
-use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -91,7 +92,7 @@ class ExceptionHandler implements HandlerInterface
         }
 
         $level = $this->getLevel($e);
-        $id = $this->container->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->container->make(IdentifierInterface::class)->identify($e);
 
         $logger->$level($e, ['identification' => ['id' => $id], 'exception' => $e]);
     }
@@ -111,11 +112,11 @@ class ExceptionHandler implements HandlerInterface
     /**
      * Determine if the exception is in the do not report list.
      *
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return bool
      */
-    protected function shouldntReport(Exception $e)
+    protected function shouldntReport(Throwable $e)
     {
         return !is_null(collect($this->dontReport)->first(function ($type) use ($e) {
             return $e instanceof $type;
@@ -154,11 +155,11 @@ class ExceptionHandler implements HandlerInterface
     /**
      * Get the exception level.
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
      *
      * @return string
      */
-    protected function getLevel(Exception $exception)
+    protected function getLevel(Throwable $exception)
     {
         foreach ((array) $this->getConfigItem('levels') as $class => $level) {
             if ($exception instanceof $class) {
@@ -183,7 +184,7 @@ class ExceptionHandler implements HandlerInterface
 
         $response = $e instanceof Responsable ? $e->toResponse($request) : null;
 
-        if (!$response && ($e instanceof OldHttpResponseException || $e instanceof NewHttpResponseException)) {
+        if (!$response && ($e instanceof HttpResponseException)) {
             $response = $e->getResponse();
         }
 
@@ -191,7 +192,7 @@ class ExceptionHandler implements HandlerInterface
             try {
                 $response = $this->getResponse($request, $e, $transformed);
             } catch (Throwable $e) {
-                $this->report($e instanceof Exception ? $e : new FatalThrowableError($e));
+                $this->report($this->ensureException($e));
 
                 $response = new Response('Internal server error.', 500, ['Content-Type' => 'text/plain']);
             }
@@ -204,11 +205,11 @@ class ExceptionHandler implements HandlerInterface
      * Map exception into an illuminate response.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param \Exception                                 $e
+     * @param \Throwable                                 $e
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    protected function toIlluminateResponse($response, Exception $e)
+    protected function toIlluminateResponse($response, Throwable $e)
     {
         if (!$response instanceof Response) {
             if ($response instanceof SymfonyRedirectResponse) {
@@ -218,23 +219,23 @@ class ExceptionHandler implements HandlerInterface
             }
         }
 
-        return $response->withException($e);
+        return $response->withException($this->ensureException($e));
     }
 
     /**
      * Get the approprate response object.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception               $transformed
-     * @param \Exception               $exception
+     * @param \Throwable               $transformed
+     * @param \Throwable               $exception
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function getResponse(Request $request, Exception $exception, Exception $transformed)
+    protected function getResponse(Request $request, Throwable $exception, Throwable $transformed)
     {
-        $id = $this->container->make(ExceptionIdentifier::class)->identify($exception);
+        $id = $this->container->make(IdentifierInterface::class)->identify($exception);
 
-        $flattened = FlattenException::create($transformed);
+        $flattened = FlattenException::createFromThrowable($transformed);
         $code = $flattened->getStatusCode();
         $headers = $flattened->getHeaders();
 
@@ -244,11 +245,11 @@ class ExceptionHandler implements HandlerInterface
     /**
      * Get the transformed exception.
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
      *
-     * @return \Exception
+     * @return \Throwable
      */
-    protected function getTransformed(Exception $exception)
+    protected function getTransformed(Throwable $exception)
     {
         foreach ($this->make((array) $this->getConfigItem('transformers')) as $transformer) {
             $exception = $transformer->transform($exception);
@@ -261,13 +262,13 @@ class ExceptionHandler implements HandlerInterface
      * Get the displayer instance.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception               $original
-     * @param \Exception               $transformed
+     * @param \Throwable               $original
+     * @param \Throwable               $transformed
      * @param int                      $code
      *
-     * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface
+     * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface
      */
-    protected function getDisplayer(Request $request, Exception $original, Exception $transformed, $code)
+    protected function getDisplayer(Request $request, Throwable $original, Throwable $transformed, int $code)
     {
         $displayers = $this->make((array) $this->getConfigItem('displayers'));
 
@@ -281,21 +282,35 @@ class ExceptionHandler implements HandlerInterface
     /**
      * Get the filtered list of displayers.
      *
-     * @param \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[] $displayers
+     * @param \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[] $displayers
      * @param \Illuminate\Http\Request                                   $request
-     * @param \Exception                                                 $original
-     * @param \Exception                                                 $transformed
+     * @param \Throwable                                                 $original
+     * @param \Throwable                                                 $transformed
      * @param int                                                        $code
      *
-     * @return \GrahamCampbell\Exceptions\Displayers\DisplayerInterface[]
+     * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, Request $request, Exception $original, Exception $transformed, $code)
+    protected function getFiltered(array $displayers, Request $request, Throwable $original, Throwable $transformed, int $code)
     {
         foreach ($this->make((array) $this->getConfigItem('filters')) as $filter) {
             $displayers = $filter->filter($displayers, $request, $original, $transformed, $code);
         }
 
         return array_values($displayers);
+    }
+
+    /**
+     * Ensure the given throwable is an exception.
+     *
+     * If it's not, we'll convert it to a FatalThrowableError exception.
+     *
+     * @param \Throwable $e
+     *
+     * @return \Exception
+     */
+    protected function ensureException(Throwable $e)
+    {
+        return $e instanceof Exception ? $e : new FatalThrowableError($e);
     }
 
     /**
@@ -312,7 +327,7 @@ class ExceptionHandler implements HandlerInterface
                 $classes[$index] = $this->container->make($class);
             } catch (Throwable $e) {
                 unset($classes[$index]);
-                $this->report($e instanceof Exception ? $e : new FatalThrowableError($e));
+                $this->report($this->ensureException($e));
             }
         }
 

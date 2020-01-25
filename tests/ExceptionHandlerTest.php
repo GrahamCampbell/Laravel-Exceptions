@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace GrahamCampbell\Tests\Exceptions;
 
 use Exception;
-use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
+use GrahamCampbell\Exceptions\Displayer\HtmlDisplayer;
 use GrahamCampbell\Exceptions\ExceptionHandler;
-use GrahamCampbell\Exceptions\ExceptionIdentifier;
-use GrahamCampbell\Exceptions\ExceptionInfoInterface;
+use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
+use GrahamCampbell\Exceptions\Information\InformationInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Exception\HttpResponseException as OldHttpResponseException;
-use Illuminate\Http\Exceptions\HttpResponseException as NewHttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
@@ -31,6 +30,7 @@ use InvalidArgumentException;
 use Mockery;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
@@ -64,11 +64,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     {
         $handler = $this->getExceptionHandler();
 
-        if (class_exists(OldHttpResponseException::class)) {
-            $e = new OldHttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain']));
-        } else {
-            $e = new NewHttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain']));
-        }
+        $e = new HttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain']));
 
         $response = $handler->render($this->app->request, $e);
 
@@ -83,11 +79,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     {
         $handler = $this->getExceptionHandler();
 
-        if (class_exists(OldHttpResponseException::class)) {
-            $e = new OldHttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302));
-        } else {
-            $e = new NewHttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302));
-        }
+        $e = new HttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302));
 
         $response = $handler->render($this->app->request, $e);
 
@@ -182,7 +174,7 @@ class ExceptionHandlerTest extends AbstractTestCase
 
         $handler = $this->getExceptionHandler();
         $response = $handler->render($this->app->request, $e = new GoneHttpException());
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(410, $response->getStatusCode());
@@ -208,7 +200,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     public function testRenderException()
     {
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
-            $info = $app->make(ExceptionInfoInterface::class);
+            $info = $app->make(InformationInterface::class);
             $assets = function ($path) {
                 throw new RuntimeException('Oh no...');
             };
@@ -230,7 +222,7 @@ class ExceptionHandlerTest extends AbstractTestCase
     public function testRenderThrowable()
     {
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
-            $info = $app->make(ExceptionInfoInterface::class);
+            $info = $app->make(InformationInterface::class);
             $assets = function ($path) {
                 throw new TypeError('Foo.');
             };
@@ -254,7 +246,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new NotFoundHttpException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -265,7 +257,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new Exception();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -310,7 +302,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new BadRequestHttpException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -321,7 +313,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new ConflictingHeadersException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -332,7 +324,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new SuspiciousOperationException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -343,7 +335,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new AuthorizationException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -354,7 +346,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new TokenMismatchException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -365,7 +357,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new ModelNotFoundException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -378,7 +370,7 @@ class ExceptionHandlerTest extends AbstractTestCase
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
         $e = new BadRequestHttpException();
-        $id = $this->app->make(ExceptionIdentifier::class)->identify($e);
+        $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('error')->once()->with($e, ['identification' => ['id' => $id], 'exception' => $e]);
 
         $this->assertNull($this->getExceptionHandler()->report($e));
@@ -395,6 +387,24 @@ class ExceptionHandlerTest extends AbstractTestCase
         $response = $this->getExceptionHandler()->render($this->app->request, new Exception());
 
         $this->assertInstanceOf(Response::class, $response);
+    }
+
+    public function testRenderForConsole()
+    {
+        $handler = $this->getExceptionHandler();
+
+        $o = Mockery::mock(OutputInterface::class);
+        $o->shouldReceive('writeln')->with('', OutputInterface::VERBOSITY_QUIET)->once();
+        $o->shouldReceive('writeln')->with([
+            '<comment>In ExceptionHandlerTest.php line 407:</comment>',
+            '<error>                    </error>',
+            '<error>  Model not found!  </error>',
+            '<error>                    </error>',
+            '',
+        ], OutputInterface::VERBOSITY_QUIET)->once();
+        $o->shouldReceive('getVerbosity')->andReturn(OutputInterface::VERBOSITY_NORMAL);
+
+        $handler->renderForConsole($o, new ModelNotFoundException('Model not found!'));
     }
 
     protected function getExceptionHandler()

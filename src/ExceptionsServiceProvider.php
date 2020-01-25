@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace GrahamCampbell\Exceptions;
 
-use GrahamCampbell\Exceptions\Displayers\HtmlDisplayer;
-use GrahamCampbell\Exceptions\Filters\VerboseFilter;
+use GrahamCampbell\Exceptions\Displayer\HtmlDisplayer;
+use GrahamCampbell\Exceptions\Filter\VerboseFilter;
+use GrahamCampbell\Exceptions\Identifier\HashingIdentifier;
+use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
+use GrahamCampbell\Exceptions\Information\InformationFactory;
+use GrahamCampbell\Exceptions\Information\InformationInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Routing\UrlGenerator as LaravelGenerator;
 use Illuminate\Foundation\Application as LaravelApplication;
@@ -64,18 +68,18 @@ class ExceptionsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(ExceptionIdentifier::class, function () {
-            return new ExceptionIdentifier();
+        $this->app->singleton(IdentifierInterface::class, function () {
+            return new HashingIdentifier();
         });
 
-        $this->app->singleton(ExceptionInfoInterface::class, function () {
+        $this->app->singleton(InformationInterface::class, function () {
             $path = __DIR__.'/../resources/errors.json';
 
-            return new ExceptionInfo(realpath($path));
+            return InformationFactory::create(realpath($path));
         });
 
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
-            $info = $app->make(ExceptionInfoInterface::class);
+            $info = $app->make(InformationInterface::class);
             $generator = $app->make($this->app instanceof LumenApplication ? LumenGenerator::class : LaravelGenerator::class);
             $assets = function ($path) use ($generator) {
                 return $generator->asset($path);
