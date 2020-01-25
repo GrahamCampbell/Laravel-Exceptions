@@ -34,7 +34,6 @@
         }
     },
     "autoload-dev": {
-        "classmap": ["tests/stubs/"],
         "psr-4": {
             "GrahamCampbell\\Tests\\Exceptions\\": "tests/"
         }
