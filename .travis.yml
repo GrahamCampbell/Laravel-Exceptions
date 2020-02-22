@@ -6,25 +6,21 @@ matrix:
       env:
         - PHP_VERSION=7.2
         - LARAVEL_VERSION=^6.0
-        - SYMFONY_VERSION=^4.0
-        - PHPUNIT_VERSION=^8.0
+        - PHPUNIT_VERSION=^8.5
     - name: PHP 7.3; Laravel 6
       env:
         - PHP_VERSION=7.3
         - LARAVEL_VERSION=^6.0
-        - SYMFONY_VERSION=^4.0
-        - PHPUNIT_VERSION=^8.0
+        - PHPUNIT_VERSION=^9.0
     - name: PHP 7.4; Laravel 6
       env:
         - PHP_VERSION=7.4
         - LARAVEL_VERSION=^6.0
-        - SYMFONY_VERSION=^4.0
-        - PHPUNIT_VERSION=^8.0
+        - PHPUNIT_VERSION=^9.0
 
 before_install:
   - travis_retry docker pull registry.gitlab.com/grahamcampbell/php:$PHP_VERSION
   - docker run -it -w /data -v ${PWD}:/data:delegated --entrypoint composer registry.gitlab.com/grahamcampbell/php:$PHP_VERSION require "laravel/framework:${LARAVEL_VERSION}" --no-update -n
-  - if [ "$SYMFONY_VERSION" != "^5.0" ]; then docker run -it -w /data -v ${PWD}:/data:delegated --entrypoint composer registry.gitlab.com/grahamcampbell/php:$PHP_VERSION require "symfony/lts:${SYMFONY_VERSION}" --no-update -n; fi
   - docker run -it -w /data -v ${PWD}:/data:delegated --entrypoint composer registry.gitlab.com/grahamcampbell/php:$PHP_VERSION require "phpunit/phpunit:${PHPUNIT_VERSION}" --dev --no-update -n
 
 install:
