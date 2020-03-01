@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V14.0.1 (01/03/2020)
+
+* Miscellaneous tweaks
+
+
 ## V14.0 (25/01/2020)
 
 * Support only Laravel 7
