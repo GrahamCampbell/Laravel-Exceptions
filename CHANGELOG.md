@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V13.0.1 (01/03/2020)
+
+* Miscellaneous tweaks
+
+
 ## V13.0 (25/01/2020)
 
 * Support only Laravel 6
