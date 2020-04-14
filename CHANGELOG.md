@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V14.0.2 (Upcoming)
+## V14.0.2 (14/04/2020)
 
 * Updated funding information
 
