@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V12.1.1 (14/04/2020)
+
+* Updated funding information
+
+
 ## V12.1 (26/08/2019)
 
 * Added Laravel 6 support
