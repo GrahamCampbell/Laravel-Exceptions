@@ -42,9 +42,6 @@
         "preferred-install": "dist"
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "13.0-dev"
-        },
         "laravel": {
             "providers": [
                 "GrahamCampbell\\Exceptions\\ExceptionsServiceProvider"
