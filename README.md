@@ -28,7 +28,7 @@ Laravel Exceptions requires [PHP](https://php.net) 7.1-7.4. This particular vers
 To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require graham-campbell/exceptions
+$ composer require graham-campbell/exceptions:^12.1
 ```
 
 Once installed, if you are not using automatic package discovery, then you need to register the `GrahamCampbell\Exceptions\ExceptionsServiceProvider` service provider in your `config/app.php`.
