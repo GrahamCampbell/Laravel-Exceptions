@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.2.5 || ^8.0",
         "illuminate/contracts": "^6.0",
         "illuminate/support": "^6.0",
         "psr/log": "^1.1",
@@ -23,7 +23,7 @@
         "graham-campbell/analyzer": "^3.0",
         "graham-campbell/testbench": "^5.4",
         "mockery/mockery": "^1.3.1",
-        "phpunit/phpunit": "^8.5 || ^9.0"
+        "phpunit/phpunit": "^8.5.8 || ^9.3.7"
     },
     "suggest": {
         "filp/whoops": "Enables use of the debug displayer."
