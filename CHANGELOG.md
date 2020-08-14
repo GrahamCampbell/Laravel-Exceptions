@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V14.1 (14/08/2020)
+
+* Support only Laravel 7 or 8
+* Added provisional PHP 8.0 support
+
+
 ## V14.0.2 (14/04/2020)
 
 * Updated funding information
