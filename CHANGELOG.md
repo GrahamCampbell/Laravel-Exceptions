@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V14.1.1 (UPCOMING)
+
+* Fixed PHP 8.0 issue
+
+
 ## V14.1 (14/08/2020)
 
 * Support only Laravel 7 or 8
