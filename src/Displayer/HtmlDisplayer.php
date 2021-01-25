@@ -94,7 +94,7 @@ final class HtmlDisplayer implements DisplayerInterface
         $info['favicon_url'] = $generator('favicon.ico');
 
         foreach ($info as $key => $val) {
-            $content = str_replace("{{ $$key }}", $val, $content);
+            $content = str_replace("{{ $$key }}", (string) $val, (string) $content);
         }
 
         return $content;
