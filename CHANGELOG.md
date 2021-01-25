@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V14.1.1 (UPCOMING)
+## V14.1.1 (25/01/2021)
 
 * Fixed PHP 8.0 issue
 
