@@ -231,7 +231,7 @@ class ExceptionHandler implements HandlerInterface
      */
     protected function getResponse(Request $request, Throwable $exception, Throwable $transformed)
     {
-        if ($this->shouldReport($exception) ) {
+        if ($this->shouldReport($exception)) {
             $id = $this->container->make(IdentifierInterface::class)->identify($exception);
         } else {
             $id = '';
