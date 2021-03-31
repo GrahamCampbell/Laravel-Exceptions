@@ -93,9 +93,19 @@ final class HtmlDisplayer implements DisplayerInterface
         $info['home_url'] = $generator('/');
         $info['favicon_url'] = $generator('favicon.ico');
 
+        if ($info['id']) {
+            $info['identification'] = "This error can be identified by <i>{$info['id']}</i>. You might want to take a note of this code.";
+        } else {
+            $info['identification'] = '';
+        }
+
         foreach ($info as $key => $val) {
             $content = str_replace("{{ $$key }}", (string) $val, (string) $content);
         }
+
+        $content = str_replace('            <p>
+                
+            </p>', '', $content);
 
         return $content;
     }

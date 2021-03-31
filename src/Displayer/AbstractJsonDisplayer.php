@@ -59,7 +59,7 @@ abstract class AbstractJsonDisplayer implements DisplayerInterface
     {
         $info = $this->info->generate($exception, $id, $code);
 
-        $error = ['id' => $id, 'status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']];
+        $error = array_filter(['id' => $id, 'status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']]);
 
         return new JsonResponse(['errors' => [$error]], $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
     }
