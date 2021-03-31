@@ -94,7 +94,8 @@ final class HtmlDisplayer implements DisplayerInterface
         $info['favicon_url'] = $generator('favicon.ico');
 
         if ($info['id']) {
-            $info['identification'] = "This error can be identified by <i>{$info['id']}</i>. You might want to take a note of this code.";
+            $info['identification'] = "This error can be identified by <i>{$info['id']}</i>.
+                You might want to take a note of this code.";
         } else {
             $info['identification'] = '';
         }
