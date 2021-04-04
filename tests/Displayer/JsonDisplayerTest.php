@@ -15,6 +15,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayer;
 
 use GrahamCampbell\Exceptions\Displayer\JsonDisplayer;
 use GrahamCampbell\Exceptions\Information\InformationFactory;
+use GrahamCampbell\Exceptions\Information\InformationMerger;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -28,7 +29,7 @@ class JsonDisplayerTest extends AbstractTestCase
 {
     public function testServerError()
     {
-        $displayer = new JsonDisplayer(InformationFactory::create(__DIR__.'/../../resources/errors.json'));
+        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json'));
 
         $response = $displayer->display(new HttpException(500, 'Gutted!'), 'foo', 500, []);
 
@@ -41,7 +42,7 @@ class JsonDisplayerTest extends AbstractTestCase
 
     public function testClientError()
     {
-        $displayer = new JsonDisplayer(InformationFactory::create(__DIR__.'/../../resources/errors.json'));
+        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json'));
 
         $response = $displayer->display(new HttpException(401, 'Grrrr!'), 'bar', 401, []);
 
@@ -54,7 +55,7 @@ class JsonDisplayerTest extends AbstractTestCase
 
     public function testProperties()
     {
-        $displayer = new JsonDisplayer(InformationFactory::create(__DIR__.'/../../resources/errors.json'));
+        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json'));
 
         $this->assertFalse($displayer->isVerbose());
         $this->assertTrue($displayer->canDisplay(new InvalidArgumentException(), new HttpException(500), 500));

@@ -18,8 +18,27 @@ namespace GrahamCampbell\Exceptions\Information;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class InformationFactory
+final class InformationFactory implements FactoryInterface
 {
+    /**
+     * The information merger.
+     *
+     * @var \GrahamCampbell\Exceptions\Information\MergerInterface
+     */
+    private $merger;
+
+    /**
+     * Create a new information factory instance.
+     *
+     * @param \GrahamCampbell\Exceptions\Information\MergerInterface $merger
+     *
+     * @return void
+     */
+    public function __construct(MergerInterface $merger)
+    {
+        $this->merger = $merger;
+    }
+
     /**
      * Create a new information instance.
      *
@@ -27,15 +46,15 @@ final class InformationFactory
      *
      * @return \GrahamCampbell\Exceptions\Information\InformationInterface
      */
-    public static function create(string $path = null)
+    public function create(string $path = null)
     {
         $data = $path === null ? null : self::getDecodedContents($path);
 
         if ($data === null) {
-            return new NullInformation();
+            return new NullInformation($this->merger);
         }
 
-        return new ArrayInformation($data);
+        return new ArrayInformation($this->merger, $data);
     }
 
     /**

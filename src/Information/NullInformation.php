@@ -23,6 +23,25 @@ use Throwable;
 final class NullInformation implements InformationInterface
 {
     /**
+     * The information merger.
+     *
+     * @var \GrahamCampbell\Exceptions\Information\MergerInterface
+     */
+    private $merger;
+
+    /**
+     * Create a new null information instance.
+     *
+     * @param \GrahamCampbell\Exceptions\Information\MergerInterface $merger
+     *
+     * @return void
+     */
+    public function __construct(MergerInterface $merger)
+    {
+        $this->merger = $merger;
+    }
+
+    /**
      * Get the exception information.
      *
      * @param \Throwable $exception
@@ -40,6 +59,6 @@ final class NullInformation implements InformationInterface
             'message' => 'An error has occurred and this resource cannot be displayed.',
         ];
 
-        return InformationMerger::merge($info, $exception);
+        return $this->merger->merge($info, $exception);
     }
 }

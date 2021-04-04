@@ -18,6 +18,7 @@ use GrahamCampbell\Exceptions\Displayer\DebugDisplayer;
 use GrahamCampbell\Exceptions\Displayer\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Displayer\JsonDisplayer;
 use GrahamCampbell\Exceptions\Filter\VerboseFilter;
+use GrahamCampbell\Exceptions\Information\InformationMerger;
 use GrahamCampbell\Exceptions\Information\NullInformation;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class VerboseFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
         $verbose = new DebugDisplayer();
-        $standard = new JsonDisplayer(new NullInformation());
+        $standard = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new VerboseFilter(true))->filter([$verbose, $standard], $request, $exception, $exception, 500);
 
@@ -47,7 +48,7 @@ class VerboseFilterTest extends AbstractTestCase
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
         $verbose = new DebugDisplayer();
-        $standard = new JsonDisplayer(new NullInformation());
+        $standard = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new VerboseFilter(false))->filter([$verbose, $standard], $request, $exception, $exception, 500);
 
@@ -63,8 +64,8 @@ class VerboseFilterTest extends AbstractTestCase
             return 'https://example.com/'.ltrim($path, '/');
         };
 
-        $json = new JsonDisplayer(new NullInformation());
-        $html = new HtmlDisplayer(new NullInformation(), $assets, 'foo');
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
+        $html = new HtmlDisplayer(new NullInformation(new InformationMerger()), $assets, 'foo');
 
         $displayers = (new VerboseFilter(true))->filter([$json, $html], $request, $exception, $exception, 500);
 
@@ -75,7 +76,7 @@ class VerboseFilterTest extends AbstractTestCase
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new VerboseFilter(false))->filter([$json], $request, $exception, $exception, 500);
 

@@ -17,8 +17,11 @@ use GrahamCampbell\Exceptions\Displayer\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Filter\VerboseFilter;
 use GrahamCampbell\Exceptions\Identifier\HashingIdentifier;
 use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
+use GrahamCampbell\Exceptions\Information\FactoryInterface;
 use GrahamCampbell\Exceptions\Information\InformationFactory;
 use GrahamCampbell\Exceptions\Information\InformationInterface;
+use GrahamCampbell\Exceptions\Information\InformationMerger;
+use GrahamCampbell\Exceptions\Information\MergerInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Routing\UrlGenerator as LaravelGenerator;
 use Illuminate\Foundation\Application as LaravelApplication;
@@ -72,10 +75,21 @@ class ExceptionsServiceProvider extends ServiceProvider
             return new HashingIdentifier();
         });
 
-        $this->app->singleton(InformationInterface::class, function () {
+        $this->app->singleton(MergerInterface::class, function () {
+            return new InformationMerger();
+        });
+
+        $this->app->singleton(FactoryInterface::class, function (Container $app) {
+            $merger = $app->make(MergerInterface::class);
+
+            return new InformationFactory($merger);
+        });
+
+        $this->app->singleton(InformationInterface::class, function (Container $app) {
+            $factory = $app->make(FactoryInterface::class);
             $path = __DIR__.'/../resources/errors.json';
 
-            return InformationFactory::create(realpath($path));
+            return $factory->create(realpath($path));
         });
 
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {

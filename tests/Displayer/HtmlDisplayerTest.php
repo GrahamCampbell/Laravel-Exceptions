@@ -16,6 +16,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayer;
 use Exception;
 use GrahamCampbell\Exceptions\Displayer\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Information\InformationFactory;
+use GrahamCampbell\Exceptions\Information\InformationMerger;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -63,7 +64,7 @@ class HtmlDisplayerTest extends AbstractTestCase
 
     protected function getHtmlDisplayer()
     {
-        $info = InformationFactory::create(__DIR__.'/../../resources/errors.json');
+        $info = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json');
 
         $assets = function ($path) {
             return 'https://example.com/'.ltrim($path, '/');

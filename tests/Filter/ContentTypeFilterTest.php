@@ -19,6 +19,7 @@ use GrahamCampbell\Exceptions\Displayer\HtmlDisplayer;
 use GrahamCampbell\Exceptions\Displayer\JsonApiDisplayer;
 use GrahamCampbell\Exceptions\Displayer\JsonDisplayer;
 use GrahamCampbell\Exceptions\Filter\ContentTypeFilter;
+use GrahamCampbell\Exceptions\Information\InformationMerger;
 use GrahamCampbell\Exceptions\Information\NullInformation;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -54,7 +55,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -69,7 +70,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -84,7 +85,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -99,7 +100,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -114,7 +115,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -129,8 +130,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
-        $api = new JsonApiDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
+        $api = new JsonApiDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json, $api], $request, $exception, $exception, 500);
 
@@ -145,8 +146,8 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
-        $api = new JsonApiDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
+        $api = new JsonApiDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json, $api], $request, $exception, $exception, 500);
 
@@ -160,8 +161,8 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
-        $api = new JsonApiDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
+        $api = new JsonApiDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $json, $api], $request, $exception, $exception, 500);
 
@@ -176,7 +177,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -191,7 +192,7 @@ class ContentTypeFilterTest extends AbstractTestCase
         $exception = new Exception();
         $debug = new DebugDisplayer();
         $html = $this->getHtmlDisplayer();
-        $json = new JsonDisplayer(new NullInformation());
+        $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
@@ -204,6 +205,6 @@ class ContentTypeFilterTest extends AbstractTestCase
             return 'https://example.com/'.ltrim($path, '/');
         };
 
-        return new HtmlDisplayer(new NullInformation(), $assets, 'foo');
+        return new HtmlDisplayer(new NullInformation(new InformationMerger()), $assets, 'foo');
     }
 }

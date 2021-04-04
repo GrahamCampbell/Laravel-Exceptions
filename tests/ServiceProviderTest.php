@@ -22,7 +22,9 @@ use GrahamCampbell\Exceptions\Filter\CanDisplayFilter;
 use GrahamCampbell\Exceptions\Filter\ContentTypeFilter;
 use GrahamCampbell\Exceptions\Filter\VerboseFilter;
 use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
+use GrahamCampbell\Exceptions\Information\FactoryInterface;
 use GrahamCampbell\Exceptions\Information\InformationInterface;
+use GrahamCampbell\Exceptions\Information\MergerInterface;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 use Illuminate\Support\Str;
 
@@ -43,6 +45,16 @@ class ServiceProviderTest extends AbstractTestCase
     public function testExceptionIdentifierIsInjectable()
     {
         $this->assertIsInjectable(IdentifierInterface::class);
+    }
+
+    public function testExceptionInformationMergerIsInjectable()
+    {
+        $this->assertIsInjectable(MergerInterface::class);
+    }
+
+    public function testExceptionInformationFactoryIsInjectable()
+    {
+        $this->assertIsInjectable(FactoryInterface::class);
     }
 
     public function testExceptionInformationIsInjectable()

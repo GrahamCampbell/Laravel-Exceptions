@@ -15,6 +15,7 @@ namespace GrahamCampbell\Tests\Exceptions\Information;
 
 use GrahamCampbell\Exceptions\Information\ArrayInformation;
 use GrahamCampbell\Exceptions\Information\InformationFactory;
+use GrahamCampbell\Exceptions\Information\InformationMerger;
 use GrahamCampbell\Exceptions\Information\NullInformation;
 use GrahamCampbell\TestBench\AbstractTestCase;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -28,7 +29,7 @@ class FactoryTest extends AbstractTestCase
 {
     public function testFallback()
     {
-        $info = (new NullInformation())->generate(new BadRequestHttpException(), 'foo', 400);
+        $info = (new NullInformation(new InformationMerger()))->generate(new BadRequestHttpException(), 'foo', 400);
 
         $expected = ['id' => 'foo', 'code' => 500, 'name' => 'Internal Server Error', 'detail' => 'An error has occurred and this resource cannot be displayed.', 'summary' => 'Houston, We Have A Problem.'];
 
@@ -51,28 +52,28 @@ class FactoryTest extends AbstractTestCase
 
     public function testFactoryNoPath()
     {
-        $i = InformationFactory::create();
+        $i = (new InformationFactory(new InformationMerger()))->create();
 
         $this->assertInstanceOf(NullInformation::class, $i);
     }
 
     public function testFactoryWithPath()
     {
-        $i = InformationFactory::create(__DIR__.'/../../resources/errors.json');
+        $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json');
 
         $this->assertInstanceOf(ArrayInformation::class, $i);
     }
 
     public function testFactoryBadPath()
     {
-        $i = InformationFactory::create(__DIR__.'/../../resources/errors.jso');
+        $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.jso');
 
         $this->assertInstanceOf(NullInformation::class, $i);
     }
 
     public function testFactoryBadContent()
     {
-        $i = InformationFactory::create(__DIR__.'/stubs/garbage.json');
+        $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/stubs/garbage.json');
 
         $this->assertInstanceOf(NullInformation::class, $i);
     }

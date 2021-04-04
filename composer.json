@@ -16,7 +16,8 @@
         "psr/log": "^1.1",
         "symfony/console": "^5.0",
         "symfony/error-handler": "^5.0",
-        "symfony/http-foundation": "^5.0"
+        "symfony/http-foundation": "^5.0",
+        "symfony/polyfill-php80": "^1.22"
     },
     "require-dev": {
         "filp/whoops": "^2.7.1",

@@ -16,6 +16,7 @@ namespace GrahamCampbell\Tests\Exceptions\Displayer;
 use Exception;
 use GrahamCampbell\Exceptions\Displayer\ViewDisplayer;
 use GrahamCampbell\Exceptions\Information\InformationFactory;
+use GrahamCampbell\Exceptions\Information\InformationMerger;
 use GrahamCampbell\Tests\Exceptions\AbstractTestCase;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -38,7 +39,7 @@ class ViewDisplayerTest extends AbstractTestCase
         $factory = Mockery::mock(Factory::class);
         $factory->shouldReceive('make')->once()->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!', 'summary' => 'Oh noes!'])->andReturn($view);
 
-        $displayer = new ViewDisplayer(InformationFactory::create(__DIR__.'/../../resources/errors.json'), $factory);
+        $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json'), $factory);
         $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
 
         $this->assertSame("Gutted.\n", $response->getContent());
@@ -48,7 +49,7 @@ class ViewDisplayerTest extends AbstractTestCase
 
     public function testPropertiesTrue()
     {
-        $displayer = new ViewDisplayer(InformationFactory::create(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(true);
 
@@ -59,7 +60,7 @@ class ViewDisplayerTest extends AbstractTestCase
 
     public function testPropertiesFalse()
     {
-        $displayer = new ViewDisplayer(InformationFactory::create(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(false);
 

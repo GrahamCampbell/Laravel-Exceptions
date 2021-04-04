@@ -23,6 +23,13 @@ use Throwable;
 final class ArrayInformation implements InformationInterface
 {
     /**
+     * The information merger.
+     *
+     * @var \GrahamCampbell\Exceptions\Information\MergerInterface
+     */
+    private $merger;
+
+    /**
      * The raw data array.
      *
      * @var array[]
@@ -32,12 +39,14 @@ final class ArrayInformation implements InformationInterface
     /**
      * Create a new array information instance.
      *
-     * @param array[] $data
+     * @param \GrahamCampbell\Exceptions\Information\MergerInterface $merger
+     * @param array[]                                                $data
      *
      * @return void
      */
-    public function __construct(array $data)
+    public function __construct(MergerInterface $merger, array $data)
     {
+        $this->merger = $merger;
         $this->data = $data;
     }
 
@@ -58,6 +67,6 @@ final class ArrayInformation implements InformationInterface
             $info = array_merge(['id' => $id, 'code' => 500], $this->data[500]);
         }
 
-        return InformationMerger::merge($info, $exception);
+        return $this->merger->merge($info, $exception);
     }
 }
