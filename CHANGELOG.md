@@ -2,6 +2,14 @@ CHANGE LOG
 ==========
 
 
+## V15.0 (04/04/2021)
+
+* Removed Google fonts
+* Removed summary field
+* Restructured to enable localization
+* Made information classes customisable
+
+
 ## V14.1.1 (25/01/2021)
 
 * Fixed PHP 8.0 issue
