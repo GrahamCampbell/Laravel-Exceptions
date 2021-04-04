@@ -42,7 +42,7 @@ final class InformationMerger implements MergerInterface
             throw new ValueError(
                 sprintf(
                     '%s::__construct(): Argument #1 ($defaultSummary) must be either null or a string of length between 5 and 35',
-                    self::class,
+                    self::class
                 )
             );
         }
