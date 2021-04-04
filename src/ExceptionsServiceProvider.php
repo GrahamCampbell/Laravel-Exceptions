@@ -26,6 +26,8 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Routing\UrlGenerator as LaravelGenerator;
 use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
+use RuntimeException;
+use Throwable;
 use Laravel\Lumen\Application as LumenApplication;
 use Laravel\Lumen\Routing\UrlGenerator as LumenGenerator;
 
@@ -85,11 +87,11 @@ class ExceptionsServiceProvider extends ServiceProvider
             return new InformationFactory($merger);
         });
 
-        $this->app->singleton(InformationInterface::class, function (Container $app) {
+        $this->app->bind(InformationInterface::class, function (Container $app) {
             $factory = $app->make(FactoryInterface::class);
-            $path = __DIR__.'/../resources/errors.json';
+            $path = self::getLocalizedResourcePath($app, 'errors.json');
 
-            return $factory->create(realpath($path));
+            return $factory->create($path);
         });
 
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
@@ -98,9 +100,9 @@ class ExceptionsServiceProvider extends ServiceProvider
             $assets = function ($path) use ($generator) {
                 return $generator->asset($path);
             };
-            $path = __DIR__.'/../resources/error.html';
+            $path = self::getLocalizedResourcePath($app, 'error.html');
 
-            return new HtmlDisplayer($info, $assets, realpath($path));
+            return new HtmlDisplayer($info, $assets, $path);
         });
 
         $this->app->bind(VerboseFilter::class, function (Container $app) {
@@ -108,6 +110,29 @@ class ExceptionsServiceProvider extends ServiceProvider
 
             return new VerboseFilter($debug);
         });
+    }
+
+    /**
+     * Get the localized resource path.
+     *
+     * @param \Illuminate\Contracts\Container\Container $app
+     * @param string                                    $file
+     *
+     * @return string
+     */
+    private static function getLocalizedResourcePath(Container $app, string $file)
+    {
+        try {
+            $locale = $app->make('translator')->getLocale();
+
+            if ($locale && is_dir(__DIR__.'/../resources/lang/'.$locale)) {
+                return realpath(__DIR__.'/../resources/lang/'.$locale.'/'.$file);
+            } else {
+                throw new RuntimeException('Invalid locale.');
+            }
+        } catch (Throwable $e) {
+            return realpath(__DIR__.'/../resources/lang/en/'.$file);
+        }
     }
 
     /**

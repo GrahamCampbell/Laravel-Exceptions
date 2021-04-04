@@ -38,7 +38,7 @@ class FactoryTest extends AbstractTestCase
 
     public function testErrorsJson()
     {
-        $path = __DIR__.'/../../resources/errors.json';
+        $path = __DIR__.'/../../resources/lang/en/errors.json';
 
         $this->assertFileExists($path);
 
@@ -59,14 +59,14 @@ class FactoryTest extends AbstractTestCase
 
     public function testFactoryWithPath()
     {
-        $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json');
+        $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json');
 
         $this->assertInstanceOf(ArrayInformation::class, $i);
     }
 
     public function testFactoryBadPath()
     {
-        $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.jso');
+        $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.jso');
 
         $this->assertInstanceOf(NullInformation::class, $i);
     }

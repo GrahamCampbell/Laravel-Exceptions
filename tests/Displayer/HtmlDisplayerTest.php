@@ -64,12 +64,12 @@ class HtmlDisplayerTest extends AbstractTestCase
 
     protected function getHtmlDisplayer()
     {
-        $info = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/errors.json');
+        $info = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json');
 
         $assets = function ($path) {
             return 'https://example.com/'.ltrim($path, '/');
         };
 
-        return new HtmlDisplayer($info, $assets, __DIR__.'/../../resources/error.html');
+        return new HtmlDisplayer($info, $assets, __DIR__.'/../../resources/lang/en/error.html');
     }
 }

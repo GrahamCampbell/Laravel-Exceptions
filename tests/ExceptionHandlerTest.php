@@ -204,7 +204,7 @@ class ExceptionHandlerTest extends AbstractTestCase
             $assets = function ($path) {
                 throw new RuntimeException('Oh no...');
             };
-            $path = __DIR__.'/../resources/error.html';
+            $path = __DIR__.'/../resources/lang/en/error.html';
 
             return new HtmlDisplayer($info, $assets, realpath($path));
         });
@@ -226,7 +226,7 @@ class ExceptionHandlerTest extends AbstractTestCase
             $assets = function ($path) {
                 throw new TypeError('Foo.');
             };
-            $path = __DIR__.'/../resources/error.html';
+            $path = __DIR__.'/../resources/lang/en/error.html';
 
             return new HtmlDisplayer($info, $assets, realpath($path));
         });
