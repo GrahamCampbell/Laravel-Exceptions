@@ -23,9 +23,8 @@
             a,a:visited{color:#2972A3;}
             .row-fluid [class*="span"]{float:left;width:100%;margin-left:2.0744680851064%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
             .row-fluid [class*="span"]:first-child{margin-left:0;}
-            .row-fluid .span3{width:99.946808510638%;}
-            .row-fluid .span2{width:57.393617021277%;}
-            .row-fluid .span1{width:40.372340425532%;}
+            .row-fluid .outer{width:99%;}
+            .row-fluid .inner{width:49%;}
             .pull-right{float:right;}
             .ellipsis{overflow: hidden;white-space: nowrap;text-overflow: ellipsis;-o-text-overflow: ellipsis;}
         }
@@ -36,8 +35,8 @@
 <div class="wrapper">
     <div role="main" class="main">
         <div class="row-fluid">
-            <div class="span3">
-                <div class="span1 ellipsis">
+            <div class="outer">
+                <div class="inner ellipsis">
                     <h1>Error 502</h1>
                 </div>
             </div>
