@@ -40,9 +40,6 @@
                 <div class="span1 ellipsis">
                     <h1>Error 502</h1>
                 </div>
-                <div class="span2 ellipsis">
-                    <h2 class="pull-right">Oh noes!</h2>
-                </div>
             </div>
             <h2>Bad Gateway</h2>
             <hr>

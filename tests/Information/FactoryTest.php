@@ -31,7 +31,7 @@ class FactoryTest extends AbstractTestCase
     {
         $info = (new NullInformation(new InformationMerger()))->generate(new BadRequestHttpException(), 'foo', 400);
 
-        $expected = ['id' => 'foo', 'code' => 500, 'name' => 'Internal Server Error', 'detail' => 'An error has occurred and this resource cannot be displayed.', 'summary' => 'Houston, We Have A Problem.'];
+        $expected = ['id' => 'foo', 'code' => 500, 'name' => 'Internal Server Error', 'detail' => 'An error has occurred and this resource cannot be displayed.'];
 
         $this->assertSame($expected, $info);
     }

@@ -37,7 +37,7 @@ class ViewDisplayerTest extends AbstractTestCase
         $view->shouldReceive('render')->once()->andReturn("Gutted.\n");
 
         $factory = Mockery::mock(Factory::class);
-        $factory->shouldReceive('make')->once()->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!', 'summary' => 'Oh noes!'])->andReturn($view);
+        $factory->shouldReceive('make')->once()->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!'])->andReturn($view);
 
         $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json'), $factory);
         $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
