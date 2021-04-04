@@ -26,10 +26,10 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Routing\UrlGenerator as LaravelGenerator;
 use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
-use RuntimeException;
-use Throwable;
 use Laravel\Lumen\Application as LumenApplication;
 use Laravel\Lumen\Routing\UrlGenerator as LumenGenerator;
+use RuntimeException;
+use Throwable;
 
 /**
  * This is the exceptions service provider class.
