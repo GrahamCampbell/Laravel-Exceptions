@@ -89,9 +89,8 @@ final class HtmlDisplayer implements DisplayerInterface
     {
         $content = file_get_contents($this->path);
 
-        $generator = $this->assets;
-        $info['home_url'] = $generator('/');
-        $info['favicon_url'] = $generator('favicon.ico');
+        $info['home_url'] = ($this->assets)('/');
+        $info['favicon_url'] = ($this->assets)('favicon.ico');
 
         foreach ($info as $key => $val) {
             $content = str_replace("{{ $$key }}", (string) $val, (string) $content);
