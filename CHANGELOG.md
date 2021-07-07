@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V15.1 (UPCOMING)
+## V15.1 (07/07/2021)
 
 * Don't let Symfony mess with the JSON encoding options
 
