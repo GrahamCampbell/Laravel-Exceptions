@@ -61,7 +61,7 @@ abstract class AbstractJsonDisplayer implements DisplayerInterface
 
         $content = json_encode([
             'errors' => [
-                ['id' => $id, 'status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']]
+                ['id' => $id, 'status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']],
             ],
         ]);
 
