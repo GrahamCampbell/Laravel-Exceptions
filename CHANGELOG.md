@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V15.1 (UPCOMING)
+
+* Don't let Symfony mess with the JSON encoding options
+
+
 ## V15.0 (04/04/2021)
 
 * Removed Google fonts
