@@ -2,6 +2,12 @@ CHANGE LOG
 ==========
 
 
+## V15.1.1 (21/11/2021)
+
+* Provisional PHP 8.1 support
+* Updated package metadata
+
+
 ## V15.1 (07/07/2021)
 
 * Don't let Symfony mess with the JSON encoding options
