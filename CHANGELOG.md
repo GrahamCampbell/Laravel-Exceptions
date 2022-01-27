@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V15.1.2 (UPCOMING)
+
+* Support `psr/log` v2
+
+
 ## V15.1.1 (21/11/2021)
 
 * Provisional PHP 8.1 support
