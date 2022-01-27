@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V15.1.2 (UPCOMING)
+## V15.1.2 (29/01/2022)
 
 * Support `psr/log` v2
 
