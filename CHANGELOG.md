@@ -1,7 +1,8 @@
 CHANGE LOG
 ==========
 
-## V15.2 (UPCOMING)
+
+## V15.2 (06/02/2022)
 
 * Added Laravel 9 support
 * Support `psr/log` v3
