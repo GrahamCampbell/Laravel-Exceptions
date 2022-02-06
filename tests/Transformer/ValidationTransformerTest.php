@@ -64,7 +64,7 @@ class ValidationTransformerTest extends AbstractTestCase
     {
         $validator = Mockery::mock(Validator::class);
 
-        $validator->shouldReceive('errors')->once()->andReturn(new MessageBag($messages));
+        $validator->shouldReceive('errors')->andReturn(new MessageBag($messages));
 
         return $validator;
     }
