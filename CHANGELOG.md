@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V16.0 (UPGRADES)
+## V16.0 (30/05/2022)
 
 * Dropped PHP < 7.4
 * Dropped Laravel < 8
