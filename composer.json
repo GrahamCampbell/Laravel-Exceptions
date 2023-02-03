@@ -1,7 +1,20 @@
 {
     "name": "graham-campbell/exceptions",
     "description": "Provides A Powerful Error Response System For Both Development And Production",
-    "keywords": ["laravel", "framework", "exceptions", "exception", "errors", "error", "whoops", "Exceptions", "Laravel Exceptions", "Laravel-Exceptions", "Graham Campbell", "GrahamCampbell"],
+    "keywords": [
+        "laravel",
+        "framework",
+        "exceptions",
+        "exception",
+        "errors",
+        "error",
+        "whoops",
+        "Exceptions",
+        "Laravel Exceptions",
+        "Laravel-Exceptions",
+        "Graham Campbell",
+        "GrahamCampbell"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -12,8 +25,8 @@
     ],
     "require": {
         "php": "^7.4.15 || ^8.0.2",
-        "illuminate/contracts": "^8.75 || ^9.0",
-        "illuminate/support": "^8.75 || ^9.0",
+        "illuminate/contracts": "^8.75 || ^9.0|^10.0",
+        "illuminate/support": "^8.75 || ^9.0|^10.0",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "symfony/console": "^5.4 || ^6.0",
         "symfony/error-handler": "^5.4 || ^6.0",
@@ -23,7 +36,7 @@
         "filp/whoops": "^2.7.1",
         "graham-campbell/analyzer": "^3.1",
         "graham-campbell/testbench": "^5.7",
-        "mockery/mockery": "^1.5",
+        "mockery/mockery": "^1.5|^1.4.4",
         "phpunit/phpunit": "^9.5"
     },
     "suggest": {
