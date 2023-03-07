@@ -31,10 +31,15 @@ final class BadHeadersTransformer implements TransformerInterface
      *
      * @return \Throwable
      */
-    public function transform(Throwable $exception)
+    public function transform(Throwable $exception): Throwable
     {
         if ($exception instanceof ConflictingHeadersException) {
-            $exception = new BadRequestHttpException('Bad headers provided.', $exception, $exception->getCode());
+            $originalCode = $exception->getCode();
+            $exception = new BadRequestHttpException(
+                'Bad headers provided.',
+                $exception,
+                is_int($originalCode) ? $originalCode : 0,
+            );
         }
 
         return $exception;

@@ -29,5 +29,5 @@ interface IdentifierInterface
      *
      * @return string
      */
-    public function identify(Throwable $exception);
+    public function identify(Throwable $exception): string;
 }

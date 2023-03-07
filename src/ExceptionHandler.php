@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace GrahamCampbell\Exceptions;
 
 use Exception;
+use GrahamCampbell\Exceptions\Displayer\DisplayerInterface;
 use GrahamCampbell\Exceptions\Identifier\IdentifierInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler as HandlerInterface;
@@ -38,18 +39,18 @@ use Throwable;
 class ExceptionHandler implements HandlerInterface
 {
     /**
-     * The exception config.
-     *
-     * @var array|null
-     */
-    protected $config;
-
-    /**
      * The container instance.
      *
      * @var \Illuminate\Contracts\Container\Container
      */
-    protected $container;
+    protected Container $container;
+
+    /**
+     * The exception config.
+     *
+     * @var array|null
+     */
+    protected ?array $config = null;
 
     /**
      * A list of the exception types that should not be reported.
@@ -77,7 +78,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return void
      */
-    public function report(Throwable $e)
+    public function report(Throwable $e): void
     {
         if ($this->shouldntReport($e)) {
             return;
@@ -102,7 +103,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return bool
      */
-    public function shouldReport(Throwable $e)
+    public function shouldReport(Throwable $e): bool
     {
         return !$this->shouldntReport($e);
     }
@@ -114,7 +115,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return bool
      */
-    protected function shouldntReport(Throwable $e)
+    protected function shouldntReport(Throwable $e): bool
     {
         return !is_null(collect($this->dontReport)->first(function ($type) use ($e) {
             return $e instanceof $type;
@@ -129,7 +130,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return void
      */
-    public function renderForConsole($output, Throwable $e)
+    public function renderForConsole($output, Throwable $e): void
     {
         (new ConsoleApplication())->renderThrowable($e, $output);
     }
@@ -157,7 +158,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return string
      */
-    protected function getLevel(Throwable $exception)
+    protected function getLevel(Throwable $exception): string
     {
         foreach ((array) $this->getConfigItem('levels') as $class => $level) {
             if ($exception instanceof $class) {
@@ -176,7 +177,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $e): SymfonyResponse
     {
         $transformed = $this->getTransformed($e);
 
@@ -207,7 +208,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    protected function toIlluminateResponse($response, Throwable $e)
+    protected function toIlluminateResponse($response, Throwable $e): SymfonyResponse
     {
         if (!$response instanceof Response) {
             if ($response instanceof SymfonyRedirectResponse) {
@@ -229,7 +230,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function getResponse(Request $request, Throwable $exception, Throwable $transformed)
+    protected function getResponse(Request $request, Throwable $exception, Throwable $transformed): SymfonyResponse
     {
         $id = $this->container->make(IdentifierInterface::class)->identify($exception);
 
@@ -247,7 +248,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return \Throwable
      */
-    protected function getTransformed(Throwable $exception)
+    protected function getTransformed(Throwable $exception): Throwable
     {
         foreach ($this->make((array) $this->getConfigItem('transformers')) as $transformer) {
             $exception = $transformer->transform($exception);
@@ -266,8 +267,12 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface
      */
-    protected function getDisplayer(Request $request, Throwable $original, Throwable $transformed, int $code)
-    {
+    protected function getDisplayer(
+        Request $request,
+        Throwable $original,
+        Throwable $transformed,
+        int $code
+    ): DisplayerInterface {
         $displayers = $this->make((array) $this->getConfigItem('displayers'));
 
         if ($filtered = $this->getFiltered($displayers, $request, $original, $transformed, $code)) {
@@ -288,8 +293,13 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[]
      */
-    protected function getFiltered(array $displayers, Request $request, Throwable $original, Throwable $transformed, int $code)
-    {
+    protected function getFiltered(
+        array $displayers,
+        Request $request,
+        Throwable $original,
+        Throwable $transformed,
+        int $code
+    ): array {
         foreach ($this->make((array) $this->getConfigItem('filters')) as $filter) {
             $displayers = $filter->filter($displayers, $request, $original, $transformed, $code);
         }
@@ -304,7 +314,7 @@ class ExceptionHandler implements HandlerInterface
      *
      * @return object[]
      */
-    protected function make(array $classes)
+    protected function make(array $classes): array
     {
         foreach ($classes as $index => $class) {
             try {

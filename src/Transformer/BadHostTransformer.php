@@ -31,10 +31,15 @@ final class BadHostTransformer implements TransformerInterface
      *
      * @return \Throwable
      */
-    public function transform(Throwable $exception)
+    public function transform(Throwable $exception): Throwable
     {
         if ($exception instanceof SuspiciousOperationException) {
-            $exception = new NotFoundHttpException('Bad hostname provided.', $exception, $exception->getCode());
+            $originalCode = $exception->getCode();
+            $exception = new NotFoundHttpException(
+                'Bad hostname provided.',
+                $exception,
+                is_int($originalCode) ? $originalCode : 0,
+            );
         }
 
         return $exception;

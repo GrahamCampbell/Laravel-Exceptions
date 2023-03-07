@@ -31,7 +31,7 @@ use Mockery;
  */
 class VerboseFilterTest extends AbstractTestCase
 {
-    public function testDebugStaysOnTop()
+    public function testDebugStaysOnTop(): void
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
@@ -40,10 +40,10 @@ class VerboseFilterTest extends AbstractTestCase
 
         $displayers = (new VerboseFilter(true))->filter([$verbose, $standard], $request, $exception, $exception, 500);
 
-        $this->assertSame([$verbose, $standard], $displayers);
+        self::assertSame([$verbose, $standard], $displayers);
     }
 
-    public function testDebugIsRemoved()
+    public function testDebugIsRemoved(): void
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
@@ -52,10 +52,10 @@ class VerboseFilterTest extends AbstractTestCase
 
         $displayers = (new VerboseFilter(false))->filter([$verbose, $standard], $request, $exception, $exception, 500);
 
-        $this->assertSame([$standard], $displayers);
+        self::assertSame([$standard], $displayers);
     }
 
-    public function testNoChangeInDebugMode()
+    public function testNoChangeInDebugMode(): void
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
@@ -69,10 +69,10 @@ class VerboseFilterTest extends AbstractTestCase
 
         $displayers = (new VerboseFilter(true))->filter([$json, $html], $request, $exception, $exception, 500);
 
-        $this->assertSame([$json, $html], $displayers);
+        self::assertSame([$json, $html], $displayers);
     }
 
-    public function testNoChangeNotInDebugMode()
+    public function testNoChangeNotInDebugMode(): void
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
@@ -80,6 +80,6 @@ class VerboseFilterTest extends AbstractTestCase
 
         $displayers = (new VerboseFilter(false))->filter([$json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$json], $displayers);
+        self::assertSame([$json], $displayers);
     }
 }

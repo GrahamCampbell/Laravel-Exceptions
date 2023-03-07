@@ -15,6 +15,7 @@ namespace GrahamCampbell\Exceptions\Displayer;
 
 use GrahamCampbell\Exceptions\Information\InformationInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
@@ -31,7 +32,7 @@ abstract class AbstractJsonDisplayer implements DisplayerInterface
      *
      * @var \GrahamCampbell\Exceptions\Information\InformationInterface
      */
-    private $info;
+    private InformationInterface $info;
 
     /**
      * Create a new json displayer instance.
@@ -55,17 +56,26 @@ abstract class AbstractJsonDisplayer implements DisplayerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Throwable $exception, string $id, int $code, array $headers)
+    public function display(Throwable $exception, string $id, int $code, array $headers): Response
     {
         $info = $this->info->generate($exception, $id, $code);
 
         $content = json_encode([
             'errors' => [
-                ['id' => $id, 'status' => $info['code'], 'title' => $info['name'], 'detail' => $info['detail']],
+                [
+                    'id'     => $id,
+                    'status' => $info['code'],
+                    'title'  => $info['name'],
+                    'detail' => $info['detail'],
+                ],
             ],
         ]);
 
-        return JsonResponse::fromJsonString($content, $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
+        return JsonResponse::fromJsonString(
+            $content,
+            $code,
+            array_merge($headers, ['Content-Type' => $this->contentType()]),
+        );
     }
 
     /**
@@ -77,7 +87,7 @@ abstract class AbstractJsonDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Throwable $original, Throwable $transformed, int $code)
+    public function canDisplay(Throwable $original, Throwable $transformed, int $code): bool
     {
         return true;
     }
@@ -87,7 +97,7 @@ abstract class AbstractJsonDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return false;
     }

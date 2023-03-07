@@ -37,85 +37,85 @@ class ServiceProviderTest extends AbstractTestCase
 {
     use ServiceProviderTrait;
 
-    public function testExceptionHandlerIsInjectable()
+    public function testExceptionHandlerIsInjectable(): void
     {
         $this->assertIsInjectable(ExceptionHandler::class);
     }
 
-    public function testExceptionIdentifierIsInjectable()
+    public function testExceptionIdentifierIsInjectable(): void
     {
         $this->assertIsInjectable(IdentifierInterface::class);
     }
 
-    public function testExceptionInformationMergerIsInjectable()
+    public function testExceptionInformationMergerIsInjectable(): void
     {
         $this->assertIsInjectable(MergerInterface::class);
     }
 
-    public function testExceptionInformationFactoryIsInjectable()
+    public function testExceptionInformationFactoryIsInjectable(): void
     {
         $this->assertIsInjectable(FactoryInterface::class);
     }
 
-    public function testExceptionInformationIsInjectable()
+    public function testExceptionInformationIsInjectable(): void
     {
         $this->assertIsInjectable(InformationInterface::class);
     }
 
-    public function testJsonApiDisplayerIsInjectable()
+    public function testJsonApiDisplayerIsInjectable(): void
     {
         $this->assertIsInjectable(JsonApiDisplayer::class);
     }
 
-    public function testJsonDisplayerIsInjectable()
+    public function testJsonDisplayerIsInjectable(): void
     {
         $this->assertIsInjectable(JsonDisplayer::class);
     }
 
-    public function testDebugDisplayerIsInjectable()
+    public function testDebugDisplayerIsInjectable(): void
     {
         $this->assertIsInjectable(DebugDisplayer::class);
     }
 
-    public function testHtmlDisplayerIsInjectable()
+    public function testHtmlDisplayerIsInjectable(): void
     {
         $this->assertIsInjectable(HtmlDisplayer::class);
     }
 
-    public function testCanDisplayFilterIsInjectable()
+    public function testCanDisplayFilterIsInjectable(): void
     {
         $this->assertIsInjectable(CanDisplayFilter::class);
     }
 
-    public function testContentTypeFilterIsInjectable()
+    public function testContentTypeFilterIsInjectable(): void
     {
         $this->assertIsInjectable(ContentTypeFilter::class);
     }
 
-    public function testVerboseFilterIsInjectable()
+    public function testVerboseFilterIsInjectable(): void
     {
         $this->assertIsInjectable(VerboseFilter::class);
     }
 
-    public function testDisplayerConfig()
+    public function testDisplayerConfig(): void
     {
         $displayers = $this->app->config->get('exceptions.displayers');
 
-        $this->assertCount(5, $displayers);
+        self::assertCount(5, $displayers);
 
         foreach ($displayers as $displayer) {
-            $this->assertTrue(Str::startsWith($displayer, 'GrahamCampbell\Exceptions\Displayer'));
+            self::assertTrue(Str::startsWith($displayer, 'GrahamCampbell\Exceptions\Displayer'));
         }
     }
 
-    public function testFilterConfig()
+    public function testFilterConfig(): void
     {
         $filters = $this->app->config->get('exceptions.filters');
 
-        $this->assertCount(3, $filters);
+        self::assertCount(3, $filters);
 
         foreach ($filters as $filter) {
-            $this->assertTrue(Str::startsWith($filter, 'GrahamCampbell\Exceptions\Filter'));
+            self::assertTrue(Str::startsWith($filter, 'GrahamCampbell\Exceptions\Filter'));
         }
     }
 }

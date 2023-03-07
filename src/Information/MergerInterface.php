@@ -30,5 +30,5 @@ interface MergerInterface
      *
      * @return array
      */
-    public function merge(array $info, Throwable $exception);
+    public function merge(array $info, Throwable $exception): array;
 }

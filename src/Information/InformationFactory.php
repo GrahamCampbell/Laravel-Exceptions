@@ -25,7 +25,7 @@ final class InformationFactory implements FactoryInterface
      *
      * @var \GrahamCampbell\Exceptions\Information\MergerInterface
      */
-    private $merger;
+    private MergerInterface $merger;
 
     /**
      * Create a new information factory instance.
@@ -46,7 +46,7 @@ final class InformationFactory implements FactoryInterface
      *
      * @return \GrahamCampbell\Exceptions\Information\InformationInterface
      */
-    public function create(string $path = null)
+    public function create(string $path = null): InformationInterface
     {
         $data = $path === null ? null : self::getDecodedContents($path);
 
@@ -66,7 +66,7 @@ final class InformationFactory implements FactoryInterface
      *
      * @return array|null
      */
-    private static function getDecodedContents(string $path)
+    private static function getDecodedContents(string $path): ?array
     {
         $contents = @file_get_contents($path);
 

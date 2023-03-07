@@ -25,7 +25,7 @@ final class JsonApiDisplayer extends AbstractJsonDisplayer
      *
      * @return string
      */
-    public function contentType()
+    public function contentType(): string
     {
         return 'application/vnd.api+json';
     }

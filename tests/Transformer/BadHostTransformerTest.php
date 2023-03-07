@@ -26,34 +26,34 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class BadHostTransformerTest extends AbstractTestCase
 {
-    public function testTransformedWithNoMessage()
+    public function testTransformedWithNoMessage(): void
     {
         $exception = new SuspiciousOperationException();
 
         $transformed = (new BadHostTransformer())->transform($exception);
 
-        $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
-        $this->assertSame('Bad hostname provided.', $transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(NotFoundHttpException::class, $transformed);
+        self::assertSame('Bad hostname provided.', $transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testTransformedWithOriginalMessage()
+    public function testTransformedWithOriginalMessage(): void
     {
         $exception = new SuspiciousOperationException('Foo!');
 
         $transformed = (new BadHostTransformer())->transform($exception);
 
-        $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
-        $this->assertSame('Bad hostname provided.', $transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(NotFoundHttpException::class, $transformed);
+        self::assertSame('Bad hostname provided.', $transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testNoChange()
+    public function testNoChange(): void
     {
         $exception = new InvalidArgumentException();
 
         $transformed = (new BadHostTransformer())->transform($exception);
 
-        $this->assertSame($exception, $transformed);
+        self::assertSame($exception, $transformed);
     }
 }

@@ -32,129 +32,129 @@ use Mockery;
  */
 class ContentTypeFilterTest extends AbstractTestCase
 {
-    public function testAcceptAll()
+    public function testAcceptAll(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['*/*']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$debug, $html, $json], $displayers);
+        self::assertSame([$debug, $html, $json], $displayers);
     }
 
-    public function testAcceptHtmlAndAll()
+    public function testAcceptHtmlAndAll(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/html', '*/*']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$debug, $html, $json], $displayers);
+        self::assertSame([$debug, $html, $json], $displayers);
     }
 
-    public function testAcceptJustHtml()
+    public function testAcceptJustHtml(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/html']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$debug, $html], $displayers);
+        self::assertSame([$debug, $html], $displayers);
     }
 
-    public function testAcceptText()
+    public function testAcceptText(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/*']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$debug, $html], $displayers);
+        self::assertSame([$debug, $html], $displayers);
     }
 
-    public function testAcceptJsonAndAll()
+    public function testAcceptJsonAndAll(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/json', '*/*']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$debug, $html, $json], $displayers);
+        self::assertSame([$debug, $html, $json], $displayers);
     }
 
-    public function testAcceptJustJson()
+    public function testAcceptJustJson(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/json']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$json], $displayers);
+        self::assertSame([$json], $displayers);
     }
 
-    public function testAcceptApplication()
+    public function testAcceptApplication(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/*']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
         $api = new JsonApiDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json, $api], $request, $exception, $exception, 500);
 
-        $this->assertSame([$json, $api], $displayers);
+        self::assertSame([$json, $api], $displayers);
     }
 
-    public function testAcceptComplexJson()
+    public function testAcceptComplexJson(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/foo+json']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
         $api = new JsonApiDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json, $api], $request, $exception, $exception, 500);
 
-        $this->assertSame([], $displayers);
+        self::assertSame([], $displayers);
     }
 
-    public function testAcceptJsonApi()
+    public function testAcceptJsonApi(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/vnd.api+json']);
@@ -166,42 +166,42 @@ class ContentTypeFilterTest extends AbstractTestCase
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $json, $api], $request, $exception, $exception, 500);
 
-        $this->assertSame([$api], $displayers);
+        self::assertSame([$api], $displayers);
     }
 
-    public function testAcceptManyThings()
+    public function testAcceptManyThings(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['text/*', 'application/foo+xml']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$debug, $html], $displayers);
+        self::assertSame([$debug, $html], $displayers);
     }
 
-    public function testAcceptNothing()
+    public function testAcceptNothing(): void
     {
         $request = Mockery::mock(Request::class)->makePartial();
         $request->shouldReceive('getAcceptableContentTypes')->andReturn(['application/xml']);
 
         $exception = new Exception();
         $debug = new DebugDisplayer();
-        $html = $this->getHtmlDisplayer();
+        $html = self::getHtmlDisplayer();
         $json = new JsonDisplayer(new NullInformation(new InformationMerger()));
 
         $displayers = (new ContentTypeFilter())->filter([$debug, $html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([], $displayers);
+        self::assertSame([], $displayers);
     }
 
-    protected function getHtmlDisplayer()
+    private static function getHtmlDisplayer(): HtmlDisplayer
     {
-        $assets = function ($path) {
+        $assets = static function (string $path): string {
             return 'https://example.com/'.ltrim($path, '/');
         };
 

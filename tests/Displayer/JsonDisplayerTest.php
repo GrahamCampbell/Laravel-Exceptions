@@ -27,38 +27,41 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class JsonDisplayerTest extends AbstractTestCase
 {
-    public function testServerError()
+    public function testServerError(): void
     {
-        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json'));
+        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))
+            ->create(__DIR__.'/../../resources/lang/en/errors.json'));
 
         $response = $displayer->display(new HttpException(500, 'Gutted!'), 'foo', 500, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/500-json.txt');
 
-        $this->assertSame(trim($expected), $response->getContent());
-        $this->assertSame(500, $response->getStatusCode());
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertSame(trim($expected), $response->getContent());
+        self::assertSame(500, $response->getStatusCode());
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
-    public function testClientError()
+    public function testClientError(): void
     {
-        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json'));
+        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))
+            ->create(__DIR__.'/../../resources/lang/en/errors.json'));
 
         $response = $displayer->display(new HttpException(401, 'Grrrr!'), 'bar', 401, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/401-json.txt');
 
-        $this->assertSame(trim($expected), $response->getContent());
-        $this->assertSame(401, $response->getStatusCode());
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertSame(trim($expected), $response->getContent());
+        self::assertSame(401, $response->getStatusCode());
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
-    public function testProperties()
+    public function testProperties(): void
     {
-        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json'));
+        $displayer = new JsonDisplayer((new InformationFactory(new InformationMerger()))
+            ->create(__DIR__.'/../../resources/lang/en/errors.json'));
 
-        $this->assertFalse($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay(new InvalidArgumentException(), new HttpException(500), 500));
-        $this->assertSame('application/json', $displayer->contentType());
+        self::assertFalse($displayer->isVerbose());
+        self::assertTrue($displayer->canDisplay(new InvalidArgumentException(), new HttpException(500), 500));
+        self::assertSame('application/json', $displayer->contentType());
     }
 }

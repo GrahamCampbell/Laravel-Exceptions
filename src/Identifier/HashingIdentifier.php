@@ -31,14 +31,14 @@ final class HashingIdentifier implements IdentifierInterface
      *
      * @var string[]
      */
-    private $identification = [];
+    private array $identification = [];
 
     /**
      * The maximum identifications to remember.
      *
      * @var int
      */
-    private $maximum;
+    private int $maximum;
 
     /**
      * Create a new hashing identifier instance.
@@ -59,7 +59,7 @@ final class HashingIdentifier implements IdentifierInterface
      *
      * @return string
      */
-    public function identify(Throwable $exception)
+    public function identify(Throwable $exception): string
     {
         $hash = spl_object_hash($exception);
 

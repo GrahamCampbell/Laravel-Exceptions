@@ -28,7 +28,7 @@ final class VerboseFilter implements FilterInterface
      *
      * @var bool
      */
-    protected $debug;
+    private bool $debug;
 
     /**
      * Create a new verbose filter instance.
@@ -53,8 +53,13 @@ final class VerboseFilter implements FilterInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[]
      */
-    public function filter(array $displayers, Request $request, Throwable $original, Throwable $transformed, int $code)
-    {
+    public function filter(
+        array $displayers,
+        Request $request,
+        Throwable $original,
+        Throwable $transformed,
+        int $code
+    ): array {
         if ($this->debug !== true) {
             foreach ($displayers as $index => $displayer) {
                 if ($displayer->isVerbose()) {

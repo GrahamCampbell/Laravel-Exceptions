@@ -34,8 +34,13 @@ final class CanDisplayFilter implements FilterInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[]
      */
-    public function filter(array $displayers, Request $request, Throwable $original, Throwable $transformed, int $code)
-    {
+    public function filter(
+        array $displayers,
+        Request $request,
+        Throwable $original,
+        Throwable $transformed,
+        int $code
+    ): array {
         foreach ($displayers as $index => $displayer) {
             if (!$displayer->canDisplay($original, $transformed, $code)) {
                 unset($displayers[$index]);

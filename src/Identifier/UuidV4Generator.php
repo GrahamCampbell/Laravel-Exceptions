@@ -27,7 +27,7 @@ final class UuidV4Generator
      *
      * @return string
      */
-    public static function generate()
+    public static function generate(): string
     {
         $hash = bin2hex(random_bytes(16));
 
@@ -39,7 +39,14 @@ final class UuidV4Generator
         $clockSeqHi &= ~(0xC0);
         $clockSeqHi |= 0x80;
 
-        $params = [substr($hash, 0, 8), substr($hash, 8, 4), sprintf('%04x', $timeHi), sprintf('%02x', $clockSeqHi), substr($hash, 18, 2), substr($hash, 20, 12)];
+        $params = [
+            substr($hash, 0, 8),
+            substr($hash, 8, 4),
+            sprintf('%04x', $timeHi),
+            sprintf('%02x', $clockSeqHi),
+            substr($hash, 18, 2),
+            substr($hash, 20, 12),
+        ];
 
         return vsprintf('%08s-%04s-%04s-%02s%02s-%012s', $params);
     }

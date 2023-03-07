@@ -31,10 +31,15 @@ final class CsrfTransformer implements TransformerInterface
      *
      * @return \Throwable
      */
-    public function transform(Throwable $exception)
+    public function transform(Throwable $exception): Throwable
     {
         if ($exception instanceof TokenMismatchException) {
-            $exception = new BadRequestHttpException($exception->getMessage() ?: 'CSRF token validation failed.', $exception, $exception->getCode());
+            $originalCode = $exception->getCode();
+            $exception = new BadRequestHttpException(
+                $exception->getMessage() ?: 'CSRF token validation failed.',
+                $exception,
+                is_int($originalCode) ? $originalCode : 0,
+            );
         }
 
         return $exception;

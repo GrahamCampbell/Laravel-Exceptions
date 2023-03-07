@@ -25,7 +25,7 @@ final class JsonDisplayer extends AbstractJsonDisplayer
      *
      * @return string
      */
-    public function contentType()
+    public function contentType(): string
     {
         return 'application/json';
     }

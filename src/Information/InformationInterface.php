@@ -31,5 +31,5 @@ interface InformationInterface
      *
      * @return array
      */
-    public function generate(Throwable $exception, string $id, int $code);
+    public function generate(Throwable $exception, string $id, int $code): array;
 }

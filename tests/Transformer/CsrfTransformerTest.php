@@ -26,34 +26,34 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class CsrfTransformerTest extends AbstractTestCase
 {
-    public function testTransformedWithNewMessage()
+    public function testTransformedWithNewMessage(): void
     {
         $exception = new TokenMismatchException();
 
         $transformed = (new CsrfTransformer())->transform($exception);
 
-        $this->assertInstanceOf(BadRequestHttpException::class, $transformed);
-        $this->assertSame('CSRF token validation failed.', $transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(BadRequestHttpException::class, $transformed);
+        self::assertSame('CSRF token validation failed.', $transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testTransformedWithOldMessage()
+    public function testTransformedWithOldMessage(): void
     {
         $exception = new TokenMismatchException('Foo!');
 
         $transformed = (new CsrfTransformer())->transform($exception);
 
-        $this->assertInstanceOf(BadRequestHttpException::class, $transformed);
-        $this->assertSame('Foo!', $transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(BadRequestHttpException::class, $transformed);
+        self::assertSame('Foo!', $transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testNoChange()
+    public function testNoChange(): void
     {
         $exception = new InvalidArgumentException();
 
         $transformed = (new CsrfTransformer())->transform($exception);
 
-        $this->assertSame($exception, $transformed);
+        self::assertSame($exception, $transformed);
     }
 }

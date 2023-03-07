@@ -27,14 +27,14 @@ final class ArrayInformation implements InformationInterface
      *
      * @var \GrahamCampbell\Exceptions\Information\MergerInterface
      */
-    private $merger;
+    private MergerInterface $merger;
 
     /**
      * The raw data array.
      *
      * @var array[]
      */
-    private $data;
+    private array $data;
 
     /**
      * Create a new array information instance.
@@ -59,7 +59,7 @@ final class ArrayInformation implements InformationInterface
      *
      * @return array
      */
-    public function generate(Throwable $exception, string $id, int $code)
+    public function generate(Throwable $exception, string $id, int $code): array
     {
         if (isset($this->data[$code])) {
             $info = array_merge(['id' => $id, 'code' => $code], $this->data[$code]);

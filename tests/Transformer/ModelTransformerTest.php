@@ -26,34 +26,34 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ModelTransformerTest extends AbstractTestCase
 {
-    public function testTransformedWithNoMessage()
+    public function testTransformedWithNoMessage(): void
     {
         $exception = new ModelNotFoundException();
 
         $transformed = (new ModelTransformer())->transform($exception);
 
-        $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
-        $this->assertEmpty($transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(NotFoundHttpException::class, $transformed);
+        self::assertEmpty($transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testTransformedWithOriginalMessage()
+    public function testTransformedWithOriginalMessage(): void
     {
         $exception = new ModelNotFoundException('Foo!');
 
         $transformed = (new ModelTransformer())->transform($exception);
 
-        $this->assertInstanceOf(NotFoundHttpException::class, $transformed);
-        $this->assertSame('Foo!', $transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(NotFoundHttpException::class, $transformed);
+        self::assertSame('Foo!', $transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testNoChange()
+    public function testNoChange(): void
     {
         $exception = new InvalidArgumentException();
 
         $transformed = (new ModelTransformer())->transform($exception);
 
-        $this->assertSame($exception, $transformed);
+        self::assertSame($exception, $transformed);
     }
 }

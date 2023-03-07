@@ -28,48 +28,53 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class InformationTest extends AbstractTestCase
 {
-    public function testExistingError()
+    public function testExistingError(): void
     {
-        $info = $this->app->make(InformationInterface::class)->generate(new BadRequestHttpException('Made a mess.'), 'foo', 400);
+        $info = $this->app->make(InformationInterface::class)
+            ->generate(new BadRequestHttpException('Made a mess.'), 'foo', 400);
 
         $expected = ['id' => 'foo', 'code' => 400, 'name' => 'Bad Request', 'detail' => 'Made a mess.'];
 
-        $this->assertSame($expected, $info);
+        self::assertSame($expected, $info);
     }
 
-    public function testShortError()
+    public function testShortError(): void
     {
-        $info = $this->app->make(InformationInterface::class)->generate(new PreconditionFailedHttpException(':('), 'bar', 412);
+        $info = $this->app->make(InformationInterface::class)
+            ->generate(new PreconditionFailedHttpException(':('), 'bar', 412);
 
         $expected = ['id' => 'bar', 'code' => 412, 'name' => 'Precondition Failed', 'detail' => 'The server does not meet one of the preconditions that the requester put on the request.'];
 
-        $this->assertSame($expected, $info);
+        self::assertSame($expected, $info);
     }
 
-    public function testLongError()
+    public function testLongError(): void
     {
-        $info = $this->app->make(InformationInterface::class)->generate(new UnprocessableEntityHttpException('Made a mess a really really big mess this time. Everything has broken, and unicorns are crying.'), 'baz', 422);
+        $info = $this->app->make(InformationInterface::class)
+            ->generate(new UnprocessableEntityHttpException('Made a mess a really really big mess this time. Everything has broken, and unicorns are crying.'), 'baz', 422);
 
         $expected = ['id' => 'baz', 'code' => 422, 'name' => 'Unprocessable Entity', 'detail' => 'Made a mess a really really big mess this time. Everything has broken, and unicorns are crying.'];
 
-        $this->assertSame($expected, $info);
+        self::assertSame($expected, $info);
     }
 
-    public function testBadError()
+    public function testBadError(): void
     {
-        $info = $this->app->make(InformationInterface::class)->generate(new Exception('Ooops.'), 'test', 666);
+        $info = $this->app->make(InformationInterface::class)
+            ->generate(new Exception('Ooops.'), 'test', 666);
 
         $expected = ['id' => 'test', 'code' => 500, 'name' => 'Internal Server Error', 'detail' => 'An error has occurred and this resource cannot be displayed.'];
 
-        $this->assertSame($expected, $info);
+        self::assertSame($expected, $info);
     }
 
-    public function testHiddenError()
+    public function testHiddenError(): void
     {
-        $info = $this->app->make(InformationInterface::class)->generate(new InvalidArgumentException('Made another mess.'), 'hi', 503);
+        $info = $this->app->make(InformationInterface::class)
+            ->generate(new InvalidArgumentException('Made another mess.'), 'hi', 503);
 
         $expected = ['id' => 'hi', 'code' => 503, 'name' => 'Service Unavailable', 'detail' => 'The server is currently unavailable. It may be overloaded or down for maintenance.'];
 
-        $this->assertSame($expected, $info);
+        self::assertSame($expected, $info);
     }
 }

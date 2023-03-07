@@ -34,5 +34,11 @@ interface FilterInterface
      *
      * @return \GrahamCampbell\Exceptions\Displayer\DisplayerInterface[]
      */
-    public function filter(array $displayers, Request $request, Throwable $original, Throwable $transformed, int $code);
+    public function filter(
+        array $displayers,
+        Request $request,
+        Throwable $original,
+        Throwable $transformed,
+        int $code
+    ): array;
 }

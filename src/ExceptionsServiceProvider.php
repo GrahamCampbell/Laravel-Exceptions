@@ -43,7 +43,7 @@ class ExceptionsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->setupConfig();
     }
@@ -53,7 +53,7 @@ class ExceptionsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function setupConfig()
+    private function setupConfig(): void
     {
         $source = realpath($raw = __DIR__.'/../config/exceptions.php') ?: $raw;
 
@@ -71,30 +71,30 @@ class ExceptionsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->singleton(IdentifierInterface::class, function () {
+        $this->app->singleton(IdentifierInterface::class, function (): IdentifierInterface {
             return new HashingIdentifier();
         });
 
-        $this->app->singleton(MergerInterface::class, function () {
+        $this->app->singleton(MergerInterface::class, function (): MergerInterface {
             return new InformationMerger();
         });
 
-        $this->app->singleton(FactoryInterface::class, function (Container $app) {
+        $this->app->singleton(FactoryInterface::class, function (Container $app): FactoryInterface {
             $merger = $app->make(MergerInterface::class);
 
             return new InformationFactory($merger);
         });
 
-        $this->app->bind(InformationInterface::class, function (Container $app) {
+        $this->app->bind(InformationInterface::class, function (Container $app): InformationInterface {
             $factory = $app->make(FactoryInterface::class);
             $path = self::getLocalizedResourcePath($app, 'errors.json');
 
             return $factory->create($path);
         });
 
-        $this->app->bind(HtmlDisplayer::class, function (Container $app) {
+        $this->app->bind(HtmlDisplayer::class, function (Container $app): HtmlDisplayer {
             $info = $app->make(InformationInterface::class);
             $generator = $app->make($this->app instanceof LumenApplication ? LumenGenerator::class : LaravelGenerator::class);
             $assets = function ($path) use ($generator) {
@@ -105,7 +105,7 @@ class ExceptionsServiceProvider extends ServiceProvider
             return new HtmlDisplayer($info, $assets, $path);
         });
 
-        $this->app->bind(VerboseFilter::class, function (Container $app) {
+        $this->app->bind(VerboseFilter::class, function (Container $app): VerboseFilter {
             $debug = $app->config->get('app.debug', false);
 
             return new VerboseFilter($debug);
@@ -120,7 +120,7 @@ class ExceptionsServiceProvider extends ServiceProvider
      *
      * @return string
      */
-    private static function getLocalizedResourcePath(Container $app, string $file)
+    private static function getLocalizedResourcePath(Container $app, string $file): string
     {
         try {
             $locale = $app->make('translator')->getLocale();
@@ -140,7 +140,7 @@ class ExceptionsServiceProvider extends ServiceProvider
      *
      * @return string[]
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             //

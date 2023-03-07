@@ -30,14 +30,14 @@ final class ViewDisplayer implements DisplayerInterface
      *
      * @var \GrahamCampbell\Exceptions\Information\InformationInterface
      */
-    private $info;
+    private InformationInterface $info;
 
     /**
      * The view factory instance.
      *
      * @var \Illuminate\Contracts\View\Factory
      */
-    private $factory;
+    private Factory $factory;
 
     /**
      * Create a new view displayer instance.
@@ -63,11 +63,15 @@ final class ViewDisplayer implements DisplayerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Throwable $exception, string $id, int $code, array $headers)
+    public function display(Throwable $exception, string $id, int $code, array $headers): Response
     {
         $info = $this->info->generate($exception, $id, $code);
 
-        return new Response($this->render($exception, $info, $code), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
+        return new Response(
+            $this->render($exception, $info, $code),
+            $code,
+            array_merge($headers, ['Content-Type' => $this->contentType()]),
+        );
     }
 
     /**
@@ -79,7 +83,7 @@ final class ViewDisplayer implements DisplayerInterface
      *
      * @return string
      */
-    private function render(Throwable $exception, array $info, int $code)
+    private function render(Throwable $exception, array $info, int $code): string
     {
         $view = $this->factory->make("errors.{$code}", $info);
 
@@ -91,7 +95,7 @@ final class ViewDisplayer implements DisplayerInterface
      *
      * @return string
      */
-    public function contentType()
+    public function contentType(): string
     {
         return 'text/html';
     }
@@ -105,7 +109,7 @@ final class ViewDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Throwable $original, Throwable $transformed, int $code)
+    public function canDisplay(Throwable $original, Throwable $transformed, int $code): bool
     {
         return $this->factory->exists("errors.{$code}");
     }
@@ -115,7 +119,7 @@ final class ViewDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return false;
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace GrahamCampbell\Exceptions\Displayer;
 
+use Closure;
 use GrahamCampbell\Exceptions\Information\InformationInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -29,32 +30,32 @@ final class HtmlDisplayer implements DisplayerInterface
      *
      * @var \GrahamCampbell\Exceptions\Information\InformationInterface
      */
-    private $info;
+    private InformationInterface $info;
 
     /**
      * The asset generator function.
      *
-     * @var callable
+     * @var Closure(string): string
      */
-    private $assets;
+    private Closure $assets;
 
     /**
      * The html template path.
      *
      * @var string
      */
-    private $path;
+    private string $path;
 
     /**
      * Create a new html displayer instance.
      *
      * @param \GrahamCampbell\Exceptions\Information\InformationInterface $info
-     * @param callable                                                    $assets
+     * @param Closure(string): string                                     $assets
      * @param string                                                      $path
      *
      * @return void
      */
-    public function __construct(InformationInterface $info, callable $assets, string $path)
+    public function __construct(InformationInterface $info, Closure $assets, string $path)
     {
         $this->info = $info;
         $this->assets = $assets;
@@ -71,11 +72,15 @@ final class HtmlDisplayer implements DisplayerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Throwable $exception, string $id, int $code, array $headers)
+    public function display(Throwable $exception, string $id, int $code, array $headers): Response
     {
         $info = $this->info->generate($exception, $id, $code);
 
-        return new Response($this->render($info), $code, array_merge($headers, ['Content-Type' => $this->contentType()]));
+        return new Response(
+            $this->render($info),
+            $code,
+            array_merge($headers, ['Content-Type' => $this->contentType()]),
+        );
     }
 
     /**
@@ -85,7 +90,7 @@ final class HtmlDisplayer implements DisplayerInterface
      *
      * @return string
      */
-    private function render(array $info)
+    private function render(array $info): string
     {
         $content = file_get_contents($this->path);
 
@@ -104,7 +109,7 @@ final class HtmlDisplayer implements DisplayerInterface
      *
      * @return string
      */
-    public function contentType()
+    public function contentType(): string
     {
         return 'text/html';
     }
@@ -118,7 +123,7 @@ final class HtmlDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Throwable $original, Throwable $transformed, int $code)
+    public function canDisplay(Throwable $original, Throwable $transformed, int $code): bool
     {
         return true;
     }
@@ -128,7 +133,7 @@ final class HtmlDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return false;
     }

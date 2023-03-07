@@ -31,10 +31,15 @@ final class ModelTransformer implements TransformerInterface
      *
      * @return \Throwable
      */
-    public function transform(Throwable $exception)
+    public function transform(Throwable $exception): Throwable
     {
         if ($exception instanceof ModelNotFoundException) {
-            $exception = new NotFoundHttpException($exception->getMessage(), $exception, $exception->getCode());
+            $originalCode = $exception->getCode();
+            $exception = new NotFoundHttpException(
+                $exception->getMessage(),
+                $exception,
+                is_int($originalCode) ? $originalCode : 0,
+            );
         }
 
         return $exception;

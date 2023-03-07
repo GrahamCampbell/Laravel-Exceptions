@@ -26,34 +26,34 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class BadHeadersTransformerTest extends AbstractTestCase
 {
-    public function testTransformedWithNoMessage()
+    public function testTransformedWithNoMessage(): void
     {
         $exception = new ConflictingHeadersException();
 
         $transformed = (new BadHeadersTransformer())->transform($exception);
 
-        $this->assertInstanceOf(BadRequestHttpException::class, $transformed);
-        $this->assertSame('Bad headers provided.', $transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(BadRequestHttpException::class, $transformed);
+        self::assertSame('Bad headers provided.', $transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testTransformedWithOriginalMessage()
+    public function testTransformedWithOriginalMessage(): void
     {
         $exception = new ConflictingHeadersException('Foo!');
 
         $transformed = (new BadHeadersTransformer())->transform($exception);
 
-        $this->assertInstanceOf(BadRequestHttpException::class, $transformed);
-        $this->assertSame('Bad headers provided.', $transformed->getMessage());
-        $this->assertSame($exception, $transformed->getPrevious());
+        self::assertInstanceOf(BadRequestHttpException::class, $transformed);
+        self::assertSame('Bad headers provided.', $transformed->getMessage());
+        self::assertSame($exception, $transformed->getPrevious());
     }
 
-    public function testNoChange()
+    public function testNoChange(): void
     {
         $exception = new InvalidArgumentException();
 
         $transformed = (new BadHeadersTransformer())->transform($exception);
 
-        $this->assertSame($exception, $transformed);
+        self::assertSame($exception, $transformed);
     }
 }

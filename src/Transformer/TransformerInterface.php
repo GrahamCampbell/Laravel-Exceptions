@@ -29,5 +29,5 @@ interface TransformerInterface
      *
      * @return \Throwable
      */
-    public function transform(Throwable $exception);
+    public function transform(Throwable $exception): Throwable;
 }

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run as Whoops;
+use Whoops\RunInterface;
 
 /**
  * This is the debug displayer class.
@@ -35,11 +36,15 @@ final class DebugDisplayer implements DisplayerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Throwable $exception, string $id, int $code, array $headers)
+    public function display(Throwable $exception, string $id, int $code, array $headers): Response
     {
         $content = self::makeWhoops()->handleException($exception);
 
-        return new Response($content, $code, array_merge($headers, ['Content-Type' => 'text/html']));
+        return new Response(
+            $content,
+            $code,
+            array_merge($headers, ['Content-Type' => 'text/html']),
+        );
     }
 
     /**
@@ -47,7 +52,7 @@ final class DebugDisplayer implements DisplayerInterface
      *
      * @return \Whoops\RunInterface
      */
-    private static function makeWhoops()
+    private static function makeWhoops(): RunInterface
     {
         $whoops = new Whoops();
         $whoops->allowQuit(false);
@@ -62,7 +67,7 @@ final class DebugDisplayer implements DisplayerInterface
      *
      * @return string
      */
-    public function contentType()
+    public function contentType(): string
     {
         return 'text/html';
     }
@@ -76,7 +81,7 @@ final class DebugDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Throwable $original, Throwable $transformed, int $code)
+    public function canDisplay(Throwable $original, Throwable $transformed, int $code): bool
     {
         return class_exists(Whoops::class);
     }
@@ -86,7 +91,7 @@ final class DebugDisplayer implements DisplayerInterface
      *
      * @return bool
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return true;
     }

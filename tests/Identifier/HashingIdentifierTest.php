@@ -24,28 +24,28 @@ use GrahamCampbell\TestBench\AbstractTestCase;
  */
 class HashingIdentifierTest extends AbstractTestCase
 {
-    public function testIdentifyOne()
+    public function testIdentifyOne(): void
     {
         $i = new HashingIdentifier();
 
         $e = new Exception();
 
-        $this->assertSame($i->identify($e), $i->identify($e));
+        self::assertSame($i->identify($e), $i->identify($e));
     }
 
-    public function testIdentifyTwo()
+    public function testIdentifyTwo(): void
     {
         $i = new HashingIdentifier();
 
         $first = new Exception();
         $second = new Exception();
 
-        $this->assertSame($i->identify($first), $i->identify($first));
-        $this->assertSame($i->identify($second), $i->identify($second));
-        $this->assertNotSame($i->identify($first), $i->identify($second));
+        self::assertSame($i->identify($first), $i->identify($first));
+        self::assertSame($i->identify($second), $i->identify($second));
+        self::assertNotSame($i->identify($first), $i->identify($second));
     }
 
-    public function testIdentifyMany()
+    public function testIdentifyMany(): void
     {
         $i = new HashingIdentifier();
 
@@ -60,12 +60,12 @@ class HashingIdentifierTest extends AbstractTestCase
         }
 
         // these should have been flushed
-        $this->assertNotSame($i->identify($arr[0]), $ids[0]);
-        $this->assertNotSame($i->identify($arr[2]), $ids[2]);
-        $this->assertNotSame($i->identify($arr[5]), $ids[5]);
+        self::assertNotSame($i->identify($arr[0]), $ids[0]);
+        self::assertNotSame($i->identify($arr[2]), $ids[2]);
+        self::assertNotSame($i->identify($arr[5]), $ids[5]);
 
         // these should still be in memory
-        $this->assertSame($i->identify($arr[7]), $ids[7]);
-        $this->assertSame($i->identify($arr[15]), $ids[15]);
+        self::assertSame($i->identify($arr[7]), $ids[7]);
+        self::assertSame($i->identify($arr[15]), $ids[15]);
     }
 }

@@ -31,7 +31,7 @@ final class InformationMerger implements MergerInterface
      *
      * @return array
      */
-    public function merge(array $info, Throwable $exception)
+    public function merge(array $info, Throwable $exception): array
     {
         if ($exception instanceof HttpExceptionInterface) {
             $msg = (string) $exception->getMessage();

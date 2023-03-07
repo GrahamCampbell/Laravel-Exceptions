@@ -27,7 +27,7 @@ use Mockery;
  */
 class CanDisplayFilterTest extends AbstractTestCase
 {
-    public function testFirstIsRemoved()
+    public function testFirstIsRemoved(): void
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
@@ -38,10 +38,10 @@ class CanDisplayFilterTest extends AbstractTestCase
 
         $displayers = (new CanDisplayFilter())->filter([$html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$json], $displayers);
+        self::assertSame([$json], $displayers);
     }
 
-    public function testNoChange()
+    public function testNoChange(): void
     {
         $request = Mockery::mock(Request::class);
         $exception = new Exception();
@@ -52,6 +52,6 @@ class CanDisplayFilterTest extends AbstractTestCase
 
         $displayers = (new CanDisplayFilter())->filter([$html, $json], $request, $exception, $exception, 500);
 
-        $this->assertSame([$html, $json], $displayers);
+        self::assertSame([$html, $json], $displayers);
     }
 }

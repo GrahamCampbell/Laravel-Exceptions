@@ -24,33 +24,33 @@ use GrahamCampbell\TestBench\AbstractTestCase;
  */
 class DebugDisplayerTest extends AbstractTestCase
 {
-    public function testServerError()
+    public function testServerError(): void
     {
         $displayer = new DebugDisplayer();
 
         $response = $displayer->display(new Exception('Down for maintenance!'), 'foo', 503, []);
 
-        $this->assertSame(503, $response->getStatusCode());
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertSame(503, $response->getStatusCode());
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testClientError()
+    public function testClientError(): void
     {
         $displayer = new DebugDisplayer();
 
         $response = $displayer->display(new Exception('Naughty!'), 'bar', 403, []);
 
-        $this->assertSame(403, $response->getStatusCode());
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertSame(403, $response->getStatusCode());
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testProperties()
+    public function testProperties(): void
     {
         $exception = new Exception();
         $displayer = new DebugDisplayer();
 
-        $this->assertTrue($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay($exception, $exception, 500));
-        $this->assertSame('text/html', $displayer->contentType());
+        self::assertTrue($displayer->isVerbose());
+        self::assertTrue($displayer->canDisplay($exception, $exception, 500));
+        self::assertSame('text/html', $displayer->contentType());
     }
 }

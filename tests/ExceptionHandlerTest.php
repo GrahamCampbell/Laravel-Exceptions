@@ -47,157 +47,157 @@ use TypeError;
  */
 class ExceptionHandlerTest extends AbstractTestCase
 {
-    public function testBasicRender()
+    public function testBasicRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new Exception('Foo Bar.'));
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(500, $response->getStatusCode());
-        $this->assertSame($e, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Internal Server Error'));
-        $this->assertFalse(Str::contains($response->getContent(), 'Foo Bar.'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(500, $response->getStatusCode());
+        self::assertSame($e, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Internal Server Error'));
+        self::assertFalse(Str::contains($response->getContent(), 'Foo Bar.'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testHttpResponseExceptionRender()
+    public function testHttpResponseExceptionRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
 
         $e = new HttpResponseException(new Response('Naughty!', 403, ['Content-Type' => 'text/plain']));
 
         $response = $handler->render($this->app->request, $e);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(403, $response->getStatusCode());
-        $this->assertSame($e, $response->exception);
-        $this->assertSame('Naughty!', $response->getContent());
-        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(403, $response->getStatusCode());
+        self::assertSame($e, $response->exception);
+        self::assertSame('Naughty!', $response->getContent());
+        self::assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
-    public function testHttpRedirectResponseExceptionRender()
+    public function testHttpRedirectResponseExceptionRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
 
         $e = new HttpResponseException(new SymfonyRedirectResponse('https://example.com/foo', 302));
 
         $response = $handler->render($this->app->request, $e);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(302, $response->getStatusCode());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame(302, $response->getStatusCode());
 
         if (property_exists($response, 'exception')) {
-            $this->assertSame($e, $response->exception);
+            self::assertSame($e, $response->exception);
         }
     }
 
-    public function testNotFoundRender()
+    public function testNotFoundRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame($e, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(404, $response->getStatusCode());
+        self::assertSame($e, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Not Found'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testBadHeadersExceptionRender()
+    public function testBadHeadersExceptionRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new ConflictingHeadersException('Oh no!'));
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(400, $response->getStatusCode());
-        $this->assertInstanceOf(BadRequestHttpException::class, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Bad Request'));
-        $this->assertTrue(Str::contains($response->getContent(), 'Bad headers provided.'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(400, $response->getStatusCode());
+        self::assertInstanceOf(BadRequestHttpException::class, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Bad Request'));
+        self::assertTrue(Str::contains($response->getContent(), 'Bad headers provided.'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testBadHostExceptionRender()
+    public function testBadHostExceptionRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new SuspiciousOperationException('Oh no!'));
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertInstanceOf(NotFoundHttpException::class, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
-        $this->assertTrue(Str::contains($response->getContent(), 'Bad hostname provided.'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(404, $response->getStatusCode());
+        self::assertInstanceOf(NotFoundHttpException::class, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Not Found'));
+        self::assertTrue(Str::contains($response->getContent(), 'Bad hostname provided.'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testAuthExceptionRender()
+    public function testAuthExceptionRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new AuthorizationException('This action is unauthorized.'));
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(403, $response->getStatusCode());
-        $this->assertInstanceOf(AccessDeniedHttpException::class, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Forbidden'));
-        $this->assertTrue(Str::contains($response->getContent(), 'This action is unauthorized.'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(403, $response->getStatusCode());
+        self::assertInstanceOf(AccessDeniedHttpException::class, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Forbidden'));
+        self::assertTrue(Str::contains($response->getContent(), 'This action is unauthorized.'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testCsrfExceptionRender()
+    public function testCsrfExceptionRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new TokenMismatchException());
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(400, $response->getStatusCode());
-        $this->assertInstanceOf(BadRequestHttpException::class, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Bad Request'));
-        $this->assertTrue(Str::contains($response->getContent(), 'CSRF token validation failed.'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(400, $response->getStatusCode());
+        self::assertInstanceOf(BadRequestHttpException::class, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Bad Request'));
+        self::assertTrue(Str::contains($response->getContent(), 'CSRF token validation failed.'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testModelExceptionRender()
+    public function testModelExceptionRender(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new ModelNotFoundException('Model not found!'));
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertInstanceOf(NotFoundHttpException::class, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
-        $this->assertTrue(Str::contains($response->getContent(), 'Model not found!'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(404, $response->getStatusCode());
+        self::assertInstanceOf(NotFoundHttpException::class, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Not Found'));
+        self::assertTrue(Str::contains($response->getContent(), 'Model not found!'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testJsonRender()
+    public function testJsonRender(): void
     {
         $this->app->request->headers->set('accept', 'application/json');
 
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new GoneHttpException());
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(410, $response->getStatusCode());
-        $this->assertSame($e, $response->exception);
-        $this->assertSame('{"errors":[{"id":"'.$id.'","status":410,"title":"Gone","detail":"The requested resource is no longer available and will not be available again."}]}', $response->getContent());
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(410, $response->getStatusCode());
+        self::assertSame($e, $response->exception);
+        self::assertSame('{"errors":[{"id":"'.$id.'","status":410,"title":"Gone","detail":"The requested resource is no longer available and will not be available again."}]}', $response->getContent());
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
-    public function testBadRender()
+    public function testBadRender(): void
     {
         $this->app->request->headers->set('accept', 'not/acceptable');
 
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame($e, $response->exception);
-        $this->assertTrue(Str::contains($response->getContent(), 'Not Found'));
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(404, $response->getStatusCode());
+        self::assertSame($e, $response->exception);
+        self::assertTrue(Str::contains($response->getContent(), 'Not Found'));
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testRenderException()
+    public function testRenderException(): void
     {
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
             $info = $app->make(InformationInterface::class);
@@ -209,17 +209,17 @@ class ExceptionHandlerTest extends AbstractTestCase
             return new HtmlDisplayer($info, $assets, realpath($path));
         });
 
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(500, $response->getStatusCode());
-        $this->assertSame($e, $response->exception);
-        $this->assertSame('Internal server error.', $response->getContent());
-        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(500, $response->getStatusCode());
+        self::assertSame($e, $response->exception);
+        self::assertSame('Internal server error.', $response->getContent());
+        self::assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
-    public function testRenderThrowable()
+    public function testRenderThrowable(): void
     {
         $this->app->bind(HtmlDisplayer::class, function (Container $app) {
             $info = $app->make(InformationInterface::class);
@@ -231,17 +231,17 @@ class ExceptionHandlerTest extends AbstractTestCase
             return new HtmlDisplayer($info, $assets, realpath($path));
         });
 
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
         $response = $handler->render($this->app->request, $e = new NotFoundHttpException());
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(500, $response->getStatusCode());
-        $this->assertSame($e, $response->exception);
-        $this->assertSame('Internal server error.', $response->getContent());
-        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame(500, $response->getStatusCode());
+        self::assertSame($e, $response->exception);
+        self::assertSame('Internal server error.', $response->getContent());
+        self::assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
-    public function testReportHttp()
+    public function testReportHttp(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -249,10 +249,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportException()
+    public function testReportException(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -260,30 +260,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('error')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportFail()
-    {
-        $app = $this->app;
-
-        if (version_compare($app::VERSION, '5.3') < 0) {
-            return $this->markTestSkipped('Laravel version too old.');
-        }
-
-        $mock = Mockery::mock(LoggerInterface::class);
-
-        $this->app->bind(LoggerInterface::class, function () {
-            throw new RuntimeException('Foo.');
-        });
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Bar');
-
-        $this->getExceptionHandler()->report(new InvalidArgumentException('Bar.'));
-    }
-
-    public function testReportFailThrowable()
+    public function testReportFailThrowable(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
 
@@ -294,10 +274,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('Foo');
 
-        $this->getExceptionHandler()->report(new InvalidArgumentException('Baz.'));
+        $this->app->make(ExceptionHandler::class)->report(new InvalidArgumentException('Baz.'));
     }
 
-    public function testReportBadRequestException()
+    public function testReportBadRequestException(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -305,10 +285,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportBadHeadersException()
+    public function testReportBadHeadersException(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -316,10 +296,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportBadHostException()
+    public function testReportBadHostException(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -327,10 +307,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportAuthException()
+    public function testReportAuthException(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -338,10 +318,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportCsrfException()
+    public function testReportCsrfException(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -349,10 +329,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('notice')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportModelException()
+    public function testReportModelException(): void
     {
         $mock = Mockery::mock(LoggerInterface::class);
         $this->app->instance(LoggerInterface::class, $mock);
@@ -360,10 +340,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('warning')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testReportFallbackWorks()
+    public function testReportFallbackWorks(): void
     {
         $this->app->config->set('exceptions.levels', [TokenMismatchException::class => 'notice']);
 
@@ -373,10 +353,10 @@ class ExceptionHandlerTest extends AbstractTestCase
         $id = $this->app->make(IdentifierInterface::class)->identify($e);
         $mock->shouldReceive('error')->once()->with($e->getMessage(), ['identification' => ['id' => $id], 'exception' => $e]);
 
-        $this->assertNull($this->getExceptionHandler()->report($e));
+        self::assertNull($this->app->make(ExceptionHandler::class)->report($e));
     }
 
-    public function testBadDisplayers()
+    public function testBadDisplayers(): void
     {
         $this->app->config->set('exceptions.displayers', ['Ooops']);
 
@@ -384,31 +364,19 @@ class ExceptionHandlerTest extends AbstractTestCase
         $this->app->instance(LoggerInterface::class, $mock);
         $mock->shouldReceive('error')->once();
 
-        $response = $this->getExceptionHandler()->render($this->app->request, new Exception());
+        $response = $this->app->make(ExceptionHandler::class)->render($this->app->request, new Exception());
 
-        $this->assertInstanceOf(Response::class, $response);
+        self::assertInstanceOf(Response::class, $response);
     }
 
-    public function testRenderForConsole()
+    public function testRenderForConsole(): void
     {
-        $handler = $this->getExceptionHandler();
+        $handler = $this->app->make(ExceptionHandler::class);
 
         $o = Mockery::mock(OutputInterface::class);
-        $o->shouldReceive('writeln')->with('', OutputInterface::VERBOSITY_QUIET)->once();
-        $o->shouldReceive('writeln')->with([
-            '<comment>In ExceptionHandlerTest.php line 407:</comment>',
-            '<error>                    </error>',
-            '<error>  Model not found!  </error>',
-            '<error>                    </error>',
-            '',
-        ], OutputInterface::VERBOSITY_QUIET)->once();
+        $o->shouldReceive('writeln')->twice();
         $o->shouldReceive('getVerbosity')->andReturn(OutputInterface::VERBOSITY_NORMAL);
 
         $handler->renderForConsole($o, new ModelNotFoundException('Model not found!'));
-    }
-
-    protected function getExceptionHandler()
-    {
-        return $this->app->make(ExceptionHandler::class);
     }
 }

@@ -30,42 +30,47 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class ViewDisplayerTest extends AbstractTestCase
 {
-    public function testError()
+    public function testError(): void
     {
         $view = Mockery::mock(View::class);
         $view->shouldReceive('with')->once()->andReturn($view);
         $view->shouldReceive('render')->once()->andReturn("Gutted.\n");
 
         $factory = Mockery::mock(Factory::class);
-        $factory->shouldReceive('make')->once()->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!'])->andReturn($view);
+        $factory->shouldReceive('make')
+            ->once()
+            ->with('errors.502', ['id' => 'foo', 'code' => 502, 'name' => 'Bad Gateway', 'detail' => 'Oh noes!'])
+            ->andReturn($view);
 
         $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json'), $factory);
         $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
 
-        $this->assertSame("Gutted.\n", $response->getContent());
-        $this->assertSame(502, $response->getStatusCode());
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertSame("Gutted.\n", $response->getContent());
+        self::assertSame(502, $response->getStatusCode());
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testPropertiesTrue()
+    public function testPropertiesTrue(): void
     {
-        $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json'), $factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))
+            ->create(__DIR__.'/../../resources/lang/en/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(true);
 
-        $this->assertFalse($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay(new Exception(), new HttpException(500), 500));
-        $this->assertSame('text/html', $displayer->contentType());
+        self::assertFalse($displayer->isVerbose());
+        self::assertTrue($displayer->canDisplay(new Exception(), new HttpException(500), 500));
+        self::assertSame('text/html', $displayer->contentType());
     }
 
-    public function testPropertiesFalse()
+    public function testPropertiesFalse(): void
     {
-        $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json'), $factory = Mockery::mock(Factory::class));
+        $displayer = new ViewDisplayer((new InformationFactory(new InformationMerger()))
+            ->create(__DIR__.'/../../resources/lang/en/errors.json'), $factory = Mockery::mock(Factory::class));
 
         $factory->shouldReceive('exists')->once()->with('errors.500')->andReturn(false);
 
-        $this->assertFalse($displayer->isVerbose());
-        $this->assertFalse($displayer->canDisplay(new Exception(), new HttpException(500), 500));
-        $this->assertSame('text/html', $displayer->contentType());
+        self::assertFalse($displayer->isVerbose());
+        self::assertFalse($displayer->canDisplay(new Exception(), new HttpException(500), 500));
+        self::assertSame('text/html', $displayer->contentType());
     }
 }

@@ -27,7 +27,7 @@ final class NullInformation implements InformationInterface
      *
      * @var \GrahamCampbell\Exceptions\Information\MergerInterface
      */
-    private $merger;
+    private MergerInterface $merger;
 
     /**
      * Create a new null information instance.
@@ -50,7 +50,7 @@ final class NullInformation implements InformationInterface
      *
      * @return array
      */
-    public function generate(Throwable $exception, string $id, int $code)
+    public function generate(Throwable $exception, string $id, int $code): array
     {
         $info = [
             'id'      => $id,

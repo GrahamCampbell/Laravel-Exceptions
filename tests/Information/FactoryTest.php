@@ -27,54 +27,54 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class FactoryTest extends AbstractTestCase
 {
-    public function testFallback()
+    public function testFallback(): void
     {
         $info = (new NullInformation(new InformationMerger()))->generate(new BadRequestHttpException(), 'foo', 400);
 
         $expected = ['id' => 'foo', 'code' => 500, 'name' => 'Internal Server Error', 'detail' => 'An error has occurred and this resource cannot be displayed.'];
 
-        $this->assertSame($expected, $info);
+        self::assertSame($expected, $info);
     }
 
-    public function testErrorsJson()
+    public function testErrorsJson(): void
     {
         $path = __DIR__.'/../../resources/lang/en/errors.json';
 
-        $this->assertFileExists($path);
+        self::assertFileExists($path);
 
         $decoded = json_decode(file_get_contents($path), true);
 
-        $this->assertIsArray($decoded);
-        $this->assertCount(40, $decoded);
-        $this->assertSame('I\'m a teapot', $decoded[418]['name']);
-        $this->assertSame('The resource that is being accessed is locked.', $decoded[423]['message']);
+        self::assertIsArray($decoded);
+        self::assertCount(40, $decoded);
+        self::assertSame('I\'m a teapot', $decoded[418]['name']);
+        self::assertSame('The resource that is being accessed is locked.', $decoded[423]['message']);
     }
 
-    public function testFactoryNoPath()
+    public function testFactoryNoPath(): void
     {
         $i = (new InformationFactory(new InformationMerger()))->create();
 
-        $this->assertInstanceOf(NullInformation::class, $i);
+        self::assertInstanceOf(NullInformation::class, $i);
     }
 
-    public function testFactoryWithPath()
+    public function testFactoryWithPath(): void
     {
         $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json');
 
-        $this->assertInstanceOf(ArrayInformation::class, $i);
+        self::assertInstanceOf(ArrayInformation::class, $i);
     }
 
-    public function testFactoryBadPath()
+    public function testFactoryBadPath(): void
     {
         $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.jso');
 
-        $this->assertInstanceOf(NullInformation::class, $i);
+        self::assertInstanceOf(NullInformation::class, $i);
     }
 
-    public function testFactoryBadContent()
+    public function testFactoryBadContent(): void
     {
         $i = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/stubs/garbage.json');
 
-        $this->assertInstanceOf(NullInformation::class, $i);
+        self::assertInstanceOf(NullInformation::class, $i);
     }
 }

@@ -27,44 +27,45 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class HtmlDisplayerTest extends AbstractTestCase
 {
-    public function testServerError()
+    public function testServerError(): void
     {
-        $displayer = $this->getHtmlDisplayer();
+        $displayer = self::getHtmlDisplayer();
 
         $response = $displayer->display(new HttpException(502, 'Oh noes!'), 'foo', 502, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/502-html.txt');
 
-        $this->assertSame($expected, $response->getContent());
-        $this->assertSame(502, $response->getStatusCode());
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertSame($expected, $response->getContent());
+        self::assertSame(502, $response->getStatusCode());
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testClientError()
+    public function testClientError(): void
     {
-        $displayer = $this->getHtmlDisplayer();
+        $displayer = self::getHtmlDisplayer();
 
         $response = $displayer->display(new HttpException(404, 'Arghhhh!'), 'bar', 404, []);
 
         $expected = file_get_contents(__DIR__.'/stubs/404-html.txt');
 
-        $this->assertSame($expected, $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        self::assertSame($expected, $response->getContent());
+        self::assertSame(404, $response->getStatusCode());
+        self::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
-    public function testProperties()
+    public function testProperties(): void
     {
-        $displayer = $this->getHtmlDisplayer();
+        $displayer = self::getHtmlDisplayer();
 
-        $this->assertFalse($displayer->isVerbose());
-        $this->assertTrue($displayer->canDisplay(new Exception(), new HttpException(500), 500));
-        $this->assertSame('text/html', $displayer->contentType());
+        self::assertFalse($displayer->isVerbose());
+        self::assertTrue($displayer->canDisplay(new Exception(), new HttpException(500), 500));
+        self::assertSame('text/html', $displayer->contentType());
     }
 
-    protected function getHtmlDisplayer()
+    private static function getHtmlDisplayer(): HtmlDisplayer
     {
-        $info = (new InformationFactory(new InformationMerger()))->create(__DIR__.'/../../resources/lang/en/errors.json');
+        $info = (new InformationFactory(new InformationMerger()))
+            ->create(__DIR__.'/../../resources/lang/en/errors.json');
 
         $assets = function ($path) {
             return 'https://example.com/'.ltrim($path, '/');

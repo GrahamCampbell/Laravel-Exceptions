@@ -31,10 +31,15 @@ final class AuthTransformer implements TransformerInterface
      *
      * @return \Throwable
      */
-    public function transform(Throwable $exception)
+    public function transform(Throwable $exception): Throwable
     {
         if ($exception instanceof AuthorizationException) {
-            $exception = new AccessDeniedHttpException($exception->getMessage(), $exception, $exception->getCode());
+            $originalCode = $exception->getCode();
+            $exception = new AccessDeniedHttpException(
+                $exception->getMessage(),
+                $exception,
+                is_int($originalCode) ? $originalCode : 0,
+            );
         }
 
         return $exception;

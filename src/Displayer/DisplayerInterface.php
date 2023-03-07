@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace GrahamCampbell\Exceptions\Displayer;
 
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
@@ -32,14 +33,14 @@ interface DisplayerInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Throwable $exception, string $id, int $code, array $headers);
+    public function display(Throwable $exception, string $id, int $code, array $headers): Response;
 
     /**
      * Get the supported content type.
      *
      * @return string
      */
-    public function contentType();
+    public function contentType(): string;
 
     /**
      * Can we display the exception?
@@ -50,12 +51,12 @@ interface DisplayerInterface
      *
      * @return bool
      */
-    public function canDisplay(Throwable $original, Throwable $transformed, int $code);
+    public function canDisplay(Throwable $original, Throwable $transformed, int $code): bool;
 
     /**
      * Do we provide verbose information about the exception?
      *
      * @return bool
      */
-    public function isVerbose();
+    public function isVerbose(): bool;
 }
