@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V17.1 (04/12/2023)
+
+* Added PHP 8.3 support
+
+
 ## V17.0 (07/03/2023)
 
 * Support Laravel 8-10 only
