@@ -32,11 +32,11 @@ final class UuidV4Generator
         $hash = bin2hex(random_bytes(16));
 
         $timeHi = hexdec(substr($hash, 12, 4)) & 0x0FFF;
-        $timeHi &= ~(0xF000);
+        $timeHi &= ~0xF000;
         $timeHi |= 4 << 12;
 
         $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3F;
-        $clockSeqHi &= ~(0xC0);
+        $clockSeqHi &= ~0xC0;
         $clockSeqHi |= 0x80;
 
         $params = [
