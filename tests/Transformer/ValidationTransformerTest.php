@@ -66,7 +66,11 @@ class ValidationTransformerTest extends AbstractTestCase
     {
         $validator = Mockery::mock(Validator::class);
 
-        if (version_compare(InstalledVersions::getVersion('laravel/framework'), '9.27') >= 0) {
+        if (version_compare(InstalledVersions::getVersion('laravel/framework'), '11.0.7') >= 0) {
+            $translator = Mockery::mock(Translator::class);
+            $translator->shouldReceive('choice')->andReturn('');
+            $validator->shouldReceive('getTranslator')->andReturn($translator);
+        } elseif (version_compare(InstalledVersions::getVersion('laravel/framework'), '9.27') >= 0) {
             $translator = Mockery::mock(Translator::class);
             $translator->shouldReceive('get')->andReturn('');
             $validator->shouldReceive('getTranslator')->andReturn($translator);
