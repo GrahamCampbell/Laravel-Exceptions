@@ -27,5 +27,5 @@ interface FactoryInterface
      *
      * @return \GrahamCampbell\Exceptions\Information\InformationInterface
      */
-    public function create(string $path = null): InformationInterface;
+    public function create(?string $path = null): InformationInterface;
 }

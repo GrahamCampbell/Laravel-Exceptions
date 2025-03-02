@@ -47,7 +47,7 @@ final class HashingIdentifier implements IdentifierInterface
      *
      * @return void
      */
-    public function __construct(int $maximum = null)
+    public function __construct(?int $maximum = null)
     {
         $this->maximum = $maximum ?? 32;
     }
