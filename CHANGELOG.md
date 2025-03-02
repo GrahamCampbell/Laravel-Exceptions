@@ -2,8 +2,9 @@ CHANGE LOG
 ==========
 
 
-## V17.2 (17/03/2024)
+## V17.2 (02/03/2025)
 
+* Added PHP 8.4 support
 * Added Laravel 11 support
 
 

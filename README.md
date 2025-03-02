@@ -26,12 +26,12 @@ This version requires [PHP](https://www.php.net/) 7.4-8.4 and supports [Laravel]
 | 14.1       | :x:                | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :x:                | :x:                | :x:                |
 | 15.2       | :x:                | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x:                | :x:                |
 | 16.0       | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :x:                | :x:                |
-| 17.3       | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 17.2       | :x:                | :x:                | :x:                | :x:                | :x:                | :x:                | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require "graham-campbell/exceptions:^17.3"
+$ composer require "graham-campbell/exceptions:^17.2"
 ```
 
 Once installed, if you are not using automatic package discovery, then you need to register the `GrahamCampbell\Exceptions\ExceptionsServiceProvider` service provider in your `config/app.php`.
