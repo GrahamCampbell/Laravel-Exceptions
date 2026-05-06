@@ -24,7 +24,7 @@
         "filp/whoops": "^2.15.4",
         "graham-campbell/analyzer": "^4.1",
         "graham-campbell/testbench": "^6.1",
-        "mockery/mockery": "^1.6.6",
+        "mockery/mockery": "^1.6.12",
         "phpunit/phpunit": "^9.6.17 || ^10.5.13"
     },
     "suggest": {

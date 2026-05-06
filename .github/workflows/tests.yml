@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -54,7 +54,7 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Select Laravel 8
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@v4
         with:
           timeout_minutes: 5
           max_attempts: 5
@@ -62,7 +62,7 @@ jobs:
         if: "matrix.laravel == '8'"
 
       - name: Select Laravel 9
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@v4
         with:
           timeout_minutes: 5
           max_attempts: 5
@@ -70,7 +70,7 @@ jobs:
         if: "matrix.laravel == '9'"
 
       - name: Select Laravel 10
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@v4
         with:
           timeout_minutes: 5
           max_attempts: 5
@@ -78,7 +78,7 @@ jobs:
         if: "matrix.laravel == '10'"
 
       - name: Select Laravel 11
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@v4
         with:
           timeout_minutes: 5
           max_attempts: 5
@@ -86,7 +86,7 @@ jobs:
         if: "matrix.laravel == '11'"
 
       - name: Install PHP Dependencies
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@v4
         with:
           timeout_minutes: 5
           max_attempts: 5
