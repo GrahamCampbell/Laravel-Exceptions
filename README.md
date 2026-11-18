@@ -3,6 +3,10 @@ Laravel Exceptions
 
 Laravel Exceptions was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and provides a powerful error response system for both development and production for [Laravel](https://laravel.com/). It optionally utilises the [Whoops](https://github.com/filp/whoops) package for the development error pages. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/GrahamCampbell/Laravel-Exceptions/releases), [security policy](https://github.com/GrahamCampbell/Laravel-Exceptions/security/policy), [license](LICENSE), [code of conduct](.github/CODE_OF_CONDUCT.md), and [contribution guidelines](.github/CONTRIBUTING.md).
 
+## WARNING
+
+#### This package is no longer maintained. One can simply use Laravel's native [error handling](https://laravel.com/docs/errors) instead.
+
 ![Banner](https://user-images.githubusercontent.com/2829600/71477346-60993680-27e1-11ea-881f-01ac5caaa169.png)
 
 <p align="center">
